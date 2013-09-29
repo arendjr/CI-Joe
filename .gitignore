@@ -1,3 +1,4 @@
+# Node.js
 lib-cov
 *.seed
 *.log
@@ -12,3 +13,20 @@ logs
 results
 
 npm-debug.log
+
+# OS X mess
+.DS_Store
+
+# Eclipse IDE files
+.settings
+.project
+
+# PHP Storm IDE files
+.idea
+
+# Qt Creator IDE files
+CIJoe*.config
+CIJoe*.creator
+CIJoe*.creator.user
+CIJoe*.files
+CIJoe*.includes
