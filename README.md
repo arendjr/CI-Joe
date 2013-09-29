@@ -1,7 +1,7 @@
 C.I. Joe
 ========
 
-C.I. Joe - Continuous Integration never looked so good!
+C.I. Joe - Because knowing is half the battle!
 
  * **[Goals](#goals)**
  * **[Roadmap](#roadmap)**
