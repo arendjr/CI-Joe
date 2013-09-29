@@ -1,0 +1,13 @@
+{
+  "name": "CI-Joe",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "socket.io": "~0.9.16",
+    "socket.io-client": "~0.9.16",
+    "underscore": "~1.5.2",
+    "yaml-config": "~0.3.0"
+  }
+}
