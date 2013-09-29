@@ -4,6 +4,7 @@ C.I. Joe
 C.I. Joe - Continuous Integration never looked so good!
 
  * **[Goals](#goals)**
+ * **[Roadmap](#roadmap)**
  * **[FAQ](#faq)**
  * **[License](#license)**
 
@@ -39,6 +40,35 @@ accomodate the veterans:
    features like parallel builds and even inter-build dependencies. Users do not
    require any knowledge of these features to get up and running, but they are
    there for the taking when that extra flexibility is required.
+
+
+Roadmap
+-------
+
+Because C.I. Joe is currently in planning/pre-alpha phase, all its upcoming
+features are still on the roadmap:
+
+ * **Master-slave architecture.** This allows for running jobs in parallel,
+   optionally on multiple build machines.
+ * **Configurable pre-conditions.** When a job requires certain pre-conditions
+   to be met before it can be run (a Selenium server should be running, a
+   Vagrant machine should be up, ...) this should be easily configurable.
+   Optionallty, you can configure the command to execute to satisfy the
+   pre-condition.
+ * **Excellent console support.** Jobs are run by triggering one or more console
+   commands. This means C.I. Joe will be able to properly display console
+   output, including ANSI colors. An interactive console is provided for
+   on-the-spot debugging of jobs.
+ * **Real-time updates.** Other Continuous Integration solutions tend to think
+   it's acceptable to have to refresh the whole page in order to get updates
+   about job statusses. C.I. Joe doesn't think so.
+ * **Dashboard.** Having a properly running Continuous Integration server is
+   something to be proud of. More than just an overview of job statusses, C.I.
+   Joe will provide a good-looking (customizable) dashboard that makes for a
+   nice and informative wall decoration in the office.
+ * **Git and Subversion support.** Other version control systems may be added
+   later, but C.I. Joe 1.0 will come with full support for Git and Subversion
+   out of the box.
 
 
 F.A.Q.
