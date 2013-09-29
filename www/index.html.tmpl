@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>C.I. Joe</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="shortcut icon" href="/favicon.png" type="image/png">
+        <link rel="apple-itouch-icon" href="/favicon.png">
+        <%
+            grunt.config("cssIncludes").forEach(function(cssInclude) {
+                var rel;
+                if (cssInclude.substr(-5) === ".less") {
+                    rel = "stylesheet/less";
+                    print("<script type=\"text/javascript\">less = { strictMath: true }</script>");
+                } else {
+                    rel = "stylesheet";
+                }
+                print("<link rel=\"" + rel + "\" href=\"" + cssInclude + "\" type=\"text/css\">");
+            });
+
+            if (grunt.config("isPackaged")) {
+                print("<script src=\"js/lib/require.js\"></script>");
+            } else {
+                print("<script src=\"../js/lib/require.js\"></script>");
+            }
+            print(
+                "<script>" +
+                "var Joe = {};" +
+                "Joe.config = " + JSON.stringify(grunt.config("externalConfig")) + ";" +
+                "require.config(" + JSON.stringify(grunt.config("requirejsConfig")) + ");" +
+                "function main(){" +
+                    "require(['application','tmpl'],function(Application){" +
+                        "Joe.application=new Application();" +
+                    "});" +
+                "}" +
+                "(function(){" +
+                    "main();" +
+                "})();" +
+                "</script>"
+            );
+        %>
+    </head>
+    <body></body>
+</html>
