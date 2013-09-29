@@ -14,7 +14,7 @@ Goals
 C.I. Joe attempts to make
 [Continuous Integration](http://en.wikipedia.org/wiki/Continuous_integration) a
 satisfying and manageable process, rather than a painful, necessary evil which
-takes days to properly set up. To achieve this, I've set two design goals:
+takes days to properly set up. To achieve this, two design goals have been set:
 
  * C.I. Joe should come in an __easy-to-use package which takes zero
    configuration to set up__ in its basic form. No additional plugins should be
