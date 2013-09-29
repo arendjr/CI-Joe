@@ -14,6 +14,8 @@ results
 
 npm-debug.log
 
+node_modules
+
 # OS X mess
 .DS_Store
 
@@ -25,8 +27,8 @@ npm-debug.log
 .idea
 
 # Qt Creator IDE files
-CIJoe*.config
-CIJoe*.creator
-CIJoe*.creator.user
-CIJoe*.files
-CIJoe*.includes
+CI-Joe*.config
+CI-Joe*.creator
+CI-Joe*.creator.user
+CI-Joe*.files
+CI-Joe*.includes

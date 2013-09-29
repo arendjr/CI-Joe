@@ -1,3 +1,4 @@
 #!/bin/sh
 
-node master.js
+cd "$(dirname "$0")"
+node app/master.js

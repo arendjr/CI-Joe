@@ -1,3 +1,4 @@
 #!/bin/sh
 
-node slave.js
+cd "$(dirname "$0")"
+node app/slave.js
