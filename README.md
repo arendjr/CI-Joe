@@ -65,7 +65,7 @@ features are still on the roadmap:
  * **Dashboard.** Having a properly running Continuous Integration server is
    something to be proud of. More than just an overview of job statusses, C.I.
    Joe will provide a good-looking (customizable) dashboard that makes for a
-   nice and informative wall decoration in the office.
+   nice and informative wall decoration in your office.
  * **Git and Subversion support.** Other version control systems may be added
    later, but C.I. Joe 1.0 will come with full support for Git and Subversion
    out of the box.
@@ -74,6 +74,9 @@ features are still on the roadmap:
    access, including administration rights, or no access at all. The only step
    in between is choosing whether people may or may not view the dashboard
    without logging in.
+
+Want to add anything to the roadmap? Now is the time!
+[File an issue!](https://github.com/arendjr/CI-Joe/issues/new)
 
 
 F.A.Q.
@@ -88,7 +91,7 @@ project has not seen any maintenance in the past 2 years. I've reached out to
 Chris to ask if I could use the name, but got no response. Now, given that there
 are no trademark issues, the old project had been abandoned and had never been a
 household name to begin with, I figured the name could be reused without too
-much confusion or too many feelings hurt. CI Joe is dead, long live C.I. Joe!
+much confusion or too many hurt feelings. CI Joe is dead, long live C.I. Joe!
 
 
 License
