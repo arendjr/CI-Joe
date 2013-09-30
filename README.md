@@ -69,6 +69,11 @@ features are still on the roadmap:
  * **Git and Subversion support.** Other version control systems may be added
    later, but C.I. Joe 1.0 will come with full support for Git and Subversion
    out of the box.
+ * **All or nothing security.** C.I. Joe will feature a simple and plain
+   security model with no advanced role management. Users will either have full
+   access, including administration rights, or no access at all. The only step
+   in between is choosing whether people may or may not view the dashboard
+   without logging in.
 
 
 F.A.Q.
