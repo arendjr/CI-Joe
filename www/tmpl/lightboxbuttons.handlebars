@@ -1,0 +1,4 @@
+{{#each buttons}}
+<button{{#if visible}}{{else}} style="display: none"{{/if}} data-type="{{type}}"
+        class="btn{{#if positioning}} pull-{{positioning}}{{/if}} {{extraClass}}"{{#if enabled}}{{else}} disabled{{/if}}>{{label}}</button>
+{{/each}}

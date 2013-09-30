@@ -49,6 +49,7 @@ module.exports = function(grunt) {
 
         // translation files
         translations: [
+            "en-US",
             "nl-NL"
         ]
     };
@@ -133,7 +134,7 @@ module.exports = function(grunt) {
         options = options || {};
 
         var paths = {};
-        var jsPrefix = (config.isPackaged ? "js/" : "../js/");
+        var jsPrefix = (config.isPackaged ? "js/" : "/js/");
         if (options.compiled) {
             clientSources.js.forEach(function(baseName) {
                 paths[baseName] = jsPrefix + "app";
@@ -170,7 +171,7 @@ module.exports = function(grunt) {
      * Command for merging PO files with updated POT file.
      */
     function msgmergeCommand() {
-        var dir = "translations/";
+        var dir = "www/translations/";
         var pot = dir + "messages.pot";
         var result = clientSources.translations.map(function(locale) {
             var po = dir + locale + ".po";
@@ -211,8 +212,8 @@ module.exports = function(grunt) {
                 all: {
                     files: {
                         "www/build/all.css":
-                                        createPaths("www/css/", clientSources.css, ".css")
-                                .concat(createPaths("www/build/css/", clientSources.less, ".css"))
+                                    createPaths("www/css/", clientSources.css, ".css")
+                            .concat(createPaths("www/build/css/", ["bootstrap", "theme"], ".css"))
                     }
                 }
             },
@@ -261,22 +262,24 @@ module.exports = function(grunt) {
                     undef: true,
                     unused: true
                 },
-                all: ["Gruntfile.js"]
-                         .concat(createPaths(serverSources.js, ".js"))
-                         .concat(createPaths("tests/", serverSources.tests, "-test.js"))
-                         .concat(createPaths("www/js/", clientSources.js, ".js"))
-                         .concat(createPaths("www/tests/", clientSources.tests, "-test.js"))
+                gruntfile: "Gruntfile.js",
+                serverSources: createPaths(serverSources.js, ".js"),
+                serverTests: createPaths("tests/", serverSources.tests, "-test.js"),
+                clientSources: createPaths("www/js/", _.filter(clientSources.js, function(src) {
+                    return src.substr(0, 10) !== "bootstrap/";
+                }), ".js"),
+                clientTests: createPaths("www/tests/", clientSources.tests, "-test.js")
             },
 
             less: {
                 options: {
                     paths: ["www/img"],
-                    strictMath: true
+                    strictMath: false
                 },
                 all: {
                     files: _.object(
-                        createPaths("www/build/css/", clientSources.less, ".css"),
-                        createPaths("www/css/", clientSources.less, ".less")
+                        createPaths("www/build/css/", ["bootstrap", "theme"], ".css"),
+                        createPaths("www/css/", ["bootstrap", "theme"], ".less")
                     )
                 }
             },
@@ -316,9 +319,8 @@ module.exports = function(grunt) {
                         "backbone": { deps: ["underscore", "jquery"], exports: "Backbone" },
                         "canvasloader": { deps: [], exports: "CanvasLoader" },
                         "handlebars": { exports: "Handlebars" },
-                        "jquery.pnotify": { deps: ["jquery"], exports: "$.fn.pnotify" },
-                        "jquery.storage": { deps: ["jquery"], exports: "$.fn.localStorage" },
-                        "jquery.ui": { deps: ["jquery"], exports: "$.fn.datepicker" },
+                        "jquery.pnotify": { deps: ["jquery"], exports: "$.pnotify" },
+                        "jquery.storage": { deps: ["jquery"], exports: "$.localStorage" },
                         "select2": { deps: ["jquery"], exports: "Select2" },
                         "setzerotimeout": { exports: "setZeroTimeout" }
                     }
@@ -402,6 +404,7 @@ module.exports = function(grunt) {
         grunt.loadNpmTasks("grunt-contrib-jshint");
         grunt.loadNpmTasks("grunt-contrib-less");
         grunt.loadNpmTasks("grunt-contrib-nodeunit");
+        grunt.loadNpmTasks("grunt-gettext");
         grunt.loadNpmTasks("grunt-shell");
 
 
@@ -442,31 +445,44 @@ module.exports = function(grunt) {
 
 
         /**
+         * Expose the config object to Grunt so it can be used from the index.html template.
+         */
+        grunt.config("externalConfig", config);
+        for (var key in config) {
+            grunt.config(key, config[key]);
+        }
+
+
+        /**
+         * Generate the client-side require.js configuration set in the HTML head.
+         */
+        var requirejsConfig = grunt.config("requirejs").options;
+        if (config.isPackaged) {
+            requirejsConfig.paths = createRequirePaths({ compiled: true });
+        }
+        grunt.config("requirejsConfig", requirejsConfig);
+
+
+        /**
          * Generate paths for all CSS includes in the HTML head.
          */
         var cssIncludes = [];
-        if (!config.isPackaged) {
+        if (config.isPackaged) {
+            cssIncludes.push("all.css");
+        } else {
             clientSources.css.forEach(function(cssFileName) {
-                cssIncludes.push("../css/" + cssFileName + ".css");
+                cssIncludes.push("/css/" + cssFileName + ".css");
             });
-            clientSources.less.forEach(function(lessFileName) {
+            ["bootstrap", "theme"].forEach(function(lessFileName) {
                 if (config.lessPrecompiled) {
                     cssIncludes.push("css/" + lessFileName + ".css");
                 } else {
                     cssIncludes.push("/css/" + lessFileName + ".less");
                 }
             });
-        } else {
-            cssIncludes.push("all.css");
         }
         grunt.config("cssIncludes", cssIncludes);
     }
-
-    grunt.registerTask("tests", "Run tests", function() {
-        init();
-
-        grunt.task.run(["jshint", "nodeunit"]);
-    });
 
     grunt.registerTask("default", "Default tasks", function() {
         var tasks = ["jshint", "clean", "handlebars", "shell:ln", "index"];
@@ -488,6 +504,31 @@ module.exports = function(grunt) {
         init();
 
         grunt.task.run(tasks);
+    });
+
+    grunt.registerTask("msgmerge", "Merges a new .pot with the existing .po files", function() {
+        init();
+
+        grunt.task.run(["shell:msgmerge"]);
+    });
+
+    grunt.registerTask("po2json", "Converts PO files to JSON resources", function() {
+        init();
+
+        grunt.task.run(["po2json"]);
+    });
+
+    grunt.registerTask("tests", "Run tests", function() {
+        init();
+
+        grunt.task.run(["jshint", "nodeunit"]);
+    });
+
+    grunt.registerTask("xgettext", "Extracts translatable messages and generates a new .pot file",
+                       function() {
+        init();
+
+        grunt.task.run(["xgettext"]);
     });
 
 };

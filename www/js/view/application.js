@@ -1,4 +1,4 @@
-define("view/application", ["jquery", "view"], function($, View) {
+define("view/application", ["jquery", "view", "tmpl/skeleton"], function($, View, tmpl) {
 
     "use strict";
 
@@ -10,6 +10,11 @@ define("view/application", ["jquery", "view"], function($, View) {
         },
 
         events: {
+        },
+
+        render: function() {
+
+            return this.$el.html(tmpl.skeleton());
         }
 
     });

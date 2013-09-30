@@ -15,16 +15,19 @@ function main() {
         res.sendfile("www/build/index.html");
     });
 
+    app.use(express.static("www"));
+
     io.sockets.on("connection", function(socket) {
         socket.on("client", function(data) {
             console.log(data);
         });
+
         socket.on("slave", function(data) {
             console.log(data);
         });
     });
 
-    app.listen(config.server.port);
+    server.listen(config.server.port);
 }
 
 main();
