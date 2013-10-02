@@ -75,7 +75,7 @@ features are still on the roadmap:
    in between is choosing whether people may or may not view the dashboard
    without logging in.
  * **REST API.** If you want to fully integrate C.I. Joe with the rest of your
-   army, you can use the REST API to query build statusses or trigger new
+   army, you can use the REST API to query build statuses or trigger new
    builds. One possible application of this is integration with GitHub's
    Service Hooks.
 
