@@ -142,6 +142,7 @@ define("application",
 
                 // check again, because it might've become the same after detectLocale()
                 if (locale === l10n.locale) {
+                    deferred.resolveWith(options.context);
                     return;
                 }
 

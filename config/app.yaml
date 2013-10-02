@@ -1,6 +1,7 @@
-default:
-  server:
+default: 
+  server: 
     hostname: localhost
     port: 8080
-
-  shell: /bin/bash
+  slaves: 
+    - name: Local
+      type: local
