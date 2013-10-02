@@ -263,7 +263,9 @@ module.exports = function(grunt) {
                     unused: true
                 },
                 gruntfile: "Gruntfile.js",
-                serverSources: createPaths(serverSources.js, ".js"),
+                serverSources: createPaths(_.filter(serverSources.js, function(src) {
+                    return src !== "lib/laces";
+                }), ".js"),
                 serverTests: createPaths("tests/", serverSources.tests, "-test.js"),
                 clientSources: createPaths("www/js/", _.filter(clientSources.js, function(src) {
                     return src.substr(0, 10) !== "bootstrap/";

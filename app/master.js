@@ -1,10 +1,17 @@
 "use strict";
 
 
+var _ = require("lodash");
+
+
 function main() {
 
     var yaml = require("yaml-config");
-    var config = yaml.readConfig("config/app.yaml");
+    var Laces = require("laces.js");
+    var config = new Laces.Model(yaml.readConfig("config/app.yaml", "active"));
+    config.bind("change", function() {
+        yaml.updateConfig(_.cloneDeep(config), "config/app.yaml", "active");
+    });
 
     var express = require("express");
     var app = express();
@@ -24,6 +31,16 @@ function main() {
 
         socket.on("slave", function(data) {
             console.log(data);
+        });
+    });
+
+    var SlaveDriver = require("../lib/slavedriver");
+    var slaveDriver = new SlaveDriver(config);
+    _.each(slaveDriver.slaves, function(slave) {
+        slave.connect();
+        slave.on("changed", function(/*propertyName, value*/) {
+            // #TODO: notify all clients
+            // #TODO: notify the respective slave
         });
     });
 

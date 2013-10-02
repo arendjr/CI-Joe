@@ -17,7 +17,7 @@ define("errors", ["i18n", "underscore"], function(i18n, _) {
 
             ], function(error) {
                 (function(code, status, message) {
-                    var constant = status.toUpperCase().replace(" ", "_");
+                    var constant = status.toUpperCase().replace(/ /g, "_");
 
                     this[code] = message.toString();
                     this[constant] = code;
