@@ -1,4 +1,5 @@
 #!/bin/sh
 
 cd "$(dirname "$0")"
-node app/slave.js
+node app/slave.js "$@"
+exit $?
