@@ -17,7 +17,6 @@ The web client consumes the REST API provided by the master in order to query in
 Source directories
 ------------------
 
-Both master and slave are in the same source repository in the app/ and lib/ directories 
+Both master and slave are in the same source directories in app/ and lib/. This allows for easy code sharing between the two, though it sometimes requires a bit of consciousness about whether the code you're working with is being used from the master or slave perspective. For example, both master and slave use the file lib/slave.js to represent a slave, but each follow their own code path for establishing a connection depending on whether it's used from the master or the slave process. Both master and slave have their respective entry point in the app/ directory.
 
-The web client is separated into the www/ directory.
-
+The web client is entirely separated into the www/ directory.
