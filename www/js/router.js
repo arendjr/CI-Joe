@@ -1,49 +1,42 @@
-define("router",
-       ["backbone", "setzerotimeout", "underscore"],
-       function(Backbone, setZeroTimeout, _, undefined) {
+define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undefined) {
 
     "use strict";
 
-    return Backbone.Router.extend({
+    function Router(navigationController) {
 
-        constructor: function(navigationController, options) {
+        _.each(this.lightboxes, function(name, path) {
+            this.routes[path + "(?:query)"] = function() {
+                this.openPage("Overview", undefined, path);
+            };
+        }, this);
 
-            _.each(this.lightboxes, function(name, path) {
-                this.routes[path + "(?:query)"] = function() {
-                    this.openPage("Overview", undefined, path);
-                };
-            }, this);
+        this.basePath = navigationController.application.basePath;
 
-            Backbone.Router.call(this, options);
+        this.controller = navigationController;
 
-            this.basePath = navigationController.application.basePath;
+        this.notificationBus = navigationController.application.notificationBus;
 
-            this.controller = navigationController;
+        var root = "/";
+        if (navigationController.application.baseUrl.indexOf("/build") > -1) {
+            root = "/build";
+        }
 
-            this.notificationBus = navigationController.application.notificationBus;
+        var self = this;
+        setZeroTimeout(function() {
+            window.addEventListener("popstate", _.bind(self._onStatePopped, self));
 
-            var root = "/";
-            if (navigationController.application.baseUrl.indexOf("/build") > -1) {
-                root = "/build";
+            var routeFound = self._activateRoute();
+            if (!routeFound) {
+                self.notificationBus.signal("router:noRoute");
             }
+        }, 0);
+    }
 
-            var self = this;
-            setZeroTimeout(function() {
-                var routeFound = true;
-                if (!Backbone.History.started) {
-                    routeFound = Backbone.history.start({ pushState: true, root: root });
-                    Backbone.History.started = true;
-                }
-
-                if (!routeFound) {
-                    self.notificationBus.signal("router:noRoute");
-                }
-            }, 0);
-        },
+    _.extend(Router.prototype, {
 
         getCurrentPagePath: function() {
 
-            var currentPath = "/" + window.location.pathname.substr(this.basePath.length);
+            var currentPath = "/" + location.pathname.substr(this.basePath.length);
             _.each(this.lightboxes, function(name, path) {
                 if (currentPath.slice(-path.length - 1) === "/" + path) {
                     currentPath = currentPath.substr(0, currentPath.length - path.length - 1);
@@ -57,15 +50,9 @@ define("router",
             this.controller.openPage(type, id, path);
         },
 
-        navigate: function(path, options) {
+        navigate: function(path) {
 
-            options = options || {};
-
-            if (!Backbone.History.started && options.trigger) {
-                history.pushState({}, "", path);
-            } else {
-                Backbone.Router.prototype.navigate.call(this, path, options);
-            }
+            history.pushState({}, "", path);
         },
 
         routes: {
@@ -73,8 +60,55 @@ define("router",
             "dashboard(/:path)": function(path) { this.openPage("Dashboard", undefined, path); }
         },
 
-        lightboxes: {}
+        lightboxes: {},
+
+        _activateRoute: function() {
+
+            function routeToRegExp(route) {
+                var optionalParam = /\((.*?)\)/g;
+                var namedParam    = /(\(\?)?:\w+/g;
+                var splatParam    = /\*\w+/g;
+                var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+
+                route = route
+                    .replace(escapeRegExp, "\\$&")
+                    .replace(optionalParam, "(?:$1)?")
+                    .replace(namedParam, function(match, optional) {
+                        return optional ? match : '([^\/]+)';
+                    })
+                    .replace(splatParam, "(.*?)");
+                return new RegExp("^" + route + "$");
+            }
+
+            var path = location.pathname.substr(this.basePath.length);
+
+            var params;
+            var route = _.find(this.routes, function(handler, route) {
+                var regex = routeToRegExp(route);
+                if (regex.test(path)) {
+                    params = _.map(regex.exec(path).slice(1), function(param) {
+                        return param ? decodeURIComponent(param) : null;
+                    });
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            if (route) {
+                route.apply(this, params);
+            }
+
+            return !!route;
+        },
+
+        _onStatePopped: function() {
+
+            this._activateRoute();
+        }
 
     });
+
+    return Router;
 
 });

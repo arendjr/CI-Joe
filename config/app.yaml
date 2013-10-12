@@ -3,5 +3,7 @@ default:
     hostname: localhost
     port: 8080
   slaves: 
-    - name: Local
+    - id: slave0
+      name: Local
       type: local
+  missions:

@@ -1,4 +1,4 @@
-define("page", ["backbone", "jquery", "underscore"], function(Backbone, $, _) {
+define("page", ["extend", "jquery", "lodash"], function(extend, $, _) {
 
     "use strict";
 
@@ -44,9 +44,11 @@ define("page", ["backbone", "jquery", "underscore"], function(Backbone, $, _) {
         this._rootView = null;
 
         if (this.initialize) {
-            this.initialize.apply(this, arguments);
+            this.initialize(application, type, id);
         }
     }
+
+    Page.extend = extend;
 
     _.extend(Page.prototype, {
 
@@ -219,8 +221,6 @@ define("page", ["backbone", "jquery", "underscore"], function(Backbone, $, _) {
         }
 
     });
-
-    Page.extend = Backbone.View.extend;
 
     return Page;
 

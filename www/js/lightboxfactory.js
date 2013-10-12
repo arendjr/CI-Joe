@@ -1,4 +1,4 @@
-define("lightboxfactory", ["underscore"], function(_) {
+define("lightboxfactory", ["lodash"], function(_) {
 
     "use strict";
 

@@ -1,4 +1,4 @@
-define("l10n", ["i18n", "jquery", "underscore"], function(i18n, $, _) {
+define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
 
     "use strict";
 

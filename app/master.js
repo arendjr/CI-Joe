@@ -24,13 +24,14 @@ function main() {
 
     app.use(express.static("www"));
 
+    io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
         socket.on("client", function(data) {
-            console.log(data);
+            console.log("client", data);
         });
 
         socket.on("slave", function(data) {
-            console.log(data);
+            console.log("slave", data);
         });
     });
 
@@ -43,6 +44,13 @@ function main() {
             // #TODO: notify the respective slave
         });
     });
+
+    var CommandPost = require("../lib/commandpost");
+    var commandPost = new CommandPost(config, slaveDriver);
+
+    var ApiController = require("../lib/apicontroller");
+    var apiController = new ApiController(commandPost);
+    apiController.attachTo(app);
 
     server.listen(config.server.port);
 }

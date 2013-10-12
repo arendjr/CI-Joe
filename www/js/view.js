@@ -1,63 +1,80 @@
-define("view", ["backbone", "underscore"], function(Backbone, _) {
+define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
 
     "use strict";
 
     /**
      * Base class for all views.
+     *
+     * @param context Application or View instance that serves as a context for this view. If a
+     *                View instance is given, it is assumed to be the parent view.
+     * @param options Optional options object. May contain the following properties:
+     *                $el - jQuery container containing the top-level element to be used by this
+     *                      view. If none is given, a new element is created for the view.
      */
-    var View = Backbone.View.extend({
+    function View(context, options) {
 
-        constructor: function(context, options) {
+        options = options || {};
 
-            // context may be an Application or View object.
-            var application = null, parent = null;
-            if (context instanceof View) {
-                application = context.application;
-                parent = context;
-            } else {
-                application = context;
-            }
+        // context may be an Application or View object.
+        var application = null, parent = null;
+        if (context instanceof View) {
+            application = context.application;
+            parent = context;
+        } else {
+            application = context;
+        }
 
-            /**
-             * Reference to the application object.
-             */
-            this.application = application;
-            if (!this.application) {
-                console.log("View instantiated without Application reference");
-            }
+        /**
+         * Reference to the application object.
+         */
+        this.application = application;
+        if (!this.application) {
+            console.log("View instantiated without Application reference");
+        }
 
-            /**
-             * Reference to the parent view.
-             */
-            this.parent = parent;
+        /**
+         * Reference to the parent view.
+         */
+        this.parent = parent;
 
-            /**
-             * References to all the children of the view.
-             */
-            this.children = [];
+        /**
+         * References to all the children of the view.
+         */
+        this.children = [];
 
-            /**
-             * Map of notification channels the view is subscribed to.
-             *
-             * Note that channels are only registered here when they are subscribed to through the
-             * view's subscribe() method.
-             */
-            this.subscribedChannels = {};
+        /**
+         * Map of notification channels the view is subscribed to.
+         *
+         * Note that channels are only registered here when they are subscribed to through the
+         * view's subscribe() method.
+         */
+        this.subscribedChannels = {};
 
-            /**
-             * Map of model events the view is subscribed to.
-             *
-             * Note that events are only registered here when they are subscribed to through the
-             * view's subscribe() method.
-             */
-            this.subscribedEvents = [];
+        /**
+         * Map of model events the view is subscribed to.
+         *
+         * Note that events are only registered here when they are subscribed to through the
+         * view's subscribe() method.
+         */
+        this.subscribedEvents = [];
 
-            if (parent) {
-                this.reparent(parent);
-            }
+        /**
+         * jQuery container containing the top-level element used by the view.
+         */
+        this.$el = options.$el || $("<" + this.tagName + ">");
 
-            Backbone.View.call(this, options);
-        },
+        if (parent) {
+            this.reparent(parent);
+        }
+
+        if (this.initialize) {
+            this.initialize(options);
+        }
+    }
+
+    View.extend = extend;
+
+    _.extend(View.prototype, {
 
         /**
          * Registers another view as a child of this view.
@@ -97,13 +114,13 @@ define("view", ["backbone", "underscore"], function(Backbone, _) {
             this.subscribedChannels = {};
 
             _.each(this.subscribedEvents, function(subscription) {
-                subscription.model.off(subscription.event, subscription.listener, this);
+                subscription.model.unbind(subscription.event, subscription.listener);
             }, this);
             this.subscribedEvents = [];
 
             this.removeChildren();
 
-            Backbone.View.prototype.remove.call(this);
+            this.$el.remove();
         },
 
         /**
@@ -128,6 +145,16 @@ define("view", ["backbone", "underscore"], function(Backbone, _) {
                 child.remove();
             });
             this.children = [];
+        },
+
+        /**
+         * Renders the view.
+         *
+         * Should return the view's $el property.
+         */
+        render: function() {
+
+            return this.$el;
         },
 
         /**
@@ -178,10 +205,25 @@ define("view", ["backbone", "underscore"], function(Backbone, _) {
 
                 this.subscribedChannels[channel] = method;
             } else {
-                model.on(event, method, this);
+                var listener = _.bind(method, this);
 
-                this.subscribedEvents.push({ model: model, event: event, listener: method });
+                model.bind(event, listener);
+
+                this.subscribedEvents.push({ model: model, event: event, listener: listener });
             }
+        },
+
+        /**
+         * Tag name of the top-level element that's created when the view is instantiated.
+         */
+        tagName: "div",
+
+        /**
+         * Runs CSS queries against the DOM scoped within this view.
+         */
+        $: function(selector) {
+
+            return this.$el.find(selector);
         }
 
     });

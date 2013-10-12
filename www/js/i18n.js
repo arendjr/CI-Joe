@@ -1,4 +1,4 @@
-define("i18n", ["underscore"], function(_) {
+define("i18n", ["lodash"], function(_) {
 
     "use strict";
 

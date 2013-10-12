@@ -1,5 +1,5 @@
 define("lightbox/confirm",
-       ["i18n", "lightbox", "underscore", "tmpl/confirm"],
+       ["i18n", "lightbox", "lodash", "tmpl/confirm"],
        function(i18n, Lightbox, _, tmpl) {
 
     "use strict";

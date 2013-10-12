@@ -1,5 +1,5 @@
 define("handlebars.helpers",
-       ["handlebars", "i18n", "jquery", "jquery.util", "l10n", "underscore"],
+       ["handlebars", "i18n", "jquery", "jquery.util", "l10n", "lodash"],
        function(Handlebars, i18n, $, $util, l10n, _) {
 
     "use strict";

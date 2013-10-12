@@ -83,6 +83,30 @@ Want to add anything to the roadmap? Now is the time!
 [File an issue!](https://github.com/arendjr/CI-Joe/issues/new)
 
 
+Terminology
+-----------
+
+If you want to work with C.I. Joe, it can help greatly to understand the
+terminology that's used. Here are some of the most important terms:
+
+ * **Mission**. To get C.I. Joe to do anything, you have to give him a mission.
+   Missions are defined by their briefing (a list of tasks, optional
+   pre-conditions, post-actions and other configuration) and have a debriefing
+   (a simple success/failure status update, accompanied by any reports and
+   output resulting from the mission's execution). Simply put: You specify the
+   briefing, while C.I. Joe does the work and informs you through a debriefing.
+ * **Mission run** or **job** are two terms both referring to a single execution
+   of a mission. The main strength of C.I. Joe is that he can perform mundane
+   missions over and over again, and he won't complain doing so. The individual
+   act of performing a mission a single time is what we call a mission run or
+   job.
+ * **Slave**. A slave is an application process which is tasked with the actual
+   execution of a job. At times, it may seem like C.I. Joe has super-human
+   powers because he is at many places at the same time, simultaneously
+   performing missions as he goes. In reality, this is made possible by
+   delegating most of the actual work to his slaves.
+
+
 F.A.Q.
 ------
 
@@ -101,6 +125,8 @@ much confusion or too many hurt feelings. CI Joe is dead, long live C.I. Joe!
 License
 -------
 
-This software is licensed under GPLv3.
+This software is licensed under GPLv3. For details, see LICENSE.GPL.txt.
 
-For details, see LICENSE.GPL.txt.
+Icons (not including the C.I. Joe logo) are taken from the Addictive Flavour
+Icon Pack by Oliver Twardowski, which are distributed as freeware. See:
+    http://www.smashingmagazine.com/2010/04/15/the-ultimate-free-web-designer-s-icon-set

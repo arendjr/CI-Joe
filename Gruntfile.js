@@ -318,7 +318,6 @@ module.exports = function(grunt) {
                     paths: createRequirePaths(),
                     preserveLicenseComments: false,
                     shim: {
-                        "backbone": { deps: ["underscore", "jquery"], exports: "Backbone" },
                         "canvasloader": { deps: [], exports: "CanvasLoader" },
                         "handlebars": { exports: "Handlebars" },
                         "jquery.pnotify": { deps: ["jquery"], exports: "$.pnotify" },

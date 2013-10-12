@@ -1,4 +1,4 @@
-define("notificationbus", ["setzerotimeout", "underscore"], function(setZeroTimeout, _) {
+define("notificationbus", ["lodash", "setzerotimeout"], function(_, setZeroTimeout) {
 
     "use strict";
 

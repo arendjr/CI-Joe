@@ -1,6 +1,6 @@
 define("pagefactory",
-       ["page/dashboard", "page/error", "page/login", "page/mainoverview", "underscore"],
-       function(DashboardPage, ErrorPage, LoginPage, MainOverviewPage, _) {
+       ["lodash", "page/dashboard", "page/error", "page/login", "page/mainoverview"],
+       function(_, DashboardPage, ErrorPage, LoginPage, MainOverviewPage) {
 
     "use strict";
 
