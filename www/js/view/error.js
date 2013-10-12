@@ -1,4 +1,4 @@
-define("view/error", ["underscore", "view"], function(_, View) {
+define("view/error", ["lodash", "view"], function(_, View) {
 
     "use strict";
 

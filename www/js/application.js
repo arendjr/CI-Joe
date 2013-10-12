@@ -1,10 +1,10 @@
 define("application",
        ["errors", "feedbackticker", "handlebars.helpers", "i18n", "jquery", "jquery.storage",
-        "l10n", "lightboxmanager", "navigationcontroller", "notificationbus", "select2",
-        "underscore", "view/application"],
+        "l10n", "lightboxmanager", "lodash", "navigationcontroller", "notificationbus", "select2",
+        "view/application"],
        function(Errors, FeedbackTicker, HandlebarsHelpers, i18n, $, $storage,
-                l10n, LightboxManager, NavigationController, NotificationBus, Select2,
-                _, ApplicationView) {
+                l10n, LightboxManager, _, NavigationController, NotificationBus, Select2,
+                ApplicationView) {
 
     "use strict";
 
@@ -185,7 +185,7 @@ define("application",
 
                 this._localizeSelect2();
 
-                this._view = new ApplicationView(this);
+                this._view = new ApplicationView(this, { $el: $("body") });
                 this._view.render();
 
                 var $main = $(".js-main");

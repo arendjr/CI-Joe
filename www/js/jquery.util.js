@@ -1,5 +1,5 @@
 define("jquery.util",
-       ["canvasloader", "jquery", "l10n", "underscore"],
+       ["canvasloader", "jquery", "l10n", "lodash"],
        function(CanvasLoader, $, l10n, _) {
 
     "use strict";

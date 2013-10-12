@@ -1,6 +1,6 @@
 define("lightbox",
-       ["i18n", "jquery", "keys", "view", "underscore", "tmpl/lightbox", "tmpl/lightboxbuttons"],
-       function(i18n, $, Keys, View, _, tmpl) {
+       ["i18n", "jquery", "keys", "lodash", "view", "tmpl/lightbox", "tmpl/lightboxbuttons"],
+       function(i18n, $, Keys, _, View, tmpl) {
 
     "use strict";
 

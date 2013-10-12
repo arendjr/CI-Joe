@@ -1,5 +1,5 @@
 define("lightboxmanager",
-       ["jquery", "lightbox/confirm", "underscore"],
+       ["jquery", "lightbox/confirm", "lodash"],
        function($, ConfirmLightbox, _) {
 
     "use strict";

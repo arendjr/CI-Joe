@@ -1,6 +1,6 @@
 define("navigationcontroller",
-       ["jquery", "lightboxfactory", "pagefactory", "router", "underscore"],
-       function($, LightboxFactory, PageFactory, Router, _) {
+       ["jquery", "lightboxfactory", "lodash", "pagefactory", "router"],
+       function($, LightboxFactory, _, PageFactory, Router) {
 
     "use strict";
 
@@ -97,7 +97,7 @@ define("navigationcontroller",
          */
         navigateTo: function(path) {
 
-            this._router.navigate(path, { trigger: true });
+            this._router.navigate(path);
             $("body").scrollTop(0);
         },
 
@@ -115,7 +115,7 @@ define("navigationcontroller",
             var query = (_.isEmpty(queryParams) ? "" : "?" + $.param(queryParams));
 
             var currentPath = this._router.getCurrentPagePath();
-            this._router.navigate(currentPath + "/" + path + query, { trigger: true });
+            this._router.navigate(currentPath + "/" + path + query);
         },
 
         /**

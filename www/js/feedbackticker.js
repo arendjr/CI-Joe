@@ -1,5 +1,5 @@
 define("feedbackticker",
-       ["errors", "i18n", "jquery", "jquery.pnotify", "underscore"],
+       ["errors", "i18n", "jquery", "jquery.pnotify", "lodash"],
        function(Errors, i18n, $, $pnotify, _) {
 
     "use strict";

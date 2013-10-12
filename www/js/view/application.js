@@ -4,8 +4,6 @@ define("view/application", ["jquery", "view", "tmpl/skeleton"], function($, View
 
     return View.extend({
 
-        el: $("body"),
-
         initialize: function() {
         },
 
