@@ -185,7 +185,8 @@ define("navigationcontroller",
             }
 
             var page;
-            if (this.application.loggedInUser || this._pageFactory.isPublic(type)) {
+            if (this.application.loggedInUser || this._pageFactory.isPublic(type) ||
+                !this.application.needLogin) {
                 page = this._pageFactory.create(type, id);
             } else {
                 page = this._pageFactory.create("Login");

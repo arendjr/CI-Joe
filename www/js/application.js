@@ -41,6 +41,11 @@ define("application",
         this.navigation = null;
 
         /**
+         * Whether a login is required to do (or view) anything.
+         */
+        this.needLogin = false;
+
+        /**
          * The Notification Bus.
          */
         this.notificationBus = null;

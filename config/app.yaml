@@ -1,5 +1,6 @@
 default: 
-  server: 
+  server:
+    scheme: http
     hostname: localhost
     port: 8080
   slaves: 
