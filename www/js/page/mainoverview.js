@@ -4,7 +4,7 @@ define("page/mainoverview", ["page", "view/mainoverview"], function(Page, MainOv
 
     return Page.extend({
 
-        getRootView: function() {
+        createRootView: function() {
 
             return new MainOverviewView(this);
         }

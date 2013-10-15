@@ -6,7 +6,7 @@ define("page/dashboard", ["page", "view/dashboard"], function(Page, DashboardVie
 
         public: true,
 
-        getRootView: function() {
+        createRootView: function() {
 
             return new DashboardView(this);
         }

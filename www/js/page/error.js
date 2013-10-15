@@ -9,7 +9,7 @@ define("page/error", ["page", "view/error"], function(Page, ErrorView) {
             this.error = null;
         },
 
-        getRootView: function() {
+        createRootView: function() {
 
             return new ErrorView(this, { error: this.error });
         },
