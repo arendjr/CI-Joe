@@ -6,7 +6,7 @@ define("page/login", ["page", "view/login"], function(Page, LoginView) {
 
         public: true,
 
-        getRootView: function() {
+        createRootView: function() {
 
             return new LoginView(this);
         }

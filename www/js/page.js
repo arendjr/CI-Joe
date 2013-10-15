@@ -73,6 +73,15 @@ define("page", ["extend", "jquery", "lodash"], function(extend, $, _) {
         },
 
         /**
+         * Creates the root view of the page.
+         *
+         * This method should be re-implemented by every subclass. The Page class will take
+         * ownership of the returned instance.
+         */
+        createRootView: function() {
+        },
+
+        /**
          * Destructs the entire page.
          *
          * Note: You may always assume that your page is hidden before it is destructed. Any views
@@ -86,10 +95,15 @@ define("page", ["extend", "jquery", "lodash"], function(extend, $, _) {
         /**
          * Returns the root view of the page.
          *
-         * This method should be re-implemented by every subclass. The Page class will take
-         * ownership of the returned instance.
+         * This will instantiate the root view if it doesn't exist yet, and should thus only be
+         * called when the page is visible or in the process of being shown.
          */
         getRootView: function() {
+
+            if (!this._rootView) {
+                this._rootView = this.createRootView();
+            }
+            return this._rootView;
         },
 
         /**
