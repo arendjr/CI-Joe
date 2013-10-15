@@ -1,6 +1,8 @@
 define("view/application",
-       ["bootstrap/collapse", "bootstrap/transition", "jquery", "view", "tmpl/skeleton"],
-       function(Collapse, Transition, $, View, tmpl) {
+       ["bootstrap/collapse", "bootstrap/transition", "jquery", "view", "view/navbar",
+        "view/sidebar", "tmpl/skeleton"],
+       function(Collapse, Transition, $, View, NavbarView,
+                SidebarView, tmpl) {
 
     "use strict";
 
@@ -17,7 +19,15 @@ define("view/application",
 
         render: function() {
 
-            return this.$el.html(tmpl.skeleton());
+            this.$el.html(tmpl.skeleton());
+
+            var navbar = new NavbarView(this);
+            this.$(".js-navbar").html(navbar.render());
+
+            var sidebar = new SidebarView(this);
+            this.$(".js-sidebar").html(sidebar.render());
+
+            return this.$el;
         }
 
     });
