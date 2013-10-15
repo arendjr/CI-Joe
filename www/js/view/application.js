@@ -1,4 +1,6 @@
-define("view/application", ["jquery", "view", "tmpl/skeleton"], function($, View, tmpl) {
+define("view/application",
+       ["bootstrap/collapse", "bootstrap/transition", "jquery", "view", "tmpl/skeleton"],
+       function(Collapse, Transition, $, View, tmpl) {
 
     "use strict";
 
@@ -8,6 +10,9 @@ define("view/application", ["jquery", "view", "tmpl/skeleton"], function($, View
         },
 
         events: {
+            "click [data-toggle='offcanvas']": function() {
+                $(".row-offcanvas").toggleClass("active");
+            }
         },
 
         render: function() {

@@ -67,6 +67,8 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             this.reparent(parent);
         }
 
+        this.delegateEvents();
+
         if (this.initialize) {
             this.initialize(options);
         }
@@ -90,6 +92,54 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
         },
 
         /**
+         * Attaches all listeners from the events map to the view's top-level element.
+         *
+         * All of the listeners specified by superclasses are automatically inherited by subclasses
+         * unless explicitly overwritten.
+         */
+        delegateEvents: function() {
+
+            var events = {};
+            var object = this;
+            while (object.constructor !== View) {
+                if (_.has(object.constructor.prototype, "events")) {
+                    events = _.extend(_.clone(object.events), events);
+                }
+                object = object.constructor.__super__;
+            }
+
+            _.each(events, function(listener, event) {
+                if (typeof listener === "string") {
+                    listener = _.bind(this[listener], this);
+                }
+
+                var selector = "";
+                if (event.indexOf(" ") > 0) {
+                    selector = event.split(" ").slice(1).join(" ");
+                    event = event.split(" ", 1)[0];
+                }
+
+                if (selector) {
+                    this.$el.on(event, selector, listener);
+                } else {
+                    this.$el.on(event, listener);
+                }
+            }, this);
+        },
+
+        /**
+         * Map of DOM events to which the view listens.
+         *
+         * The keys of the map specify the events, with an optional space-separated selector. The
+         * values are the listeners, which may be specified as either a function object or the
+         * string name of a view method. Examples:
+         *
+         * "click": function(event) { console.log("clicked"); }
+         * "click button": "onButtonClicked"
+         */
+        events: {},
+
+        /**
          * Convenience shortcut for showing an error through the feedback ticker.
          */
         showError: function(message, error) {
@@ -105,6 +155,12 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             this.application.feedbackTicker.showNotice(notice);
         },
 
+        /**
+         * Removes the view from the DOM.
+         *
+         * Also acts as a destructor by terminating all the view's subscriptions and removing the
+         * view's children.
+         */
         remove: function() {
 
             var notificationBus = this.application.notificationBus;
