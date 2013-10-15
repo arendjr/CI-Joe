@@ -318,6 +318,9 @@ module.exports = function(grunt) {
                     paths: createRequirePaths(),
                     preserveLicenseComments: false,
                     shim: {
+                        "bootstrap/collapse":  { deps: ["jquery"], exports: "$.fn.collapse" },
+                        "bootstrap/transition":  { deps: ["jquery"],
+                                                   exports: "$.fn.emulateTransitionEnd" },
                         "canvasloader": { deps: [], exports: "CanvasLoader" },
                         "handlebars": { exports: "Handlebars" },
                         "jquery.pnotify": { deps: ["jquery"], exports: "$.pnotify" },
@@ -382,6 +385,20 @@ module.exports = function(grunt) {
                 }
             },
 
+            watch: {
+                less: {
+                    files: ["www/css/**.less"],
+                    tasks: ["less"]
+                },
+                templates: {
+                    files: createPaths("www/tmpl/", clientSources.tmpl, ".handlebars"),
+                    tasks: ["handlebars"]
+                },
+                options: {
+                    nospawn: true
+                }
+            },
+
             xgettext: {
                 all: {
                     files: {
@@ -405,6 +422,7 @@ module.exports = function(grunt) {
         grunt.loadNpmTasks("grunt-contrib-jshint");
         grunt.loadNpmTasks("grunt-contrib-less");
         grunt.loadNpmTasks("grunt-contrib-nodeunit");
+        grunt.loadNpmTasks("grunt-contrib-watch");
         grunt.loadNpmTasks("grunt-gettext");
         grunt.loadNpmTasks("grunt-shell");
 
@@ -471,15 +489,15 @@ module.exports = function(grunt) {
         if (config.isPackaged) {
             cssIncludes.push("all.css");
         } else {
-            clientSources.css.forEach(function(cssFileName) {
-                cssIncludes.push("/css/" + cssFileName + ".css");
-            });
             ["bootstrap", "theme"].forEach(function(lessFileName) {
                 if (config.lessPrecompiled) {
                     cssIncludes.push("css/" + lessFileName + ".css");
                 } else {
                     cssIncludes.push("/css/" + lessFileName + ".less");
                 }
+            });
+            clientSources.css.forEach(function(cssFileName) {
+                cssIncludes.push("/css/" + cssFileName + ".css");
             });
         }
         grunt.config("cssIncludes", cssIncludes);
@@ -500,6 +518,11 @@ module.exports = function(grunt) {
             tasks.splice(4, 0, "shell:mkdir", "shell:lnNoLess");
         } else {
             tasks.splice(4, 0, "less");
+        }
+
+        var watch = !!grunt.option("watch");
+        if (watch) {
+            tasks.push("watch");
         }
 
         init();
