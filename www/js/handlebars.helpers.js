@@ -12,10 +12,10 @@ define("handlebars.helpers",
 
         var text = i18n(key);
         if (arguments.length > 1) {
-            if (arguments.length === 3 && typeof arguments[2] === "number") {
+            if (arguments.length === 4 && typeof arguments[2] === "number") {
                 text = i18n(key, arguments[1]).arg(arguments[2]);
             } else {
-                text = text.arg.apply(text, Array.prototype.slice.call(arguments, 1));
+                text = text.arg.apply(text, Array.prototype.slice.call(arguments, 1, -1));
             }
         }
         return text.toString();
