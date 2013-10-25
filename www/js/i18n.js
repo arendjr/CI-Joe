@@ -43,8 +43,9 @@ define("i18n", ["lodash"], function(_) {
                     }
 
                     while (index > -1) {
-                        result = result.replace(substr, arguments[argNum]);
-                        index = result.indexOf(substr, index);
+                        var replacement = arguments[argNum];
+                        result = result.replace(substr, replacement);
+                        index = result.indexOf(substr, index + replacement.length);
                     }
                 }
 
