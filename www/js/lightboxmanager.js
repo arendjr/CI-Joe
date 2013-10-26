@@ -53,10 +53,10 @@ define("lightboxmanager",
          *
          * @param text The question or statement presented to the user.
          * @param options Optional options object. Possible properties are:
-         *                - context Context in which to execute the promise callbacks.
-         *                - title The title for the confirm dialog.
-         *                - confirmLabel Label of the confirm button (default: "OK").
-         *                - cancelLabel Label of the cancel button (default: "Cancel").
+         *                context - Context in which to execute the promise callbacks.
+         *                title - The title for the confirm dialog.
+         *                confirmLabel - Label of the confirm button (default: "OK").
+         *                cancelLabel - Label of the cancel button (default: "Cancel").
          *
          * @return A Promise object that gets fulfilled when the dialog is confirmed, or rejected if
          *         the dialog is cancelled.

@@ -1,9 +1,9 @@
 define("application",
-       ["errors", "feedbackticker", "handlebars.helpers", "i18n", "jquery", "jquery.storage",
-        "l10n", "lightboxmanager", "lodash", "navigationcontroller", "notificationbus", "select2",
+       ["api", "feedbackticker", "handlebars.helpers", "i18n", "jquery", "jquery.storage", "l10n",
+        "lightboxmanager", "lodash", "navigationcontroller", "notificationbus", "select2", "status",
         "view/application"],
-       function(Errors, FeedbackTicker, HandlebarsHelpers, i18n, $, $storage,
-                l10n, LightboxManager, _, NavigationController, NotificationBus, Select2,
+       function(API, FeedbackTicker, HandlebarsHelpers, i18n, $, $storage, l10n,
+                LightboxManager, _, NavigationController, NotificationBus, Select2, Status,
                 ApplicationView) {
 
     "use strict";
@@ -182,11 +182,14 @@ define("application",
             this.basePath = (location.pathname.substr(0, 7) === "/build/" ? "/build/" : "/");
             this.baseUrl = location.protocol + "//" + location.host + this.basePath;
 
+            this.api = new API(this);
+            this.api.restoreSession();
+
             this.notificationBus = new NotificationBus(this);
             this.notificationBus.connect();
 
             this.setLocale($.localStorage("lang"), { context: this }).then(function() {
-                Errors.init();
+                Status.init();
 
                 this._localizeSelect2();
 
