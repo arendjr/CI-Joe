@@ -261,9 +261,13 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
 
                 this.subscribedChannels[channel] = method;
             } else {
+                if (typeof method === "string") {
+                    method = this[method];
+                }
+
                 var listener = _.bind(method, this);
 
-                model.bind(event, listener);
+                model.on(event, listener);
 
                 this.subscribedEvents.push({ model: model, event: event, listener: listener });
             }

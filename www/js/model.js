@@ -6,8 +6,11 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
      * Base class for all models.
      *
      * @param application Application instance.
+     * @param attributes Map of attributes to assign to the model.
      */
     function Model(application, attributes) {
+
+        Laces.Model.call(this);
 
         /**
          * Reference to the application object.
@@ -18,13 +21,18 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
         }
 
         /**
+         * Whether the model is currently being fetched from the server.
+         */
+        this.fetchInProgress = false;
+
+        /**
          * The model's ID.
          */
         this.set("id", null);
 
-        if (attributes) {
-            this.set(attributes);
-        }
+        this.set({}, this.attributes, attributes);
+
+        this._fetchPromise = null;
 
         if (this.initialize) {
             this.initialize();
@@ -38,12 +46,21 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
     _.extend(Model.prototype, {
 
         /**
+         * Object containing default attributes.
+         */
+        defaults: {},
+
+        /**
          * Fetches all the model's attributes from the server.
          *
          * @param options Optional options object. May contain the following properties:
          *                context - Context in which to execute the promise callbacks.
          */
         fetch: function(options) {
+
+            if (this._fetchPromise) {
+                return this._fetchPromise;
+            }
 
             options = options || {};
 
@@ -53,9 +70,16 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
             var promise = this.application.api.ajax(url, { context: options.context });
             promise.then(function(data) {
                 self.set(data);
+                self._fetchPromise = null;
             });
+            this._fetchPromise = promise;
             return promise;
         },
+
+        /**
+         * Plural version of the model type.
+         */
+        plural: "",
 
         /**
          * Removes the model instance from the server.
@@ -135,9 +159,14 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
          */
         type: "",
 
+        /**
+         * Returns the URL from which to fetch and to which to store the model.
+         *
+         * May also be a plain string.
+         */
         url: function() {
 
-            return this.type + "/" + (this.id ? this.id + "/" : "");
+            return (this.plural || this.type) + "/" + (this.id ? this.id + "/" : "");
         }
     });
 
