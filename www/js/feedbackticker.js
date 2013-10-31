@@ -1,6 +1,6 @@
 define("feedbackticker",
-       ["errors", "i18n", "jquery", "jquery.pnotify", "lodash"],
-       function(Errors, i18n, $, $pnotify, _) {
+       ["i18n", "jquery", "jquery.pnotify", "lodash", "status"],
+       function(i18n, $, $pnotify, _, Status) {
 
     "use strict";
 
@@ -18,12 +18,12 @@ define("feedbackticker",
         showError: function(message, error) {
 
             if (error) {
-                message = message + ": " + Errors[error.code];
+                message = message + ": " + Status[error.code];
             } else {
                 if (message) {
                     if (message.code) {
                         error = message;
-                        message = Errors[error.code];
+                        message = Status[error.code];
                     } else {
                         error = { message: message };
                     }

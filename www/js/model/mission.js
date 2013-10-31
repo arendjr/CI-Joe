@@ -1,4 +1,4 @@
-define("mission", ["model"], function(Model) {
+define("model/mission", ["model"], function(Model) {
 
     "use strict";
 

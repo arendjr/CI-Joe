@@ -7,11 +7,6 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
      */
     var Collection = Model.extend({
 
-        /**
-         * Class to use for wrapping the collection's models.
-         */
-        ModelClass: null,
-
         constructor: function() {
 
             Model.prototype.constructor.apply(this, arguments);
@@ -35,8 +30,13 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
             /**
              * The offset to use during fetching.
              */
-            this.offset = 10;
+            this.offset = 0;
         },
+
+        /**
+         * Class to use for wrapping the collection's models.
+         */
+        ModelClass: null,
 
         /**
          * Adds a model to the collection. Does nothing if a model with the same ID is already

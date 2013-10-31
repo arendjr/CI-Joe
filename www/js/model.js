@@ -6,7 +6,7 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
      * Base class for all models.
      *
      * @param application Application instance.
-     * @param attributes Map of attributes to assign to the model.
+     * @param attributes Optional map of attributes to assign to the model.
      */
     function Model(application, attributes) {
 
@@ -42,6 +42,7 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
     Model.extend = extend;
 
     Model.prototype = new Laces.Model();
+    Model.prototype.constructor = Model;
 
     _.extend(Model.prototype, {
 
