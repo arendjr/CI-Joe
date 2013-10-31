@@ -1,7 +1,7 @@
 define("view/application",
-       ["bootstrap/collapse", "bootstrap/transition", "jquery", "view", "view/navbar",
+       ["bootstrap/collapse", "bootstrap/transition", "jquery", "keys", "view", "view/navbar",
         "view/sidebar", "tmpl/skeleton"],
-       function(Collapse, Transition, $, View, NavbarView,
+       function(Collapse, Transition, $, Keys, View, NavbarView,
                 SidebarView, tmpl) {
 
     "use strict";
@@ -12,9 +12,14 @@ define("view/application",
         },
 
         events: {
+            "click .action-home": function() {
+                this.application.navigateTo("/");
+            },
             "click [data-toggle='offcanvas']": function() {
                 $(".row-offcanvas").toggleClass("active");
-            }
+            },
+            "keypress": "_onKeyPress",
+            "keyup": "_onKeyUp"
         },
 
         render: function() {
@@ -28,6 +33,30 @@ define("view/application",
             this.$(".js-sidebar").html(sidebar.render());
 
             return this.$el;
+        },
+
+        _onKeyPress: function(event) {
+
+            var lightbox = this.application.lightboxManager.getCurrentLightbox();
+            if (lightbox) {
+                lightbox.handleKeyPress(event);
+            }
+        },
+
+        _onKeyUp: function(event) {
+
+            event.preventDefault();
+
+            var lightbox = this.application.lightboxManager.getCurrentLightbox();
+            if (lightbox) {
+                lightbox.handleKeyUp(event);
+            } else {
+                if (event.keyCode === Keys.ESCAPE) {
+                    if ($.isInputElement(event.target)) {
+                        $(event.target).blur();
+                    }
+                }
+            }
         }
 
     });

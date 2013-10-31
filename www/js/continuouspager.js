@@ -1,25 +1,39 @@
 define("continuouspager",
-       ["jquery.util", "lodash", "view", "tmpl/continuouspager"],
-       function($, _, View, tmpl) {
+       ["jquery.util", "laces.tie", "lodash", "view", "tmpl/continuouspager"],
+       function($, Laces, _, View, tmpl) {
 
     "use strict";
 
+    /**
+     * Base class for continuous pagers.
+     */
     return View.extend({
 
-        initialize: function(options) {
+        constructor: function() {
 
-            this.collection = options.collection;
+            /**
+             * The collection to render in the pager.
+             */
+            this.collection = null;
 
+            /**
+             * Template function to render individual items.
+             *
+             * As alternative to setting this property, you may consider overwriting renderItem()
+             * entirely.
+             */
+            this.itemTemplate = null;
+
+            /**
+             * Template function to render the pager's skeleton.
+             */
             this.template = tmpl.continuouspager;
+
+            View.apply(this, arguments);
 
             this.subscribe(this.collection, "add", "_itemAdded");
             this.subscribe(this.collection, "remove", "_itemRemoved");
         },
-
-        /**
-         * Tag name of the element to use wrapping individual items.
-         */
-        itemTagName: "div",
 
         /**
          * Removes a rendered item.
@@ -44,22 +58,22 @@ define("continuouspager",
         /**
          * Renders an individual item.
          *
-         * Calls renderItemContent().
+         * The default implementation uses the itemTemplate property, creates a Laces Tie between
+         * the template and the model and renders it into a jQuery container. The data-item-id
+         * attribute is always added to the rendered template.
+         *
+         * @param model Model to use for rendering the item.
+         *
+         * @return jQuery container of the rendered item.
          */
         renderItem: function(model) {
 
-            var $el = $("<" + this.itemTagName + ">");
+            var tie = new Laces.Tie(model, this.itemTemplate);
+            var $el = $(tie.render());
+
             $el.attr("data-item-id", model.id);
 
-            this.renderItemContent($el, model);
-
             return $el;
-        },
-
-        /**
-         * Renders the contents of an individual item.
-         */
-        renderItemContent: function(/*$el, model*/) {
         },
 
         _itemAdded: function(event) {

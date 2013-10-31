@@ -1,4 +1,6 @@
-define("view/mainoverview", ["view"], function(View) {
+define("view/mainoverview",
+       ["view", "view/missionsoverview"],
+       function(View, MissionsOverviewView) {
 
     "use strict";
 
@@ -6,7 +8,12 @@ define("view/mainoverview", ["view"], function(View) {
 
         render: function() {
 
-            return "MainOverview";
+            this.removeChildren();
+
+            var overview = new MissionsOverviewView(this, { missions: this.options.missions });
+            this.$el.html(overview.render());
+
+            return this.$el;
         }
 
     });

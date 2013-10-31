@@ -4,9 +4,14 @@ define("page/mainoverview", ["page", "view/mainoverview"], function(Page, MainOv
 
     return Page.extend({
 
+        beforeShow: function() {
+
+            this.application.missions.fetch();
+        },
+
         createRootView: function() {
 
-            return new MainOverviewView(this);
+            return new MainOverviewView(this, { missions: this.application.missions });
         }
 
     });

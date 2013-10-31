@@ -410,4 +410,6 @@ define("jquery.util",
         }
     };
 
+    return $;
+
 });

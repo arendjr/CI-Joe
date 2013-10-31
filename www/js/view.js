@@ -43,6 +43,11 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
         this.children = [];
 
         /**
+         * The options passed to the constructor (or an empty object if none were passed).
+         */
+        this.options = options;
+
+        /**
          * Map of notification channels the view is subscribed to.
          *
          * Note that channels are only registered here when they are subscribed to through the
@@ -111,6 +116,8 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             _.each(events, function(listener, event) {
                 if (typeof listener === "string") {
                     listener = _.bind(this[listener], this);
+                } else if (typeof listener === "function") {
+                    listener = _.bind(listener, this);
                 }
 
                 var selector = "";

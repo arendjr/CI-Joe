@@ -1,10 +1,10 @@
 define("application",
        ["api", "feedbackticker", "handlebars.helpers", "i18n", "jquery", "jquery.storage", "l10n",
-        "lightboxmanager", "lodash", "navigationcontroller", "notificationbus", "select2", "status",
-        "view/application"],
+        "lightboxmanager", "lodash", "model/missions", "navigationcontroller", "notificationbus",
+        "select2", "status", "view/application"],
        function(API, FeedbackTicker, HandlebarsHelpers, i18n, $, $storage, l10n,
-                LightboxManager, _, NavigationController, NotificationBus, Select2, Status,
-                ApplicationView) {
+                LightboxManager, _, MissionsModel, NavigationController, NotificationBus,
+                Select2, Status, ApplicationView) {
 
     "use strict";
 
@@ -34,6 +34,11 @@ define("application",
          * The logged in user, if there is one.
          */
         this.loggedInUser = null;
+
+        /**
+         * Collection of missions.
+         */
+        this.missions = null;
 
         /**
          * The Navigation Controller.
@@ -182,11 +187,13 @@ define("application",
             this.basePath = (location.pathname.substr(0, 7) === "/build/" ? "/build/" : "/");
             this.baseUrl = location.protocol + "//" + location.host + this.basePath;
 
+            this.notificationBus = new NotificationBus(this);
+            this.notificationBus.connect();
+
             this.api = new API(this);
             this.api.restoreSession();
 
-            this.notificationBus = new NotificationBus(this);
-            this.notificationBus.connect();
+            this.missions = new MissionsModel(this);
 
             this.setLocale($.localStorage("lang"), { context: this }).then(function() {
                 Status.init();
