@@ -30,7 +30,7 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
          */
         this.set("id", null);
 
-        this.set({}, this.attributes, attributes);
+        this.set(_.extend({}, this.defaults, attributes));
 
         this._fetchPromise = null;
 
@@ -78,6 +78,14 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
         },
 
         /**
+         * Returns whether the model is new, or in other words, hasn't been saved to the server yet.
+         */
+        isNew: function() {
+
+            return !this.id;
+        },
+
+        /**
          * Plural version of the model type.
          */
         plural: "",
@@ -94,6 +102,7 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
 
             var url = _.result(this, "url");
             var settings = {
+                context: options.context,
                 type: "DELETE"
             };
 
@@ -117,7 +126,11 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
 
             var url = _.result(this, "url");
             var settings = {
+                contentType: "application/json; charset=UTF-8",
+                context: options.context,
+                data: JSON.stringify(this.toJSON()),
                 dataType: "json",
+                processData: false,
                 type: (this.id ? "PUT" : "POST")
             };
 
@@ -159,6 +172,20 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
          * The model's type.
          */
         type: "",
+
+        /**
+         * Converts the model to JSON representation for saving to the server.
+         */
+        toJSON: function() {
+
+            var json = {};
+            _.each(this.keys(), function(key) {
+                if (key !== "id" || !this.isNew()) {
+                    json[key] = this[key];
+                }
+            }, this);
+            return json;
+        },
 
         /**
          * Returns the URL from which to fetch and to which to store the model.

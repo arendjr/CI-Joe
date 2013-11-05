@@ -27,11 +27,12 @@ function main() {
     var server = require(config.server.scheme).createServer(app);
     var io = require("socket.io").listen(server);
 
-    app.get("/", function(req, res){
+    app.use(express.bodyParser());
+    app.use(express.static("www"));
+
+    app.get("/", function(req, res) {
         res.sendfile("www/build/index.html");
     });
-
-    app.use(express.static("www"));
 
     var SlaveDriver = require("../lib/slavedriver");
     var slaveDriver = new SlaveDriver(config);
@@ -67,6 +68,12 @@ function main() {
     var ApiController = require("../lib/apicontroller");
     var apiController = new ApiController(commandPost);
     apiController.attachTo(app);
+
+    app.use(function(err, req, res, next) {
+        /*jshint unused:false */
+        console.error(err.stack);
+        res.send(500, "Internal Server Error");
+    });
 
     server.listen(config.server.port);
 

@@ -11,7 +11,7 @@ define("page/mainoverview", ["page", "view/mainoverview"], function(Page, MainOv
 
         createRootView: function() {
 
-            return new MainOverviewView(this, { missions: this.application.missions });
+            return new MainOverviewView(this.application, { missions: this.application.missions });
         }
 
     });

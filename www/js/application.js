@@ -1,9 +1,9 @@
 define("application",
        ["api", "feedbackticker", "handlebars.helpers", "i18n", "jquery", "jquery.storage", "l10n",
-        "lightboxmanager", "lodash", "model/missions", "navigationcontroller", "notificationbus",
+        "lightboxmanager", "lodash", "modelfactory", "navigationcontroller", "notificationbus",
         "select2", "status", "view/application"],
        function(API, FeedbackTicker, HandlebarsHelpers, i18n, $, $storage, l10n,
-                LightboxManager, _, MissionsModel, NavigationController, NotificationBus,
+                LightboxManager, _, ModelFactory, NavigationController, NotificationBus,
                 Select2, Status, ApplicationView) {
 
     "use strict";
@@ -39,6 +39,11 @@ define("application",
          * Collection of missions.
          */
         this.missions = null;
+
+        /**
+         * Model Factory.
+         */
+        this.modelFactory = null;
 
         /**
          * The Navigation Controller.
@@ -187,13 +192,15 @@ define("application",
             this.basePath = (location.pathname.substr(0, 7) === "/build/" ? "/build/" : "/");
             this.baseUrl = location.protocol + "//" + location.host + this.basePath;
 
+            this.modelFactory = new ModelFactory(this);
+
             this.notificationBus = new NotificationBus(this);
             this.notificationBus.connect();
 
             this.api = new API(this);
             this.api.restoreSession();
 
-            this.missions = new MissionsModel(this);
+            this.missions = this.modelFactory.create("missions");
 
             this.setLocale($.localStorage("lang"), { context: this }).then(function() {
                 Status.init();

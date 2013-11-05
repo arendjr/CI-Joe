@@ -120,10 +120,6 @@ define("lightboxmanager",
 
             options = options || {};
 
-            if (this._openLightboxes.length === 0) {
-                this._showBackdrop();
-            }
-
             lightbox.openedThroughNavigation = !!options.inHistory;
             this._openLightboxes.push(lightbox);
 
@@ -154,34 +150,12 @@ define("lightboxmanager",
                 this._openLightboxes.push(topLightbox);
             }
 
-            if (this._openLightboxes.length === 0) {
-                this._removeBackdrop();
-            } else if (!lightbox.openedThroughNavigation) {
+            if (this._openLightboxes.length > 0 && !lightbox.openedThroughNavigation) {
                 topLightbox = this._openLightboxes[this._openLightboxes.length - 1];
                 if (topLightbox) {
                     this.$el.html(topLightbox.render());
                 }
             }
-        },
-
-        _removeBackdrop: function() {
-
-            this._$backdrop.remove();
-            this._$backdrop = null;
-
-            this.$mainEl.find("input, textarea").removeAttr("tabindex");
-        },
-
-        _showBackdrop: function() {
-
-            var self = this;
-            this._$backdrop = $("<div>").addClass("modal-backdrop")
-                                        .appendTo("body")
-                                        .on("click", function() { self.closeCurrentLightbox(); });
-
-            document.body.scrollTop = 0;
-
-            this.$mainEl.find("input, textarea").attr("tabindex", -1);
         }
 
     });

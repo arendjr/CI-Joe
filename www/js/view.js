@@ -72,6 +72,8 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             this.reparent(parent);
         }
 
+        this._events = [];
+
         this.delegateEvents();
 
         if (this.initialize) {
@@ -97,12 +99,24 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
         },
 
         /**
+         * Creates a new model.
+         *
+         * this method is a convenience shortcut for ModelFactory.create().
+         */
+        createModel: function(modelType, modelId) {
+
+            return this.application.modelFactory.create(modelType, modelId);
+        },
+
+        /**
          * Attaches all listeners from the events map to the view's top-level element.
          *
          * All of the listeners specified by superclasses are automatically inherited by subclasses
          * unless explicitly overwritten.
          */
         delegateEvents: function() {
+
+            this.undelegateEvents();
 
             var events = {};
             var object = this;
@@ -131,6 +145,8 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
                 } else {
                     this.$el.on(event, listener);
                 }
+
+                this._events.push({ event: event, selector: selector, listener: listener });
             }, this);
         },
 
@@ -232,6 +248,22 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
         },
 
         /**
+         * Sets a new element to use for the view.
+         *
+         * Automatically re-attaches all listeners from the events map to the new element.
+         *
+         * @param el The new element. May be either a DOM element or a jQuery container.
+         */
+        setElement: function(el) {
+
+            this.undelegateEvents();
+
+            this.$el = (el.jquery ? el : $(el));
+
+            this.delegateEvents();
+        },
+
+        /**
          * Subscribes the view to a notification channel or a model event for its entire lifetime.
          * The view will automatically unsubscribe itself from the channel/event when it's removed.
          *
@@ -284,6 +316,22 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
          * Tag name of the top-level element that's created when the view is instantiated.
          */
         tagName: "div",
+
+        /**
+         * Detaches all listeners from the events map from the view's top-level element.
+         */
+        undelegateEvents: function() {
+
+            _.each(this._events, function(event) {
+                if (event.selector) {
+                    this.$el.off(event.event, event.selector, event.listener);
+                } else {
+                    this.$el.off(event.event, event.listener);
+                }
+            }, this);
+
+            this._events = [];
+        },
 
         /**
          * Runs CSS queries against the DOM scoped within this view.
