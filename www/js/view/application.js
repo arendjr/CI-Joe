@@ -1,7 +1,7 @@
 define("view/application",
-       ["bootstrap/collapse", "bootstrap/transition", "jquery", "keys", "view", "view/navbar",
-        "view/sidebar", "tmpl/skeleton"],
-       function(Collapse, Transition, $, Keys, View, NavbarView,
+       ["bootstrap/collapse", "bootstrap/modal", "bootstrap/transition", "jquery", "keys", "view",
+        "view/navbar", "view/sidebar", "tmpl/skeleton"],
+       function(BootstrapCollapse, BootstrapModal, BootstrapTransition, $, Keys, View, NavbarView,
                 SidebarView, tmpl) {
 
     "use strict";

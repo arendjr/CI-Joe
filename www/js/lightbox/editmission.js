@@ -8,9 +8,20 @@ define("lightbox/editmission",
 
         initialize: function(options) {
 
-            var mission = options.mission;
+            this.buttons = [
+                { label: i18n("Close"), extraClass: "action-close", data: { dismiss: "modal" } },
+                { label: i18n("Save"), extraClass: "action-save btn-primary" }
+            ];
 
-            this.title = (mission ? i18n("Edit %1").arg(mission.name) : i18n("New Mission"));
+            var mission = options.mission;
+            if (mission) {
+                this.title = i18n("Edit %1").arg(mission.name);
+            } else {
+                mission = this.createModel("mission");
+                mission.name = i18n("Unnamed mission").toString();
+
+                this.title = i18n("New Mission");
+            }
 
             this.mission = mission;
         },
@@ -27,8 +38,17 @@ define("lightbox/editmission",
 
         _save: function() {
 
-            alert(this.mission.name);
-            return false;
+            var $button = this.$(".action-save");
+            $button.addClass("btn-progress");
+
+            this.mission.save({ context: this }).then(function() {
+                this.application.missions.add(this.mission);
+                this.resolve();
+            }, function(error) {
+                this.showError(i18n("Could not save the mission"), error);
+            }).always(function() {
+                $button.removeClass("btn-progress");
+            });
         }
 
     });

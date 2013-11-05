@@ -14,10 +14,24 @@ define("lightbox",
             options = options || {};
 
             /**
+             * Buttons to display in the lightbox footer.
+             */
+            this.buttons = [];
+
+            /**
              * Context from which the lightbox was opened. Used for resolving and rejecting the
              * lightbox's deferred object.
              */
             this.context = options.context;
+
+            /**
+             * The view that is inserted into the lightbox by the renderContent() method. Setting
+             * the content view is optional; custom content can be rendered by overriding the
+             * renderContent() method.
+             *
+             * Use setContentView() to set the inner view.
+             */
+            this.contentView = null;
 
             /**
              * A $.Deferred object that can be resolved or rejected to close the lightbox. The
@@ -30,31 +44,6 @@ define("lightbox",
             this.deferred = new $.Deferred();
 
             /**
-             * Optional CSS class to add to the lightbox.
-             */
-            this.extraClass = "";
-
-            /**
-             * Optional raw HTML content that will be inserted into the header of the lightbox.
-             */
-            this.extraHeaderHtml = "";
-
-            /**
-             * Optional raw HTML content that will be inserted right after the title of the
-             * lightbox.
-             */
-            this.extraTitleHtml = "";
-
-            /**
-             * The view that is inserted into the lightbox by the renderContent() method. Setting
-             * the content view is optional; custom content can be rendered by overriding the
-             * renderContent() method.
-             *
-             * Use setContentView() to set the inner view.
-             */
-            this.contentView = null;
-
-            /**
              * Boolean indicating whether the lightbox has been opened by navigating to its path. If
              * this is the case then closing the lightbox should result in a back navigation in the
              * history.
@@ -62,6 +51,11 @@ define("lightbox",
              * This property is set by LightboxManager.openLightbox().
              */
             this.openedThroughNavigation = false;
+
+            /**
+             * Boolean indicating whether the lightbox has been resolved.
+             */
+            this.resolved = false;
 
             /**
              * The display title of the lightbox.
@@ -79,7 +73,8 @@ define("lightbox",
         },
 
         events: {
-            "click .action-close": "requestClose"
+            "click .action-close": "requestClose",
+            "hidden.bs.modal": "_resolveDeferred"
         },
 
         /**
@@ -111,21 +106,38 @@ define("lightbox",
          */
         reject: function() {
 
-            this.deferred.rejectWith(this.context, arguments);
+            this.$el.modal("hide");
+        },
+
+        remove: function() {
+
+            if (this.contentView) {
+                this.contentView.remove();
+                this.contentView = null;
+            }
+
+            this.application.notificationBus.signal("lightbox:close", this);
+
+            View.prototype.remove.call(this);
         },
 
         render: function() {
 
-            if (this.$el.children().length === 0) {
-                this.$el.html(this.template({
-                    extraClass: this.extraClass,
-                    extraHeaderHtml: this.extraHeaderHtml,
-                    extraTitleHtml: this.extraTitleHtml,
-                    title: this.title
-                }));
+            var buttons = _.map(this.buttons, function(button) {
+                return {
+                    label: button.label,
+                    extraAttr: _.map(button.data, function(value, key) {
+                        return " " + _.escape(key) + "=\"" + _.escape(value) + "\"";
+                    }).join(""),
+                    extraClass: (button.extraClass ? " " + button.extraClass : "")
+                };
+            });
 
-                this.renderContent();
-            }
+            this.setElement(this.template({ buttons: buttons, title: this.title }));
+
+            this.renderContent();
+
+            this.$el.modal({ backdrop: true });
 
             return this.$el;
         },
@@ -141,18 +153,6 @@ define("lightbox",
             if (this.contentView) {
                 this.$(".js-content").html(this.contentView.render());
             }
-        },
-
-        remove: function() {
-
-            if (this.contentView) {
-                this.contentView.remove();
-                this.contentView = null;
-            }
-
-            this.application.notificationBus.signal("lightbox:close", this);
-
-            View.prototype.remove.call(this);
         },
 
         reparent: function() {
@@ -173,7 +173,9 @@ define("lightbox",
          */
         resolve: function() {
 
-            this.deferred.resolveWith(this.context, arguments);
+            this.resolved = true;
+
+            this.$el.modal("hide");
         },
 
         /**
@@ -187,6 +189,15 @@ define("lightbox",
             }
 
             this.contentView = contentView;
+        },
+
+        _resolveDeferred: function() {
+
+            if (this.resolved) {
+                this.deferred.resolveWith(this.context, arguments);
+            } else {
+                this.deferred.rejectWith(this.context, arguments);
+            }
         }
 
     });

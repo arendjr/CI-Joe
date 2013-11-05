@@ -37,6 +37,9 @@ module.exports = function(grunt) {
         // all LESS files
         less: [], // determined automatically
 
+        // LESS files which need to be imported from the root
+        lessRoots: ["bootstrap", "theme", "ci-joe"],
+
         // all CSS files
         css: [], // determined automatically
 
@@ -213,7 +216,7 @@ module.exports = function(grunt) {
                     files: {
                         "www/build/all.css":
                                     createPaths("www/css/", clientSources.css, ".css")
-                            .concat(createPaths("www/build/css/", ["bootstrap", "theme"], ".css"))
+                            .concat(createPaths("www/build/css/", clientSources.lessRoots, ".css"))
                     }
                 }
             },
@@ -280,8 +283,8 @@ module.exports = function(grunt) {
                 },
                 all: {
                     files: _.object(
-                        createPaths("www/build/css/", ["bootstrap", "theme"], ".css"),
-                        createPaths("www/css/", ["bootstrap", "theme"], ".less")
+                        createPaths("www/build/css/", clientSources.lessRoots, ".css"),
+                        createPaths("www/css/", clientSources.lessRoots, ".less")
                     )
                 }
             },
@@ -319,6 +322,7 @@ module.exports = function(grunt) {
                     preserveLicenseComments: false,
                     shim: {
                         "bootstrap/collapse":  { deps: ["jquery"], exports: "$.fn.collapse" },
+                        "bootstrap/modal":  { deps: ["jquery"], exports: "$.fn.modal" },
                         "bootstrap/transition":  { deps: ["jquery"],
                                                    exports: "$.fn.emulateTransitionEnd" },
                         "canvasloader": { deps: [], exports: "CanvasLoader" },
@@ -489,7 +493,7 @@ module.exports = function(grunt) {
         if (config.isPackaged) {
             cssIncludes.push("all.css");
         } else {
-            ["bootstrap", "theme"].forEach(function(lessFileName) {
+            clientSources.lessRoots.forEach(function(lessFileName) {
                 if (config.lessPrecompiled) {
                     cssIncludes.push("css/" + lessFileName + ".css");
                 } else {
