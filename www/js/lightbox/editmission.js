@@ -42,7 +42,6 @@ define("lightbox/editmission",
             $button.addClass("btn-progress");
 
             this.mission.save({ context: this }).then(function() {
-                this.application.missions.add(this.mission);
                 this.resolve();
             }, function(error) {
                 this.showError(i18n("Could not save the mission"), error);
