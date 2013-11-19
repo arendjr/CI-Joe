@@ -44,10 +44,13 @@ function main() {
         });
     });
 
+    var ClientPool = require("../lib/clientpool");
+    var clientPool = new ClientPool();
+
     io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
-        socket.on("client", function(data) {
-            console.log("client", data);
+        socket.on("client", function(/*data*/) {
+            clientPool.addClientBySocket(socket);
         });
 
         socket.on("slave", function(data) {
