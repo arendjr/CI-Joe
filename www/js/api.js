@@ -234,9 +234,9 @@ define("api", ["jquery", "jquery.storage", "lodash", "status"], function($, $sto
 
             try {
                 var json = JSON.parse(xhr.responseText);
-                if (json.code && json.message) {
-                    error.code = json.code;
-                    error.message = json.message;
+                if (json.errorCode && json.errorMessage) {
+                    error.code = json.errorCode;
+                    error.message = json.errorMessage;
                     error.response = json;
                 } else {
                     console.log("Missing error code or message from: ", url);

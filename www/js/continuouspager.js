@@ -69,7 +69,7 @@ define("continuouspager",
         renderItem: function(model) {
 
             var tie = new Laces.Tie(model, this.itemTemplate);
-            var $el = $(tie.render());
+            var $el = $(tie.render()).children();
 
             $el.attr("data-item-id", model.id);
 
