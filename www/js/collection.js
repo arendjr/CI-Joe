@@ -31,6 +31,9 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
              * The offset to use during fetching.
              */
             this.offset = 0;
+
+            this.subscribe("server-push:" + this.type + ":add", this._onServerAdd);
+            this.subscribe("server-push:" + this.type + ":remove", this._onServerRemove);
         },
 
         /**
@@ -46,13 +49,13 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
          */
         add: function(model) {
 
-            if (model instanceof this.ModelClass) {
-                // good
-            } else {
-                model = new this.ModelClass(this.application, model);
-            }
-
             if (!this.any({ id: model.id })) {
+                if (model instanceof this.ModelClass) {
+                    // good
+                } else {
+                    model = new this.ModelClass(this.application, model);
+                }
+
                 this.models.push(model);
             }
         },
@@ -82,7 +85,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
                     var model = new this.ModelClass(this.application, item);
                     this.models.push(model);
                 }, self);
-                self.remove("items");
+                self.unset("items");
             });
             return promise;
         },
@@ -133,6 +136,16 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
 
             var url = Model.prototype.url.call(this);
             return url + "?" + $.param({ limit: this.limit, offset: this.offset });
+        },
+
+        _onServerAdd: function(data) {
+
+            this.add(data.mission);
+        },
+
+        _onServerRemove: function(data) {
+
+            this.remove(data.id);
         },
 
         _updateLength: function() {

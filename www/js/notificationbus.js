@@ -178,12 +178,14 @@ define("notificationbus", ["lodash", "setzerotimeout"], function(_, setZeroTimeo
 
             var socket = this._socket;
             socket.emit("client", {
-                // TODO: accessToken: ...
+                // TODO: sessionToken: ...
             });
 
             var self = this;
             socket.on("server-push", function(data) {
-                self.signal("server-push:" + data.channel, data);
+                var channel = data.channel;
+                delete data.channel;
+                self.signal("server-push:" + channel, data);
             });
         }
 

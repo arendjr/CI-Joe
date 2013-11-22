@@ -66,7 +66,7 @@ function main() {
     });
 
     var CommandPost = require("../lib/commandpost");
-    var commandPost = new CommandPost(config, slaveDriver);
+    var commandPost = new CommandPost(config, slaveDriver, clientPool);
 
     var ApiController = require("../lib/apicontroller");
     var apiController = new ApiController(commandPost);

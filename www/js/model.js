@@ -1,4 +1,6 @@
-define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
+define("model",
+       ["extend", "laces", "lodash", "subscriber"],
+       function(extend, Laces, _, Subscriber) {
 
     "use strict";
 
@@ -10,15 +12,12 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
      */
     function Model(application, attributes) {
 
-        Laces.Model.call(this);
-
-        /**
-         * Reference to the application object.
-         */
-        this.application = application;
-        if (!this.application) {
+        if (!application) {
             console.log("Model instantiated without Application reference");
         }
+
+        Laces.Model.call(this);
+        Subscriber.call(this, application);
 
         /**
          * Whether the model is currently being fetched from the server.
@@ -50,6 +49,14 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
          * Object containing default attributes.
          */
         defaults: {},
+
+        /**
+         * Destructor.
+         */
+        destruct: function() {
+
+            Subscriber.prototype.destruct.call(this);
+        },
 
         /**
          * Fetches all the model's attributes from the server.
@@ -168,6 +175,11 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
             }
         },
 
+        subscribe: function() {
+
+            Subscriber.prototype.subscribe.apply(this, arguments);
+        },
+
         /**
          * The model's type.
          */
@@ -185,6 +197,16 @@ define("model", ["extend", "laces", "lodash"], function(extend, Laces, _) {
                 }
             }, this);
             return json;
+        },
+
+        /**
+         * Unsets an attribute from the model.
+         *
+         * @param key Key of the attribute to set.
+         */
+        unset: function(key) {
+
+            Laces.Model.prototype.remove.call(this, key);
         },
 
         /**

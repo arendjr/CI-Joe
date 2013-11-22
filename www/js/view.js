@@ -1,4 +1,4 @@
-define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
+define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $, _, Subscriber) {
 
     "use strict";
 
@@ -24,13 +24,11 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             application = context;
         }
 
-        /**
-         * Reference to the application object.
-         */
-        this.application = application;
-        if (!this.application) {
+        if (!application) {
             console.log("View instantiated without Application reference");
         }
+
+        Subscriber.call(this, application);
 
         /**
          * Reference to the parent view.
@@ -186,16 +184,7 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
          */
         remove: function() {
 
-            var notificationBus = this.application.notificationBus;
-            _.each(this.subscribedChannels, function(method, channel) {
-                notificationBus.unsubscribe(channel, method, this);
-            }, this);
-            this.subscribedChannels = {};
-
-            _.each(this.subscribedEvents, function(subscription) {
-                subscription.model.unbind(subscription.event, subscription.listener);
-            }, this);
-            this.subscribedEvents = [];
+            Subscriber.prototype.destruct.call(this);
 
             this.removeChildren();
 
@@ -263,53 +252,9 @@ define("view", ["extend", "jquery", "lodash"], function(extend, $, _) {
             this.delegateEvents();
         },
 
-        /**
-         * Subscribes the view to a notification channel or a model event for its entire lifetime.
-         * The view will automatically unsubscribe itself from the channel/event when it's removed.
-         *
-         * This method supports two distinct signatures. The first is first subscribing to a
-         * notification channel:
-         *
-         * @param channel The channel to subscribe to.
-         * @param method The listener method which will be invoked when a signal arrives on the
-         *               notification channel. Should be a method of the view.
-         *
-         * The second is for subscribing to a model event:
-         *
-         * @param model The model to subscribe to.
-         * @param event The model's event to subscribe to.
-         * @param method The listener method which will be invoked when a signal arrives on the
-         *               notification channel. Should be a method of the view.
-         *
-         * Note that this method only supports subscribing to each channel once.
-         */
-        subscribe: function(model, event, method) {
+        subscribe: function() {
 
-            var channel;
-            if (!method) {
-                channel = model;
-                method = event;
-            }
-
-            if (channel) {
-                if (_.has(this.subscribedChannels, channel)) {
-                    console.log("Warning: Subscribing view to channel it is already registered to");
-                }
-
-                this.application.notificationBus.subscribe(channel, method, this);
-
-                this.subscribedChannels[channel] = method;
-            } else {
-                if (typeof method === "string") {
-                    method = this[method];
-                }
-
-                var listener = _.bind(method, this);
-
-                model.on(event, listener);
-
-                this.subscribedEvents.push({ model: model, event: event, listener: listener });
-            }
+            Subscriber.prototype.subscribe.apply(this, arguments);
         },
 
         /**
