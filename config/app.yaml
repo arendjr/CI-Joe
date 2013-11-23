@@ -1,5 +1,5 @@
 default: 
-  server:
+  server: 
     scheme: http
     hostname: localhost
     port: 8080
@@ -7,4 +7,4 @@ default:
     - id: slave0
       name: Local
       type: local
-  missions:
+  missions: []
