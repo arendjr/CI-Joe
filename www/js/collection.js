@@ -140,12 +140,17 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
 
         _onServerAdd: function(data) {
 
-            this.add(data.mission);
+            this.add(data[this.ModelClass.prototype.type]);
         },
 
         _onServerRemove: function(data) {
 
-            this.remove(data.id);
+            var model = this.find({ id: data.id });
+            if (model) {
+                this.remove(model);
+
+                model.destruct();
+            }
         },
 
         _updateLength: function() {
@@ -154,9 +159,17 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
         }
     });
 
-    _.each(["any", "each", "filter", "find", "findIndex", "indexOf", "reject"], function(func) {
+    // mixin useful LoDash methods
+    _.each(["any", "each", "filter", "find", "findIndex", "reject"], function(func) {
         Collection.prototype[func] = function(callback, context) {
             return _[func](this.models, callback, context || this);
+        };
+    });
+
+    // mixin useful Array methods
+    _.each(["indexOf", "push", "shift", "slice", "splice", "unshift"], function(func) {
+        Collection.prototype[func] = function() {
+            return this.models[func].apply(this.models, arguments);
         };
     });
 
