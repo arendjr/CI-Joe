@@ -25,16 +25,11 @@ define("modelfactory",
          * Creates a new Model instance.
          *
          * @param type Type of the model to create.
-         * @param id Optional ID of the model to create.
+         * @param attributes Optional map of attributes to assign to the model.
          */
-        create: function(type, id) {
+        create: function(type, attributes) {
 
             var application = this.application;
-            var attributes = {};
-
-            if (id) {
-                attributes.id = id;
-            }
 
             switch (type) {
             case "mission":

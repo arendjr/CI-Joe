@@ -395,7 +395,7 @@ module.exports = function(grunt) {
                     tasks: ["less"]
                 },
                 templates: {
-                    files: createPaths("www/tmpl/", clientSources.tmpl, ".handlebars"),
+                    files: ["www/tmpl/**.handlebars"],
                     tasks: ["handlebars"]
                 },
                 options: {

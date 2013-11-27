@@ -48,9 +48,9 @@ define("lightbox",
              * this is the case then closing the lightbox should result in a back navigation in the
              * history.
              *
-             * This property is set by LightboxManager.openLightbox().
+             * Pass the inHistory option to initialize this property.
              */
-            this.openedThroughNavigation = false;
+            this.openedThroughNavigation = !!options.inHistory;
 
             /**
              * Boolean indicating whether the lightbox has been resolved.
