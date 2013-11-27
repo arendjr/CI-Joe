@@ -33,6 +33,7 @@ define("lightbox/editmission",
         },
 
         events: {
+            "click .action-remove": "_remove",
             "click .action-save": "_save"
         },
 
