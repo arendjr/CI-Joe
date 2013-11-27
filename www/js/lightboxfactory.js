@@ -1,6 +1,10 @@
-define("lightboxfactory", ["lodash"], function(_) {
+define("lightboxfactory", ["lightbox/editmission", "lodash"], function(EditMissionLightbox, _) {
 
     "use strict";
+
+    var LIGHTBOX_MAP = {
+        EditMission: EditMissionLightbox
+    };
 
     /**
      * Lightbox Factory.
@@ -23,15 +27,13 @@ define("lightboxfactory", ["lodash"], function(_) {
          * Creates a new lightbox instance.
          *
          * @param type Type of the lightbox to instantiate.
-         * @param parent Optional parent of the lightbox. By default, the application object is
-         *               used as parent.
+         * @param options Optional options object to pass to the lightbox.
          */
-        create: function(type, parent) {
+        create: function(type, options) {
 
-            parent = parent || this.application;
-
-            switch (type) {
-            default:
+            if (_.has(LIGHTBOX_MAP, type)) {
+                return new LIGHTBOX_MAP[type](this.application, options);
+            } else {
                 console.log("Unknown lightbox type: " + type);
                 return null;
             }

@@ -9,15 +9,21 @@ define("lightbox/editmission",
         initialize: function(options) {
 
             this.buttons = [
-                { label: i18n("Close"), extraClass: "action-close", data: { dismiss: "modal" } },
+                { label: i18n("Cancel"), extraClass: "action-close", data: { dismiss: "modal" } },
                 { label: i18n("Save"), extraClass: "action-save btn-primary" }
             ];
 
-            var mission = options.mission;
-            if (mission) {
+            var mission = this.createModel("mission");
+            if (options.mission) {
+                mission.set(options.mission.toJSON());
+
                 this.title = i18n("Edit %1").arg(mission.name);
+
+                this.buttons.unshift({
+                    label: i18n("Remove"),
+                    extraClass: "action-remove btn-danger pull-left"
+                });
             } else {
-                mission = this.createModel("mission");
                 mission.name = i18n("Unnamed mission").toString();
 
                 this.title = i18n("New Mission");
@@ -34,6 +40,20 @@ define("lightbox/editmission",
 
             var tie = new Laces.Tie(this.mission, tmpl.editmission);
             this.$(".js-content").html(tie.render());
+        },
+
+        _remove: function() {
+
+            var $button = this.$(".action-remove");
+            $button.addClass("btn-progress");
+
+            this.mission.remove({ context: this }).then(function() {
+                this.resolve();
+            }, function(error) {
+                this.showError(i18n("Could not remove the mission"), error);
+            }).always(function() {
+                $button.removeClass("btn-progress");
+            });
         },
 
         _save: function() {

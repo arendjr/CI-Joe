@@ -66,11 +66,11 @@ define("model",
          */
         fetch: function(options) {
 
+            options = options || {};
+
             if (this._fetchPromise) {
                 return this._fetchPromise;
             }
-
-            options = options || {};
 
             var url = _.result(this, "url");
 
@@ -79,8 +79,10 @@ define("model",
             promise.then(function(data) {
                 self.set(data);
                 self._fetchPromise = null;
+                self.fetchInProgress = false;
             });
             this._fetchPromise = promise;
+            this.fetchInProgress = true;
             return promise;
         },
 
@@ -138,7 +140,7 @@ define("model",
                 data: JSON.stringify(this.toJSON()),
                 dataType: "json",
                 processData: false,
-                type: (this.id ? "PUT" : "POST")
+                type: (this.isNew() ? "POST" : "PUT")
             };
 
             var self = this;
@@ -212,11 +214,11 @@ define("model",
         /**
          * Returns the URL from which to fetch and to which to store the model.
          *
-         * May also be a plain string.
+         * May also be a plain string instead of a method.
          */
         url: function() {
 
-            return (this.plural || this.type) + "/" + (this.id ? this.id + "/" : "");
+            return (this.plural || this.type) + "/" + (this.isNew() ? "" : this.id + "/");
         }
     });
 

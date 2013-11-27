@@ -1,6 +1,6 @@
 define("lightboxmanager",
-       ["jquery", "lightbox/confirm", "lodash"],
-       function($, ConfirmLightbox, _) {
+       ["jquery", "lightboxfactory", "lightbox/confirm", "lodash"],
+       function($, LightboxFactory, ConfirmLightbox, _) {
 
     "use strict";
 
@@ -16,6 +16,8 @@ define("lightboxmanager",
 
         this.$el = options.$el;
         this.$mainEl = options.$mainEl;
+
+        this._lightboxFactory = new LightboxFactory(application);
 
         this._openLightboxes = [];
 
@@ -106,26 +108,20 @@ define("lightboxmanager",
          * the navigatable history of the application. If you want the lightbox to show up in the
          * history, use navigateToSubpath() instead.
          *
-         * @param lightbox Instance of a lightbox view.
-         * @param options Optional options object. Set the option inHistory to true to trigger a
-         *                back navigation when the lightbox is closed. This is set automatically
-         *                by the Page class when a lightbox is opened by navigating to its path.
-         *                If you set the context property, it will be passed to become the context
-         *                of the lightbox.
+         * @param lightbox Instance of a lightbox view or name of a lightbox class.
+         * @param options Optional options object that's passed to the lightbox. Only used when the
+         *                first parameter is a string.
          *
          * @return A $.Deferred object that's resolved when the lightbox is resolved, and rejected
          *         when the lightbox is rejected.
          */
         openLightbox: function(lightbox, options) {
 
-            options = options || {};
-
-            lightbox.openedThroughNavigation = !!options.inHistory;
-            this._openLightboxes.push(lightbox);
-
-            if (options.context) {
-                lightbox.context = options.context;
+            if (typeof lightbox === "string") {
+                lightbox = this._lightboxFactory.create(lightbox, options);
             }
+
+            this._openLightboxes.push(lightbox);
 
             this.$el.html(lightbox.render());
 

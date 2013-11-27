@@ -9,7 +9,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
 
         constructor: function() {
 
-            Model.prototype.constructor.apply(this, arguments);
+            Model.apply(this, arguments);
 
             /**
              * The number of models in the collection.
@@ -34,6 +34,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
 
             this.subscribe("server-push:" + this.type + ":add", this._onServerAdd);
             this.subscribe("server-push:" + this.type + ":remove", this._onServerRemove);
+            this.subscribe("server-push:" + this.type + ":update", this._onServerUpdate);
         },
 
         /**
@@ -150,6 +151,15 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
                 this.remove(model);
 
                 model.destruct();
+            }
+        },
+
+        _onServerUpdate: function(data) {
+
+            var attrs = data[this.ModelClass.prototype.type];
+            var model = this.find({ id: attrs.id });
+            if (model) {
+                model.set(attrs);
             }
         },
 

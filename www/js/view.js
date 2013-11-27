@@ -46,22 +46,6 @@ define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $,
         this.options = options;
 
         /**
-         * Map of notification channels the view is subscribed to.
-         *
-         * Note that channels are only registered here when they are subscribed to through the
-         * view's subscribe() method.
-         */
-        this.subscribedChannels = {};
-
-        /**
-         * Map of model events the view is subscribed to.
-         *
-         * Note that events are only registered here when they are subscribed to through the
-         * view's subscribe() method.
-         */
-        this.subscribedEvents = [];
-
-        /**
          * jQuery container containing the top-level element used by the view.
          */
         this.$el = options.$el || $("<" + this.tagName + ">");
@@ -101,9 +85,9 @@ define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $,
          *
          * this method is a convenience shortcut for ModelFactory.create().
          */
-        createModel: function(modelType, modelId) {
+        createModel: function(modelType, attributes) {
 
-            return this.application.modelFactory.create(modelType, modelId);
+            return this.application.modelFactory.create(modelType, attributes);
         },
 
         /**

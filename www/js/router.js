@@ -14,8 +14,6 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
 
         this.controller = navigationController;
 
-        this.notificationBus = navigationController.application.notificationBus;
-
         var root = "/";
         if (navigationController.application.baseUrl.indexOf("/build") > -1) {
             root = "/build";
@@ -27,7 +25,7 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
 
             var routeFound = self._activateRoute();
             if (!routeFound) {
-                self.notificationBus.signal("router:noRoute");
+                self.controller.application.notificationBus.signal("router:noRoute");
             }
         }, 0);
     }

@@ -79,14 +79,21 @@ define("continuouspager",
         _itemAdded: function(event) {
 
             var $container = this.$(".js-items");
-            var $items = $container.children();
-            if ($items.length > event.index) {
+            var $items = $container.children().filter("[data-item-id]");
+            if (event.index > 0 && event.index <= $items.length) {
                 _.each(event.elements, function(model) {
-                    this.renderItem(model).insertBefore($items.at(event.index));
+                    this.renderItem(model).insertAfter($items.eq(event.index - 1));
                 }, this);
             } else {
+                var $previous = this.$(".js-item-header");
                 _.each(event.elements, function(model) {
-                    this.renderItem(model).appendTo($container);
+                    var $item = this.renderItem(model);
+                    if ($previous.length) {
+                        $item.insertAfter($previous);
+                    } else {
+                        $item.appendTo($container);
+                    }
+                    $previous = $item;
                 }, this);
             }
         },
