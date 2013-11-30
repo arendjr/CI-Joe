@@ -1,8 +1,11 @@
-define("lightboxfactory", ["lightbox/editmission", "lodash"], function(EditMissionLightbox, _) {
+define("lightboxfactory",
+       ["lightbox/confirm", "lightbox/editmission", "lodash"],
+       function(ConfirmLightbox, EditMissionLightbox, _) {
 
     "use strict";
 
     var LIGHTBOX_MAP = {
+        Confirm: ConfirmLightbox,
         EditMission: EditMissionLightbox
     };
 

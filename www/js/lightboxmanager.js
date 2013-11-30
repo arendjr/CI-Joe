@@ -66,27 +66,8 @@ define("lightboxmanager",
         confirm: function(text, options) {
 
             options = options ? _.clone(options) : {};
-
-            var context = options.context;
-            delete options.context;
-
-            var deferred = new $.Deferred();
-
             options.text = text.toString();
-            options.confirm = function() {
-                deferred.resolveWith(context);
-            };
-            options.cancel = function() {
-                deferred.rejectWith(context);
-            };
-
-            var lightbox = new ConfirmLightbox(this.application, options);
-            this.openLightbox(lightbox);
-            deferred.always(function() {
-                lightbox.remove();
-            });
-
-            return deferred.promise();
+            return this.openLightbox("Confirm", options);
         },
 
         /**
@@ -106,7 +87,7 @@ define("lightboxmanager",
          *
          * Be aware if you use this method directly, the resulting lightbox will not be a part of
          * the navigatable history of the application. If you want the lightbox to show up in the
-         * history, use navigateToSubpath() instead.
+         * history, use NavigationController.navigateToSubpath() instead.
          *
          * @param lightbox Instance of a lightbox view or name of a lightbox class.
          * @param options Optional options object that's passed to the lightbox. Only used when the
@@ -116,6 +97,13 @@ define("lightboxmanager",
          *         when the lightbox is rejected.
          */
         openLightbox: function(lightbox, options) {
+
+            options = options || {};
+
+            var currentLightbox = this.getCurrentLightbox();
+            if (currentLightbox) {
+                currentLightbox.$el.modal("removeBackdrop");
+            }
 
             if (typeof lightbox === "string") {
                 lightbox = this._lightboxFactory.create(lightbox, options);

@@ -223,7 +223,7 @@ define("page", ["extend", "jquery", "lodash"], function(extend, $, _) {
             if (lightbox) {
                 this.$el.find("input, textarea").attr("tabindex", "-1");
 
-                this.application.openLightbox(lightbox, { inHistory: true });
+                this.application.lightboxManager.openLightbox(lightbox, { inHistory: true });
             }
 
             index = this._pathsStack.indexOf(path);

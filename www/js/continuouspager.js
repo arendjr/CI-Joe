@@ -17,6 +17,14 @@ define("continuouspager",
             this.collection = null;
 
             /**
+             * Template to render a placeholder when the pager is empty.
+             *
+             * As alternative to setting this property, you may consider overwriting renderEmpty()
+             * entirely.
+             */
+            this.emptyTemplate = null;
+
+            /**
              * Template function to render individual items.
              *
              * As alternative to setting this property, you may consider overwriting renderItem()
@@ -33,6 +41,8 @@ define("continuouspager",
 
             this.subscribe(this.collection, "add", "_itemAdded");
             this.subscribe(this.collection, "remove", "_itemRemoved");
+            this.subscribe(this.collection, "fetch:start", "_fetchStarted");
+            this.subscribe(this.collection, "fetch:finish", "_fetchFinished");
         },
 
         /**
@@ -47,12 +57,27 @@ define("continuouspager",
 
             this.$el.html(this.template());
 
-            var $items = this.$(".js-items");
-            this.collection.each(function(model) {
-                $items.append(this.renderItem(model));
-            }, this);
+            if (this.collection.length) {
+                this._itemAdded({ index: 0, elements: this.collection.models });
+            } else if (this.collection.fetchInProgress) {
+                this._fetchStarted();
+            } else {
+                this._append(this.renderEmpty());
+            }
 
             return this.$el;
+        },
+
+        /**
+         * Renders a placeholder that should be used when the pager is empty.
+         *
+         * The default implementation renders the emptyTemplate and returns it.
+         *
+         * @return jQuery container of the rendered placeholder.
+         */
+        renderEmpty: function() {
+
+            return $(_.result(this, "emptyTemplate")).addClass("js-empty-placeholder");
         },
 
         /**
@@ -76,6 +101,30 @@ define("continuouspager",
             return $el;
         },
 
+        _append: function($el, $after) {
+
+            $after = $after || this.$(".js-item-header");
+            if ($after.length) {
+                $el.insertAfter($after);
+            } else {
+                this.$(".js-items").append($el);
+            }
+        },
+
+        _fetchFinished: function() {
+
+            //this.$(".js-spinner").remove();
+
+            if (!this.collection.length) {
+                this._append(this.renderEmpty());
+            }
+        },
+
+        _fetchStarted: function() {
+
+            //this._append($("<div class=\"js-spinner\">").startLoader());
+        },
+
         _itemAdded: function(event) {
 
             var $container = this.$(".js-items");
@@ -85,14 +134,11 @@ define("continuouspager",
                     this.renderItem(model).insertAfter($items.eq(event.index - 1));
                 }, this);
             } else {
+                $(".js-empty-placeholder").remove();
                 var $previous = this.$(".js-item-header");
                 _.each(event.elements, function(model) {
                     var $item = this.renderItem(model);
-                    if ($previous.length) {
-                        $item.insertAfter($previous);
-                    } else {
-                        $item.appendTo($container);
-                    }
+                    this._append($item, $previous);
                     $previous = $item;
                 }, this);
             }
@@ -103,6 +149,10 @@ define("continuouspager",
             _.each(event.elements, function(model) {
                 this.removeItem(this.$("[data-item-id=" + $.jsEscape(model.id) + "]"), model);
             }, this);
+
+            if (!this.collection.length) {
+                this._append(this.renderEmpty());
+            }
         }
 
     });

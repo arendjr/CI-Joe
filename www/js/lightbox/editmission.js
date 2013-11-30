@@ -48,12 +48,17 @@ define("lightbox/editmission",
             var $button = this.$(".action-remove");
             $button.addClass("btn-progress");
 
-            this.mission.remove({ context: this }).then(function() {
-                this.resolve();
-            }, function(error) {
-                this.showError(i18n("Could not remove the mission"), error);
-            }).always(function() {
-                $button.removeClass("btn-progress");
+            this.application.confirm(i18n("Are you sure you want to remove this mission?"), {
+                context: this,
+                title: i18n("Remove mission")
+            }).then(function() {
+                this.mission.remove({ context: this }).then(function() {
+                    this.resolve();
+                }, function(error) {
+                    this.showError(i18n("Could not remove the mission"), error);
+                }).always(function() {
+                    $button.removeClass("btn-progress");
+                });
             });
         },
 
