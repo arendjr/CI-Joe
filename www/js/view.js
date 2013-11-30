@@ -145,6 +145,20 @@ define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $,
         events: {},
 
         /**
+         * Opens a new lightbox.
+         *
+         * Be aware if you use this method directly, the resulting lightbox will not be a part of
+         * the navigatable history of the application. If you want the lightbox to show up in the
+         * history, use navigateToSubpath() instead.
+         *
+         * This method is a convenience shortcut for LightboxManager.openLightbox().
+         */
+        openLightbox: function(lightbox, options) {
+
+            return this.application.lightboxManager.openLightbox(lightbox, options);
+        },
+
+        /**
          * Convenience shortcut for showing an error through the feedback ticker.
          */
         showError: function(message, error) {

@@ -1,4 +1,6 @@
 default: 
+  defaults:
+    shell: bash -xe
   server: 
     scheme: http
     hostname: localhost

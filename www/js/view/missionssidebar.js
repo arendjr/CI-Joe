@@ -24,12 +24,12 @@ define("view/missionssidebar",
 
             var id = $(event.target).closest("[data-item-id]").data("item-id");
             var mission = this.collection.find({ id: id });
-            this.application.openLightbox("EditMission", { mission: mission });
+            this.openLightbox("EditMission", { mission: mission });
         },
 
         _new: function() {
 
-            this.application.openLightbox("EditMission");
+            this.openLightbox("EditMission");
         }
 
     });

@@ -80,6 +80,8 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
         fetch: function() {
 
             var self = this;
+            self.models.fire("fetch:start");
+
             var promise = Model.prototype.fetch.apply(this, arguments);
             promise.then(function() {
                 _.each(self.items, function(item) {
@@ -87,7 +89,10 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
                     this.models.push(model);
                 }, self);
                 self.unset("items");
+            }).always(function() {
+                self.models.fire("fetch:finish");
             });
+
             return promise;
         },
 
