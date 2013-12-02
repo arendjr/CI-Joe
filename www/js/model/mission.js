@@ -4,6 +4,11 @@ define("model/mission", ["model"], function(Model) {
 
     return Model.extend({
 
+        initialize: function() {
+
+            this.defaultShell = this.application.config.defaults.shell;
+        },
+
         defaults: {
             name: "",
             actions: [],

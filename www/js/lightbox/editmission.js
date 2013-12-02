@@ -30,17 +30,35 @@ define("lightbox/editmission",
             }
 
             this.mission = mission;
+
+            this.subscribe(mission, "change:actions", "render");
         },
 
         events: {
+            "click .action-add-action": "_addAction",
+            "click .action-remove-action": "_removeAction",
             "click .action-remove": "_remove",
-            "click .action-save": "_save"
+            "click .action-save": "_save",
+            "click .action-toggle-advanced": "_toggleAdvanced"
         },
 
         renderContent: function() {
 
             var tie = new Laces.Tie(this.mission, tmpl.editmission);
             this.$(".js-content").html(tie.render());
+        },
+
+        _addAction: function() {
+
+            this.openLightbox("EditAction", { context: this }).then(function(action) {
+                this.mission.actions.push(action);
+            });
+        },
+
+        _removeAction: function(event) {
+
+            var index = this.targetData(event, ".js-action", "action-index");
+            this.mission.actions.splice(index, 1);
         },
 
         _remove: function() {
@@ -74,6 +92,18 @@ define("lightbox/editmission",
             }).always(function() {
                 $button.removeClass("btn-progress");
             });
+        },
+
+        _toggleAdvanced: function() {
+
+            var $chevron = this.$(".js-chevron"), $advanced = this.$(".js-advanced");
+            if ($chevron.hasClass("glyphicon-chevron-right")) {
+                $chevron.removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+                $advanced.show();
+            } else {
+                $chevron.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+                $advanced.hide();
+            }
         }
 
     });

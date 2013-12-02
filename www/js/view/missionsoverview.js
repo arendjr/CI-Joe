@@ -1,7 +1,6 @@
 define("view/missionsoverview",
-       ["continuouspager", "jquery", "tmpl/missionitem", "tmpl/missionsoverview",
-        "tmpl/nomissions"],
-       function(ContinuousPager, $, tmpl) {
+       ["continuouspager", "tmpl/missionitem", "tmpl/missionsoverview", "tmpl/nomissions"],
+       function(ContinuousPager, tmpl) {
 
     "use strict";
 

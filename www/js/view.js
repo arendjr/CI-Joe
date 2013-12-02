@@ -261,6 +261,20 @@ define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $,
         tagName: "div",
 
         /**
+         * Returns the value of the data attribute of the element closest to the event target.
+         *
+         * @param event The event to use the target of.
+         * @param selector Selector for the ancestor element to get the data attribute of.
+         *                 If omitted, the target itself is used.
+         * @param dataAttr Name of the data attribute (without "data-" prefix) to get the value of.
+         */
+        targetData: function(event, selector, dataAttr) {
+
+            var $target = $(event.target);
+            return (dataAttr ? $target.closest(selector).data(dataAttr) : $target.data(selector));
+        },
+
+        /**
          * Detaches all listeners from the events map from the view's top-level element.
          */
         undelegateEvents: function() {

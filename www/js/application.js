@@ -21,6 +21,11 @@ define("application",
         this.baseUrl = "";
 
         /**
+         * Config passed from the server.
+         */
+        this.config = {};
+
+        /**
          * Reference to the feedback ticker.
          */
         this.feedbackTicker = null;
@@ -177,6 +182,9 @@ define("application",
 
             this.basePath = (location.pathname.substr(0, 7) === "/build/" ? "/build/" : "/");
             this.baseUrl = location.protocol + "//" + location.host + this.basePath;
+
+            /* global Joe: false */
+            this.config = Joe.config;
 
             this.modelFactory = new ModelFactory(this);
 
