@@ -27,12 +27,16 @@ function main() {
     var server = require(config.server.scheme).createServer(app);
     var io = require("socket.io").listen(server);
 
+    app.get(/^\/(?:build\/?)?$/, function(req, res) {
+        var fs = require("fs");
+        var index = fs.readFileSync("www/build/index.html").toString();
+        index = index.replace(/\/\*defaults_start\*\/.*\/\*defaults_end\*\//,
+                              JSON.stringify(config.defaults));
+        res.send(index);
+    });
+
     app.use(express.bodyParser());
     app.use(express.static("www"));
-
-    app.get("/", function(req, res) {
-        res.sendfile("www/build/index.html");
-    });
 
     var SlaveDriver = require("../lib/slavedriver");
     var slaveDriver = new SlaveDriver(config);

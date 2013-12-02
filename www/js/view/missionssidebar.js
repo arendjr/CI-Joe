@@ -1,6 +1,6 @@
 define("view/missionssidebar",
-       ["continuouspager", "jquery", "tmpl/missionssidebar", "tmpl/missionssidebaritem"],
-       function(ContinuousPager, $, tmpl) {
+       ["continuouspager", "tmpl/missionssidebar", "tmpl/missionssidebaritem"],
+       function(ContinuousPager, tmpl) {
 
     "use strict";
 
@@ -22,7 +22,7 @@ define("view/missionssidebar",
 
         _edit: function(event) {
 
-            var id = $(event.target).closest("[data-item-id]").data("item-id");
+            var id = this.targetData(event, "[data-item-id]", "item-id");
             var mission = this.collection.find({ id: id });
             this.openLightbox("EditMission", { mission: mission });
         },

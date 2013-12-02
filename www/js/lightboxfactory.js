@@ -1,11 +1,12 @@
 define("lightboxfactory",
-       ["lightbox/confirm", "lightbox/editmission", "lodash"],
-       function(ConfirmLightbox, EditMissionLightbox, _) {
+       ["lightbox/confirm", "lightbox/editaction", "lightbox/editmission", "lodash"],
+       function(ConfirmLightbox, EditActionLightbox, EditMissionLightbox, _) {
 
     "use strict";
 
     var LIGHTBOX_MAP = {
         Confirm: ConfirmLightbox,
+        EditAction: EditActionLightbox,
         EditMission: EditMissionLightbox
     };
 

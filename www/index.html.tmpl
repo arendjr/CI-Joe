@@ -27,6 +27,7 @@
                 "<script>" +
                 "var Joe = {};" +
                 "Joe.config = " + JSON.stringify(grunt.config("externalConfig")) + ";" +
+                "Joe.config.defaults = /*defaults_start*/{}/*defaults_end*/;" +
                 "require.config(" + JSON.stringify(grunt.config("requirejsConfig")) + ");" +
                 "function main(){" +
                     "require(['application','tmpl'],function(Application){" +
