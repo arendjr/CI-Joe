@@ -53,11 +53,6 @@ define("lightbox",
             this.openedThroughNavigation = !!options.inHistory;
 
             /**
-             * Boolean indicating whether the lightbox has been resolved.
-             */
-            this.resolved = false;
-
-            /**
              * The display title of the lightbox.
              */
             this.title = "";
@@ -70,6 +65,8 @@ define("lightbox",
             View.call(this, context, options);
 
             this.application.notificationBus.signal("lightbox:open", this);
+
+            this._resolveArguments = null;
         },
 
         events: {
@@ -170,10 +167,13 @@ define("lightbox",
 
         /**
          * Resolves the lightbox's deferred object. This will close the lightbox.
+         *
+         * Any arguments passed to this method are passed back to the caller who opened the
+         * lightbox.
          */
         resolve: function() {
 
-            this.resolved = true;
+            this._resolveArguments = Array.prototype.slice.call(arguments, 0);
 
             this.$el.modal("hide");
         },
@@ -193,10 +193,10 @@ define("lightbox",
 
         _resolveDeferred: function() {
 
-            if (this.resolved) {
-                this.deferred.resolveWith(this.context, arguments);
+            if (this._resolveArguments) {
+                this.deferred.resolveWith(this.context, this._resolveArguments);
             } else {
-                this.deferred.rejectWith(this.context, arguments);
+                this.deferred.rejectWith(this.context);
             }
         }
 

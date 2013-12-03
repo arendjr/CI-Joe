@@ -114,13 +114,15 @@ define("lightboxmanager",
             this.$el.html(lightbox.render());
 
             var self = this;
-            return lightbox.deferred.promise().always(function() {
+            var promise = lightbox.deferred.promise();
+            promise.always(function() {
                 if (lightbox.openedThroughNavigation) {
                     self.application.navigation.goBack();
                 } else {
                     lightbox.remove();
                 }
             });
+            return promise;
         },
 
         _onLightboxClosed: function(lightbox) {

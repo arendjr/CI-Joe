@@ -27,6 +27,8 @@ function main() {
     var server = require(config.server.scheme).createServer(app);
     var io = require("socket.io").listen(server);
 
+    app.use(express.bodyParser());
+
     app.get(/^\/(?:build\/?)?$/, function(req, res) {
         var fs = require("fs");
         var index = fs.readFileSync("www/build/index.html").toString();
@@ -35,7 +37,6 @@ function main() {
         res.send(index);
     });
 
-    app.use(express.bodyParser());
     app.use(express.static("www"));
 
     var SlaveDriver = require("../lib/slavedriver");
