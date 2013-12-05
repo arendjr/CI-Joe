@@ -195,6 +195,10 @@ define("application",
             this.api.restoreSession();
 
             this.missions = this.modelFactory.create("missions");
+            this.missions.fetch();
+
+            this.slaves = this.modelFactory.create("slaves");
+            this.slaves.fetch();
 
             this.setLocale($.localStorage("lang"), { context: this }).then(function() {
                 Status.init();
