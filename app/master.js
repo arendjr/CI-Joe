@@ -39,8 +39,11 @@ function main() {
 
     app.use(express.static("www"));
 
+    var ClientPool = require("../lib/clientpool");
+    var clientPool = new ClientPool();
+
     var SlaveDriver = require("../lib/slavedriver");
-    var slaveDriver = new SlaveDriver(config);
+    var slaveDriver = new SlaveDriver(config, clientPool);
     _.each(slaveDriver.slaves, function(slave) {
         slave.connect();
         slave.on("changed", function(/*propertyName, value*/) {
@@ -48,9 +51,6 @@ function main() {
             // #TODO: notify the respective slave
         });
     });
-
-    var ClientPool = require("../lib/clientpool");
-    var clientPool = new ClientPool();
 
     io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
@@ -74,7 +74,7 @@ function main() {
     var commandPost = new CommandPost(config, slaveDriver, clientPool);
 
     var ApiController = require("../lib/apicontroller");
-    var apiController = new ApiController(commandPost);
+    var apiController = new ApiController(commandPost, slaveDriver);
     apiController.attachTo(app);
 
     app.use(function(err, req, res, next) {

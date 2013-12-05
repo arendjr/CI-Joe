@@ -1,8 +1,8 @@
 define("view/application",
        ["bootstrap/collapse", "bootstrap/modal", "bootstrap/transition", "jquery", "keys", "view",
-        "view/navbar", "view/missionssidebar", "tmpl/skeleton"],
+        "view/navbar", "view/missionssidebar", "view/slavessidebar", "tmpl/skeleton"],
        function(BootstrapCollapse, BootstrapModal, BootstrapTransition, $, Keys, View,
-                NavbarView, MissionsSidebarView, tmpl) {
+                NavbarView, MissionsSidebarView, SlavesSidebarView, tmpl) {
 
     "use strict";
 
@@ -33,6 +33,11 @@ define("view/application",
                 missions: this.application.missions
             });
             this.$(".js-sidebar").append(missionsSidebar.render());
+
+            var slavesSidebar = new SlavesSidebarView(this, {
+                slaves: this.application.slaves
+            });
+            this.$(".js-sidebar").append(slavesSidebar.render());
 
             return this.$el;
         },

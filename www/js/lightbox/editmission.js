@@ -31,11 +31,12 @@ define("lightbox/editmission",
 
             this.mission = mission;
 
-            this.subscribe(mission, "change:actions", "render");
+            this.subscribe(mission, "change:actions", "renderContent");
         },
 
         events: {
             "click .action-add-action": "_addAction",
+            "click .action-edit-action": "_editAction",
             "click .action-remove-action": "_removeAction",
             "click .action-remove": "_remove",
             "click .action-save": "_save",
@@ -53,6 +54,12 @@ define("lightbox/editmission",
             this.openLightbox("EditAction", { context: this }).then(function(action) {
                 this.mission.actions.push(action);
             });
+        },
+
+        _editAction: function(event) {
+
+            var index = this.targetData(event, ".js-action", "action-index");
+            this.openLightbox("EditAction", { action: this.mission.actions[index] });
         },
 
         _removeAction: function(event) {

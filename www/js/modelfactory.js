@@ -1,6 +1,6 @@
 define("modelfactory",
-       ["model/mission", "model/missions", "lodash"],
-       function(MissionModel, MissionsModel, _) {
+       ["model/mission", "model/missions", "model/slave", "model/slaves", "lodash"],
+       function(MissionModel, MissionsModel, SlaveModel, SlavesModel, _) {
 
     "use strict";
 
@@ -36,6 +36,10 @@ define("modelfactory",
                 return new MissionModel(application, attributes);
             case "missions":
                 return new MissionsModel(application, attributes);
+            case "slave":
+                return new SlaveModel(application, attributes);
+            case "slaves":
+                return new SlavesModel(application, attributes);
             default:
                 throw new Error("Unknown model type: " + type);
             }

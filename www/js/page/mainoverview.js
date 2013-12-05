@@ -1,17 +1,14 @@
-define("page/mainoverview", ["page", "view/mainoverview"], function(Page, MainOverviewView) {
+define("page/mainoverview", ["page", "view/missionsoverview"], function(Page, MissionsOverviewView) {
 
     "use strict";
 
     return Page.extend({
 
-        beforeShow: function() {
-
-            this.application.missions.fetch();
-        },
-
         createRootView: function() {
 
-            return new MainOverviewView(this.application, { missions: this.application.missions });
+            return new MissionsOverviewView(this.application, {
+                missions: this.application.missions
+            });
         }
 
     });

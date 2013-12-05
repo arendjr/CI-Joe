@@ -15,7 +15,7 @@ define("lightbox/editaction",
 
             var action;
             if (options.action) {
-                action = new Laces.Object({
+                action = new Laces.Map({
                     description: options.action.description,
                     command: options.action.command,
                     timeout: options.action.timeout
