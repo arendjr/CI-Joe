@@ -9,11 +9,11 @@ define("model/slave", ["model"], function(Model) {
             this.set("statusIcon", function() {
                 switch (this.connectedState) {
                 case "connected":
-                    return "ok-circle";
+                    return "glyphicon-ok-circle";
                 case "busy":
-                    return "player-circle";
+                    return "glyphicon-player-circle";
                 default:
-                    return "off";
+                    return "glyphicon-off";
                 }
             });
         },

@@ -13,8 +13,6 @@ define("view/slavessidebar",
             this.itemTemplate = tmpl.slavessidebaritem;
 
             this.template = tmpl.slavessidebar;
-
-            this.subscribe(this.collection, "change", "render");
         }
 
     });
