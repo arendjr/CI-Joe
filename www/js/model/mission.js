@@ -23,13 +23,13 @@ define("model/mission", ["i18n", "model"], function(i18n, Model) {
             this.set("lastJobStatusLabelText", function() {
                 switch (this.lastJobStatus) {
                 case "success":
-                    return i18n("Success");
+                    return i18n("Success").toString();
                 case "failed":
-                    return i18n("Failed");
+                    return i18n("Failed").toString();
                 case "running":
-                    return i18n("Running...");
+                    return i18n("Running...").toString();
                 default:
-                    return i18n("Unavailable");
+                    return i18n("Unavailable").toString();
                 }
             });
         },

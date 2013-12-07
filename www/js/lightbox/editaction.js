@@ -1,6 +1,6 @@
 define("lightbox/editaction",
-       ["i18n", "laces", "lightbox", "tmpl/editaction"],
-       function(i18n, Laces, Lightbox, tmpl) {
+       ["i18n", "laces", "lightbox", "lodash", "tmpl/editaction"],
+       function(i18n, Laces, Lightbox, _, tmpl) {
 
     "use strict";
 
@@ -47,7 +47,14 @@ define("lightbox/editaction",
 
         _save: function() {
 
-            this.resolve(this.action);
+            var action = this.action, originalAction = this.options.action;
+            if (originalAction) {
+                _.each(originalAction, function(value, key) {
+                    originalAction.set(key, action[key]);
+                });
+            }
+
+            this.resolve(action);
         }
 
     });
