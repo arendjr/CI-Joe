@@ -77,38 +77,97 @@ function LacesTie(model, template, options) {
         return undefined;
     }
 
-    function updateChecked(element, propertyRef) {
-        element.checked = !!reference(propertyRef).value;
+    function updateChecked(el, propertyRef) {
+        el.checked = !!reference(propertyRef).value;
     }
 
-    function updateClass(element, propertyRef) {
+    function updateClass(el, propertyRef) {
         var originalAttr = "data-tie-class";
-        var originalClass = element.getAttribute(originalAttr);
+        var originalClass = el.getAttribute(originalAttr);
         if (!originalClass) {
-            originalClass = element.getAttribute("class");
-            element.setAttribute(originalAttr, originalClass);
+            originalClass = el.getAttribute("class");
+            el.setAttribute(originalAttr, originalClass);
         }
         var classes = originalClass + " " + reference(propertyRef).value;
-        element.setAttribute("class", classes);
+        el.setAttribute("class", classes);
     }
 
-    function updateDisabled(element, propertyRef) {
-        element.disabled = !!reference(propertyRef).value;
+    function updateDisabled(el, propertyRef) {
+        el.disabled = !!reference(propertyRef).value;
     }
 
-    function updateText(element, propertyRef, defaultValue) {
+    function updateRadio(el, propertyRef, defaultValue) {
+        var value = reference(propertyRef).value || defaultValue;
+        var radios = el.querySelectorAll("input[type=radio]");
+        for (var i = 0; i < radios.length; i++) {
+            var radio = radios[i];
+            radio.checked = (radio.getAttribute("value") === value);
+        }
+    }
+
+    function updateText(el, propertyRef, defaultValue) {
         var value = reference(propertyRef).value;
-        element.textContent = value || defaultValue;
+        el.textContent = value || defaultValue;
     }
 
-    function updateValue(element, propertyRef, defaultValue) {
+    function updateValue(el, propertyRef, defaultValue) {
         var value = reference(propertyRef).value;
-        element.value = value || defaultValue;
+        el.value = value || defaultValue;
     }
 
-    function updateVisible(element, propertyRef) {
+    function updateVisible(el, propertyRef) {
         var value = !!reference(propertyRef).value;
-        element.style.display = (value ? "" : "none");
+        el.style.display = (value ? "" : "none");
+    }
+
+    function updateMethodForKey(key) {
+        switch(key) {
+        case "checked": return updateChecked;
+        case "class": return updateClass;
+        case "disabled": return updateDisabled;
+        case "radio": return updateRadio;
+        case "text": return updateText;
+        case "value": return updateValue;
+        case "visible": return updateVisible;
+        }
+    }
+
+    function tieProperty(key, propertyRef, defaultValue, el) {
+        var updateMethod = updateMethodForKey(key);
+        if (!updateMethod) {
+            return;
+        }
+
+        var binding = function() {
+            updateMethod(el, propertyRef, defaultValue);
+        };
+        bindings.push(binding);
+
+        var ref = reference(propertyRef);
+        binding.parent = ref.parent;
+        if (ref.parent instanceof Laces.Model) {
+            ref.parent.bind("change:" + ref.propertyName, binding);
+        } else {
+            ref.parent.bind("change", binding);
+        }
+
+        if (key === "checked" || key === "value") {
+            el.addEventListener(saveEvent, function() {
+                var newRef = reference(propertyRef);
+                newRef.parent[newRef.propertyName] = (key === "checked" ? !!el.checked : el.value);
+            });
+        } else if (key === "radio") {
+            var radios = el.querySelectorAll("input[type=radio]");
+            var listener = function(event) {
+                var newRef = reference(propertyRef);
+                newRef.parent[newRef.propertyName] = event.target.getAttribute("value");
+            };
+            for (var i = 0; i < radios.length; i++) {
+                radios[i].addEventListener(saveEvent, listener);
+            }
+        }
+
+        updateMethod(el, propertyRef, defaultValue);
     }
 
     function makeEditable(node, propertyRef) {
@@ -150,66 +209,25 @@ function LacesTie(model, template, options) {
         });
     }
 
-    function updateMethodForKey(key) {
-        switch(key) {
-        case "checked": return updateChecked;
-        case "class": return updateClass;
-        case "disabled": return updateDisabled;
-        case "text": return updateText;
-        case "value": return updateValue;
-        case "visible": return updateVisible;
-        }
-    }
-
-    function tieProperties(tie, element) {
-        var defaultValue = tie["default"];
-        if (defaultValue === undefined || defaultValue === null) {
-            defaultValue = (element.getAttribute("type") === "number") ? 0 : "";
-        }
-
-        for (var key in tie) {
-            if (tie.hasOwnProperty(key)) {
-                var propertyRef = tie[key];
-                var updateMethod = updateMethodForKey(key);
-                if (!updateMethod) {
-                    continue;
-                }
-
-                var binding = function() {
-                    updateMethod(element, propertyRef, defaultValue);
-                };
-                bindings.push(binding);
-
-                var ref = reference(propertyRef);
-                binding.parent = ref.parent;
-                if (ref.parent instanceof Laces.Model) {
-                    ref.parent.bind("change:" + ref.propertyName, binding);
-                } else {
-                    ref.parent.bind("change", binding);
-                }
-
-                if (key === "checked" || key === "value") {
-                    element.addEventListener(saveEvent, function() {
-                        var newRef = reference(propertyRef);
-                        newRef.parent[newRef.propertyName] = (key === "checked" ?
-                                                              !!element.checked : element.value);
-                    });
-                }
-
-                updateMethod(element, propertyRef, defaultValue);
-
-                if (key === "text" && tie.editable === "true") {
-                    makeEditable(element, prop);
-                }
-            }
-        }
-    }
-
     function process(node) {
         if (node.nodeType === Node.ELEMENT_NODE) {
             var ties = getTies(node);
             if (ties) {
-                tieProperties(ties, node);
+                var defaultValue = ties["default"];
+                if (defaultValue === undefined || defaultValue === null) {
+                    defaultValue = (node.getAttribute("type") === "number") ? 0 : "";
+                }
+
+                for (var key in ties) {
+                    if (ties.hasOwnProperty(key)) {
+                        var propertyRef = ties[key];
+                        tieProperty(key, propertyRef, defaultValue, node);
+
+                        if (key === "text" && ties.editable === "true") {
+                            makeEditable(node, propertyRef);
+                        }
+                    }
+                }
             }
 
             for (var i = 0, length = node.childNodes.length; i < length; i++) {
