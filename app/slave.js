@@ -30,6 +30,32 @@ function main() {
     var Slave = require("../lib/slave");
     var slave = new Slave(slaveConfig, { masterConfig: masterConfig });
     slave.connect();
+
+    var JobRunner = require("../lib/jobrunner");
+    var jobRunner = new JobRunner();
+
+    var socket = slave.socket;
+    socket.on("queue:job-available", function() {
+        if (!jobRunner.isBusy) {
+            socket.emit("queue:request-job");
+        }
+    });
+
+    socket.on("job:start", function(data) {
+        jobRunner.startJob(data.mission);
+    });
+
+    jobRunner.on("output", function(data) {
+        socket.emit("job:output", {
+            actionIndex: jobRunner.actionIndex,
+            data: data,
+            jobId: jobRunner.jobId
+        });
+    });
+    jobRunner.on("finished", function(job) {
+        socket.emit("job:finished", { job: job });
+        socket.emit("queue:request-job");
+    });
 }
 
 main();

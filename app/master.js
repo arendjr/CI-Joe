@@ -52,6 +52,9 @@ function main() {
         });
     });
 
+    var CommandPost = require("../lib/commandpost");
+    var commandPost = new CommandPost(config, slaveDriver, clientPool);
+
     io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
         socket.on("client", function(/*data*/) {
@@ -68,10 +71,14 @@ function main() {
                 }
             });
         });
-    });
 
-    var CommandPost = require("../lib/commandpost");
-    var commandPost = new CommandPost(config, slaveDriver, clientPool);
+        socket.on("queue:request-job", function() {
+            var slave = slaveDriver.getSlaveBySocket(socket);
+            if (slave) {
+                commandPost.dispatchJobToSlave(slave);
+            }
+        });
+    });
 
     var ApiController = require("../lib/apicontroller");
     var apiController = new ApiController(commandPost, slaveDriver);
