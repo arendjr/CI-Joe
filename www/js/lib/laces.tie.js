@@ -31,14 +31,14 @@ function LacesTie(model, template, options) {
         bindings = [];
     }
 
-    function reference(lacesProperty) {
+    function reference(propertyRef) {
         var inversed = false;
-        if (lacesProperty.slice(0, 1) === "!") {
+        if (propertyRef.slice(0, 1) === "!") {
             inversed = true;
-            lacesProperty = lacesProperty.slice(1);
+            propertyRef = propertyRef.slice(1);
         }
 
-        var parts = lacesProperty.split(".");
+        var parts = propertyRef.split(".");
         var part, value, parent;
         for (var i = 0, length = parts.length; i < length; i++) {
             parent = value || model;
@@ -63,10 +63,10 @@ function LacesTie(model, template, options) {
         return { propertyName: part, value: value, parent: parent };
     }
 
-    function getLaces(node) {
-        function splitObject(string) {
-            console.log("splitting: " + string)
-            var parts = string.split(",");
+    function getTies(node) {
+        var tie = node.getAttribute("data-tie");
+        if (tie) {
+            var parts = tie.split(",");
             var object = {};
             for (var i = 0, length = parts.length; i < length; i++) {
                 var keyValue = parts[i].split(":");
@@ -74,74 +74,44 @@ function LacesTie(model, template, options) {
             }
             return object;
         }
-
-        var laces = node.getAttribute("data-laces");
-        if (laces) {
-            if (laces.slice(0, 1) === "{" && laces.slice(-1) === "}") {
-                return splitObject(laces.slice(1, -1));
-            } else if (laces.slice(0, 1) === "[" && laces.slice(-1) === "]") {
-                laces = laces.slice(1, -1);
-                var array = [];
-                while (laces) {
-                    var startIndex = laces.indexOf("{"),
-                        endIndex = laces.indexOf("}"),
-                        commaIndex = laces.indexOf(",");
-                    if (startIndex > -1 && startIndex < commaIndex && startIndex < endIndex) {
-                        array.push(splitObject(laces.slice(startIndex + 1, endIndex)));
-                        laces = laces.slice(endIndex + 1);
-                    } else if (commaIndex > 0) {
-                        console.log("found  comma ")
-                        array.push(splitObject(laces.slice(0, commaIndex)));
-                        laces = laces.slice(commaIndex + 1);
-                    } else {
-                        array.push(splitObject(laces.slice(0)));
-                        laces = "";
-                    }
-                }
-                return array;
-            }
-        }
         return undefined;
     }
 
-    function update(element, lacesProperty, defaultValue) {
-        var value = reference(lacesProperty).value;
-        if (element.tagName === "INPUT" || element.tagName === "SELECT") {
-            if (element.getAttribute("type") === "checkbox") {
-                element.checked = !!value;
-            } else {
-                element.value = value || defaultValue;
-            }
-        } else {
-            element.textContent = value || defaultValue;
-        }
+    function updateChecked(element, propertyRef) {
+        element.checked = !!reference(propertyRef).value;
     }
 
-    function updateVisibility(element, lacesProperty) {
-        var value = !!reference(lacesProperty).value;
-        element.style.display = (value ? "" : "none");
-    }
-
-    function updateChecked(element, lacesProperty) {
-        element.checked = !!reference(lacesProperty).value;
-    }
-
-    function updateClass(element, lacesProperty) {
-        var originalAttr = "data-laces-original-class";
+    function updateClass(element, propertyRef) {
+        var originalAttr = "data-tie-class";
         var originalClass = element.getAttribute(originalAttr);
         if (!originalClass) {
             originalClass = element.getAttribute("class");
             element.setAttribute(originalAttr, originalClass);
         }
-        var classes = originalClass + " " + reference(lacesProperty).value;
+        var classes = originalClass + " " + reference(propertyRef).value;
         element.setAttribute("class", classes);
     }
 
-    function updateDisabled(element, lacesProperty) {
-        element.disabled = !!reference(lacesProperty).value;
+    function updateDisabled(element, propertyRef) {
+        element.disabled = !!reference(propertyRef).value;
     }
 
-    function makeEditable(node, lacesProperty) {
+    function updateText(element, propertyRef, defaultValue) {
+        var value = reference(propertyRef).value;
+        element.textContent = value || defaultValue;
+    }
+
+    function updateValue(element, propertyRef, defaultValue) {
+        var value = reference(propertyRef).value;
+        element.value = value || defaultValue;
+    }
+
+    function updateVisible(element, propertyRef) {
+        var value = !!reference(propertyRef).value;
+        element.style.display = (value ? "" : "none");
+    }
+
+    function makeEditable(node, propertyRef) {
         node.addEventListener(editEvent, function() {
             var parent = node.parentNode;
             var input = document.createElement("input");
@@ -154,7 +124,7 @@ function LacesTie(model, template, options) {
                 input.removeEventListener("keypress", keypressHandler);
                 input.removeEventListener("blur", saveHandler);
 
-                var newRef = reference(lacesProperty);
+                var newRef = reference(propertyRef);
                 newRef.parent[newRef.propertyName] = input.value;
                 parent.insertBefore(node, input.nextSibling);
                 parent.removeChild(input);
@@ -180,91 +150,66 @@ function LacesTie(model, template, options) {
         });
     }
 
-    function tieProperty(laces, node) {
-        var prop = laces.property;
-        if (prop) {
-            var lacesDefault = laces["default"];
-            if (lacesDefault === undefined || lacesDefault === null) {
-                lacesDefault = (node.getAttribute("type") === "number") ? 0 : "";
-            }
-
-            var binding = function() {
-                update(node, prop, lacesDefault);
-            };
-            bindings.push(binding);
-
-            var ref = reference(prop);
-            binding.parent = ref.parent;
-            if (ref.parent instanceof Laces.Model) {
-                ref.parent.bind("change:" + ref.propertyName, binding);
-            } else {
-                ref.parent.bind("change", binding);
-            }
-
-            if (node.tagName === "INPUT" || node.tagName === "TEXTAREA") {
-                node.addEventListener(saveEvent, function() {
-                    var newRef = reference(prop);
-                    newRef.parent[newRef.propertyName] = (node.getAttribute("type") === "checkbox" ?
-                                                          !!node.checked : node.value);
-                });
-            }
-
-            update(node, prop, lacesDefault);
-
-            if (laces.editable === "true") {
-                makeEditable(node, prop);
-            }
+    function updateMethodForKey(key) {
+        switch(key) {
+        case "checked": return updateChecked;
+        case "class": return updateClass;
+        case "disabled": return updateDisabled;
+        case "text": return updateText;
+        case "value": return updateValue;
+        case "visible": return updateVisible;
         }
     }
 
-    function tieOtherProperty(laces, node, propertyName, updateMethod) {
-        var prop = laces[propertyName];
-        if (prop) {
-            var binding = function() {
-                updateMethod(node, prop);
-            };
-            bindings.push(binding);
+    function tieProperties(tie, element) {
+        var defaultValue = tie["default"];
+        if (defaultValue === undefined || defaultValue === null) {
+            defaultValue = (element.getAttribute("type") === "number") ? 0 : "";
+        }
 
-            var ref = reference(prop);
-            binding.parent = ref.parent;
-            if (ref.parent instanceof Laces.Model) {
-                ref.parent.bind("change:" + ref.propertyName, binding);
-            } else {
-                ref.parent.bind("change", binding);
+        for (var key in tie) {
+            if (tie.hasOwnProperty(key)) {
+                var propertyRef = tie[key];
+                var updateMethod = updateMethodForKey(key);
+                if (!updateMethod) {
+                    continue;
+                }
+
+                var binding = function() {
+                    updateMethod(element, propertyRef, defaultValue);
+                };
+                bindings.push(binding);
+
+                var ref = reference(propertyRef);
+                binding.parent = ref.parent;
+                if (ref.parent instanceof Laces.Model) {
+                    ref.parent.bind("change:" + ref.propertyName, binding);
+                } else {
+                    ref.parent.bind("change", binding);
+                }
+
+                if (key === "checked" || key === "value") {
+                    element.addEventListener(saveEvent, function() {
+                        var newRef = reference(propertyRef);
+                        newRef.parent[newRef.propertyName] = (key === "checked" ?
+                                                              !!element.checked : element.value);
+                    });
+                }
+
+                updateMethod(element, propertyRef, defaultValue);
+
+                if (key === "text" && tie.editable === "true") {
+                    makeEditable(element, prop);
+                }
             }
-
-            updateMethod(node, prop);
         }
     }
 
     function process(node) {
         if (node.nodeType === Node.ELEMENT_NODE) {
-            var laces = getLaces(node), lace;
-            if (!laces) {
-                lace = {
-                    "default": node.getAttribute("data-laces-default"),
-                    editable: node.getAttribute("data-laces-editable"),
-                    property: node.getAttribute("data-laces-property"),
-                    target: node.getAttribute("data-laces-target")
-                };
-                if (!lace.target) {
-                    var shortcuts = ["checked", "class", "disabled", "visible"];
-                    for (var j = 0; j < shortcuts.length; j++) {
-                        var attr = shortcuts[j], val = node.getAttribute("data-laces-" + attr);
-                        if (val) {
-                            lace.property = val;
-                            lace.target = val;
-                        }
-                    }
-                }
-            }
-            if (!(laces instanceof Array)) {
-                laces = [laces];
-            }
-
-            for (var i = 0; i < laces.length; i++) {
-                lace = laces[i];
-                tieProperty(lace, node);
+            var ties = getTies(node);
+            if (ties) {
+                tieProperties(ties, node);
             }
 
             for (var i = 0, length = node.childNodes.length; i < length; i++) {
