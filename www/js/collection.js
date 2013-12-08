@@ -97,6 +97,14 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
         },
 
         /**
+         * Returns an item by ID.
+         */
+        get: function(id) {
+
+            return this.find({ id: id });
+        },
+
+        /**
          * Stops observing an event.
          *
          * @param event Name of the observed event. May be a space-separated list of event names.
@@ -151,7 +159,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
 
         _onServerRemove: function(data) {
 
-            var model = this.find({ id: data.id });
+            var model = this.get(data.id);
             if (model) {
                 this.remove(model);
 
@@ -162,7 +170,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
         _onServerUpdate: function(data) {
 
             var attrs = data[this.ModelClass.prototype.type];
-            var model = this.find({ id: attrs.id });
+            var model = this.get(attrs.id);
             if (model) {
                 model.set(attrs);
             }

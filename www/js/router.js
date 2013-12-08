@@ -6,7 +6,7 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
 
         _.each(this.lightboxes, function(name, path) {
             this.routes[path + "(?:query)"] = function() {
-                this.openPage("Overview", undefined, path);
+                this.openPage("MainOverview", undefined, path);
             };
         }, this);
 
@@ -50,12 +50,14 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
 
         navigate: function(path) {
 
-            history.pushState({}, "", path);
+            history.pushState({}, "", this.basePath + path);
+            this._activateRoute();
         },
 
         routes: {
             "": function(path) { this.openPage("MainOverview", undefined, path); },
-            "dashboard(/:path)": function(path) { this.openPage("Dashboard", undefined, path); }
+            "dashboard(/:path)": function(path) { this.openPage("Dashboard", undefined, path); },
+            "mission/:id(/:path)": function(id, path) { this.openPage("Mission", id, path); }
         },
 
         lightboxes: {},
