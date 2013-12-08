@@ -13,7 +13,11 @@ define("view/application",
 
         events: {
             "click .action-home": function() {
-                this.application.navigateTo("/");
+                this.application.navigateTo("");
+            },
+            "click .action-mission": function(event) {
+                var id = this.targetData(event, ".action-mission", "mission-id");
+                this.application.navigateTo("mission/" + id);
             },
             "click [data-toggle='offcanvas']": function() {
                 $(".row-offcanvas").toggleClass("active");

@@ -1,6 +1,8 @@
 define("pagefactory",
-       ["lodash", "page/dashboard", "page/error", "page/login", "page/mainoverview"],
-       function(_, DashboardPage, ErrorPage, LoginPage, MainOverviewPage) {
+       ["lodash", "page/dashboard", "page/error", "page/login", "page/mainoverview",
+        "page/mission"],
+       function(_, DashboardPage, ErrorPage, LoginPage, MainOverviewPage,
+                MissionPage) {
 
     "use strict";
 
@@ -8,7 +10,8 @@ define("pagefactory",
         Dashboard: DashboardPage,
         Error: ErrorPage,
         Login: LoginPage,
-        MainOverview: MainOverviewPage
+        MainOverview: MainOverviewPage,
+        Mission: MissionPage
     };
 
     /**

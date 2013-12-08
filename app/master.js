@@ -29,7 +29,7 @@ function main() {
 
     app.use(express.bodyParser());
 
-    app.get(/^\/(?:build\/?)?$/, function(req, res) {
+    app.get(/^\/build(?:\/[a-z0-9/]*)?$/, function(req, res) {
         var fs = require("fs");
         var index = fs.readFileSync("www/build/index.html").toString();
         index = index.replace(/\/\*defaults_start\*\/.*\/\*defaults_end\*\//,
@@ -95,6 +95,7 @@ function main() {
     function terminate() {
         slaveDriver.destruct();
         server.close();
+        console.log("Quit.");
         process.exit();
     }
 
