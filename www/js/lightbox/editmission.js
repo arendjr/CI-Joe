@@ -58,13 +58,13 @@ define("lightbox/editmission",
 
         _editAction: function(event) {
 
-            var index = this.targetData(event, ".js-action", "action-index");
+            var index = this.targetData(event, "action-index");
             this.openLightbox("EditAction", { action: this.mission.actions[index] });
         },
 
         _removeAction: function(event) {
 
-            var index = this.targetData(event, ".js-action", "action-index");
+            var index = this.targetData(event, "action-index");
             this.mission.actions.splice(index, 1);
         },
 

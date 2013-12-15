@@ -22,7 +22,7 @@ define("view/missionssidebar",
 
         _edit: function(event) {
 
-            var id = this.targetData(event, "[data-item-id]", "item-id");
+            var id = this.targetData(event, "item-id");
             var mission = this.collection.find({ id: id });
             this.openLightbox("EditMission", { mission: mission });
         },

@@ -264,14 +264,12 @@ define("view", ["extend", "jquery", "lodash", "subscriber"], function(extend, $,
          * Returns the value of the data attribute of the element closest to the event target.
          *
          * @param event The event to use the target of.
-         * @param selector Selector for the ancestor element to get the data attribute of.
-         *                 If omitted, the target itself is used.
          * @param dataAttr Name of the data attribute (without "data-" prefix) to get the value of.
          */
-        targetData: function(event, selector, dataAttr) {
+        targetData: function(event, dataAttr) {
 
             var $target = $(event.target);
-            return (dataAttr ? $target.closest(selector).data(dataAttr) : $target.data(selector));
+            return $target.closest("[data-" + dataAttr + "]").data(dataAttr);
         },
 
         /**

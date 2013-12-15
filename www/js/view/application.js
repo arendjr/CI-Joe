@@ -16,8 +16,13 @@ define("view/application",
                 this.application.navigateTo("");
             },
             "click .action-mission": function(event) {
-                var id = this.targetData(event, ".action-mission", "mission-id");
+                var id = this.targetData(event, "mission-id");
                 this.application.navigateTo("mission/" + id);
+            },
+            "click .action-start-mission": function(event) {
+                var id = this.targetData(event, "mission-id");
+                this.application.missions.get(id).start();
+                return false;
             },
             "click [data-toggle='offcanvas']": function() {
                 $(".row-offcanvas").toggleClass("active");
