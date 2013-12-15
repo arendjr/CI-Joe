@@ -78,6 +78,10 @@ function main() {
                 commandPost.dispatchJobToSlave(slave);
             }
         });
+
+        socket.on("job:finished", function() {
+            // TODO
+        });
     });
 
     var ApiController = require("../lib/apicontroller");

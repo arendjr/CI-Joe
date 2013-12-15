@@ -127,6 +127,5 @@ License
 
 This software is licensed under GPLv3. For details, see LICENSE.GPL.txt.
 
-Icons (not including the C.I. Joe logo) are taken from the Addictive Flavour
-Icon Pack by Oliver Twardowski, which are distributed as freeware. See:
-    http://www.smashingmagazine.com/2010/04/15/the-ultimate-free-web-designer-s-icon-set
+Icons (not including the C.I. Joe logo) are used from the GlyphIcons set:
+http://glyphicons.com/

@@ -1,4 +1,4 @@
-define("model/mission", ["i18n", "model"], function(i18n, Model) {
+define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
 
     "use strict";
 
@@ -8,8 +8,14 @@ define("model/mission", ["i18n", "model"], function(i18n, Model) {
 
             this.defaultShell = this.application.config.defaults.shell;
 
+            this.set("isQueued", function() {
+                return this.lastJobStatus === "queued";
+            });
             this.set("isRunning", function() {
                 return this.lastJobStatus === "running";
+            });
+            this.set("isStopped", function() {
+                return this.lastJobStatus !== "queued" && this.lastJobStatus !== "running";
             });
             this.set("lastJobStatusLabelClass", function() {
                 switch (this.lastJobStatus) {
@@ -50,6 +56,14 @@ define("model/mission", ["i18n", "model"], function(i18n, Model) {
         },
 
         plural: "missions",
+
+        /**
+         * Starts execution of the mission.
+         */
+        start: function() {
+
+            return this.application.api.ajax(this.url() + "start", { type: "POST" });
+        },
 
         type: "mission"
 

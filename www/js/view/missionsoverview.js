@@ -1,6 +1,7 @@
 define("view/missionsoverview",
-       ["continuouspager", "tmpl/missionitem", "tmpl/missionsoverview", "tmpl/nomissions"],
-       function(ContinuousPager, tmpl) {
+       ["continuouspager", "jquery", "tmpl/missionitem", "tmpl/missionsoverview",
+        "tmpl/nomissions"],
+       function(ContinuousPager, $, tmpl) {
 
     "use strict";
 
@@ -18,7 +19,23 @@ define("view/missionsoverview",
         },
 
         events: {
-            "click .action-new": "_new"
+            "click .action-new": "_new",
+            "mouseover .action-mission": "_hoverMission",
+            "mouseout .action-mission": "_leaveMission"
+        },
+
+        _hoverMission: function(event) {
+
+            var $mission = $(event.target).closest(".action-mission");
+            $mission.find(".js-hover").show();
+            $mission.find(".js-no-hover").hide();
+        },
+
+        _leaveMission: function(event) {
+
+            var $mission = $(event.target).closest(".action-mission");
+            $mission.find(".js-hover").hide();
+            $mission.find(".js-no-hover").show();
         },
 
         _new: function() {
