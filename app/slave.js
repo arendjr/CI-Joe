@@ -49,11 +49,20 @@ function main() {
         socket.emit("job:output", {
             actionIndex: jobRunner.actionIndex,
             data: data,
-            jobId: jobRunner.jobId
+            jobId: jobRunner.job.id,
+            missionId: jobRunner.mission.id
         });
     });
-    jobRunner.on("finished", function(job) {
-        socket.emit("job:finished", { job: job });
+    jobRunner.on("action-finished", function(data) {
+        socket.emit("job:action-finished", {
+            actionIndex: data.actionIndex,
+            exitCode: data.exitCode,
+            jobId: jobRunner.job.id,
+            missionId: jobRunner.mission.id
+        });
+    });
+    jobRunner.on("finished", function(data) {
+        socket.emit("job:finished", { job: data.job, missionId: data.mission.id });
         socket.emit("queue:request-job");
     });
 }

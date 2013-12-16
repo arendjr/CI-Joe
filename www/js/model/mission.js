@@ -47,12 +47,13 @@ define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
         },
 
         defaults: {
-            name: "",
             actions: [],
+            assignedSlaves: [],
             environment: {},
+            jobs: [],
             lastJobStatus: "",
-            shell: "",
-            assignedSlaves: []
+            name: "",
+            shell: ""
         },
 
         plural: "missions",
