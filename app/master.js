@@ -79,8 +79,24 @@ function main() {
             }
         });
 
-        socket.on("job:finished", function() {
-            // TODO
+        socket.on("job:output", function(data) {
+            var mission = commandPost.getMission(data.missionId);
+            var job = mission.getJob(data.jobId);
+            if (job) {
+                job.processOutput(data.actionIndex, data.data);
+                clientPool.notifyAll("missions:update", { mission: mission.toJSON() });
+            }
+        });
+        socket.on("job:action-finished", function(data) {
+            var mission = commandPost.getMission(data.missionId);
+            var job = mission.getJob(data.jobId);
+            if (job) {
+                job.finishAction(data.actionIndex, data.exitCode);
+                clientPool.notifyAll("missions:update", { mission: mission.toJSON() });
+            }
+        });
+        socket.on("job:finished", function(data) {
+            commandPost.updateJob(data.missionId, data.job);
         });
     });
 
