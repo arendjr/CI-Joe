@@ -45,6 +45,10 @@ function main() {
         jobRunner.startJob(data.mission);
     });
 
+    socket.on("slave:rejected", function() {
+        process.exit(2);
+    });
+
     jobRunner.on("output", function(data) {
         socket.emit("job:output", {
             actionIndex: jobRunner.actionIndex,

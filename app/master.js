@@ -46,7 +46,7 @@ function main() {
     var slaveDriver = new SlaveDriver(config, clientPool);
     _.each(slaveDriver.slaves, function(slave) {
         slave.connect();
-        slave.on("changed", function(/*propertyName, value*/) {
+        slave.on("change", function(/*propertyName, value*/) {
             // #TODO: notify all clients
             // #TODO: notify the respective slave
         });
@@ -62,14 +62,18 @@ function main() {
         });
 
         socket.on("slave", function(data) {
-            var slaveName = data.name;
-            _.each(slaveDriver.slaves, function(slave) {
-                if (slave.name === slaveName) {
+            var slave = slaveDriver.getSlaveByName(data.name);
+            if (slave) {
+                if (slave.socket) {
+                    socket.emit("slave:rejected");
+
+                    console.log("Duplicate slave '" + data.name + "' rejected.");
+                } else {
                     slave.assignSocket(socket);
 
-                    console.log("Slave '" + slaveName + "' connected.");
+                    console.log("Slave '" + data.name + "' connected.");
                 }
-            });
+            }
         });
 
         socket.on("queue:request-job", function() {
@@ -79,22 +83,6 @@ function main() {
             }
         });
 
-        socket.on("job:output", function(data) {
-            var mission = commandPost.getMission(data.missionId);
-            var job = mission.getJob(data.jobId);
-            if (job) {
-                job.processOutput(data.actionIndex, data.data);
-                clientPool.notifyAll("missions:update", { mission: mission.toJSON() });
-            }
-        });
-        socket.on("job:action-finished", function(data) {
-            var mission = commandPost.getMission(data.missionId);
-            var job = mission.getJob(data.jobId);
-            if (job) {
-                job.finishAction(data.actionIndex, data.exitCode);
-                clientPool.notifyAll("missions:update", { mission: mission.toJSON() });
-            }
-        });
         socket.on("job:finished", function(data) {
             commandPost.updateJob(data.missionId, data.job);
         });
