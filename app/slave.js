@@ -66,7 +66,7 @@ function main() {
         });
     });
     jobRunner.on("finished", function(data) {
-        socket.emit("job:finished", { job: data.job, missionId: data.mission.id });
+        socket.emit("job:finished", { job: data.job.toJSON(), missionId: data.mission.id });
         socket.emit("queue:request-job");
     });
 }
