@@ -41,6 +41,11 @@ function main() {
         }
     });
 
+    socket.on("error", function(error) {
+        console.log("Socket error: " + error);
+        process.exit(3);
+    });
+
     socket.on("job:start", function(data) {
         jobRunner.startJob(data.mission);
     });
