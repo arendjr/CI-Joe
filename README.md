@@ -5,6 +5,7 @@ C.I. Joe - Because knowing is half the battle!
 
  * **[Goals](#goals)**
  * **[Roadmap](#roadmap)**
+ * **[Tests](#tests)**
  * **[FAQ](#faq)**
  * **[License](#license)**
 
@@ -105,6 +106,16 @@ terminology that's used. Here are some of the most important terms:
    powers because he is at many places at the same time, simultaneously
    performing missions as he goes. In reality, this is made possible by
    delegating most of the actual work to his slaves.
+
+
+Tests
+-----
+
+To run the tests, make sure you have PhantomJS >= 1.9 and CasperJS >= 1.0
+installed, then run the script:
+
+    ./tests.sh
+
 
 
 F.A.Q.
