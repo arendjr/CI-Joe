@@ -48,6 +48,7 @@ module.exports = function(grunt) {
 
         // all JavaScript test files
         tests: (serverTest || clientTest) ? (clientTest ? [clientTest] : []) : [
+            "firstmission"
         ],
 
         // translation files
@@ -140,13 +141,13 @@ module.exports = function(grunt) {
         var jsPrefix = (config.isPackaged ? "js/" : "/js/");
         if (options.compiled) {
             clientSources.js.forEach(function(baseName) {
-                paths[baseName] = jsPrefix + "app";
+                paths[baseName] = jsPrefix + "application";
             });
             clientSources.libs.forEach(function(baseName) {
-                paths[baseName] = jsPrefix + "libs";
+                paths[baseName] = jsPrefix + "application";
             });
             clientSources.tmpl.forEach(function(baseName) {
-                paths["tmpl/" + baseName] = jsPrefix + "tmpl";
+                paths["tmpl/" + baseName] = jsPrefix + "application";
             });
             clientSources.translations.forEach(function(locale) {
                 paths["translations/" + locale] = jsPrefix + locale;
@@ -206,7 +207,15 @@ module.exports = function(grunt) {
         grunt.initConfig({
             pkg: grunt.file.readJSON("package.json"),
 
-            clean: ["www/build"],
+            casperjs: {
+                options: {
+                    verbose: true,
+                    logLevel: "debug"
+                },
+                files: createPaths("tests/integration/test", clientSources.tests, ".js")
+            },
+
+            clean: ["www/build", "build"],
 
             csso: {
                 options: {
@@ -271,7 +280,7 @@ module.exports = function(grunt) {
                 }), ".js"),
                 serverTests: createPaths("tests/", serverSources.tests, "-test.js"),
                 clientSources: createPaths("www/js/", _.filter(clientSources.js, function(src) {
-                    return src.substr(0, 10) !== "bootstrap/";
+                    return src.slice(0, 10) !== "bootstrap/";
                 }), ".js"),
                 clientTests: createPaths("www/tests/", clientSources.tests, "-test.js")
             },
@@ -337,18 +346,9 @@ module.exports = function(grunt) {
                     options: {
                         modules: [
                             {
-                                name: "www/js/app",
-                                include: createPaths("www/js/", clientSources.js, ".js"),
-                                exclude: clientSources.libs
-                            },
-                            {
-                                name: "www/js/libs",
-                                include: clientSources.libs
-                            },
-                            {
-                                name: "www/js/tmpl",
-                                include: createPaths("www/tmpl/", clientSources.tmpl, ".js"),
-                                exclude: clientSources.libs
+                                name: "www/js/application",
+                                include: createPaths("www/js/", clientSources.js, ".js")
+                                    .concat(createPaths("www/tmpl/", clientSources.tmpl, ".js"))
                             }
                         ]
                     }
@@ -359,7 +359,10 @@ module.exports = function(grunt) {
                 options: {
                     failOnError: true
                 },
-                mkdir: {
+                mkBuildDir: {
+                    command: "mkdir build; mkdir build/www"
+                },
+                mkCssDir: {
                     command: "mkdir www/build/css"
                 },
                 ln: {
@@ -380,6 +383,9 @@ module.exports = function(grunt) {
                                      "rm -R \"build/$f\"; " +
                                  "fi;" +
                              "done"
+                },
+                copyTemplates: {
+                    command: "cp -R www/build/tmpl build/www/tmpl"
                 },
                 favicon: {
                     command: "cp www/favicon.png www/build"
@@ -421,11 +427,14 @@ module.exports = function(grunt) {
 
         });
 
+        grunt.loadNpmTasks("grunt-casperjs");
+        grunt.loadNpmTasks("grunt-csso");
         grunt.loadNpmTasks("grunt-contrib-clean");
         grunt.loadNpmTasks("grunt-contrib-handlebars");
         grunt.loadNpmTasks("grunt-contrib-jshint");
         grunt.loadNpmTasks("grunt-contrib-less");
         grunt.loadNpmTasks("grunt-contrib-nodeunit");
+        grunt.loadNpmTasks("grunt-contrib-requirejs");
         grunt.loadNpmTasks("grunt-contrib-watch");
         grunt.loadNpmTasks("grunt-gettext");
         grunt.loadNpmTasks("grunt-shell");
@@ -519,7 +528,7 @@ module.exports = function(grunt) {
         if (noLess) {
             config.lessPrecompiled = false;
             clientSources.libs.push("less");
-            tasks.splice(4, 0, "shell:mkdir", "shell:lnNoLess");
+            tasks.splice(4, 0, "shell:mkCssDir", "shell:lnNoLess");
         } else {
             tasks.splice(4, 0, "less");
         }
@@ -528,6 +537,15 @@ module.exports = function(grunt) {
         if (watch) {
             tasks.push("watch");
         }
+
+        init();
+
+        grunt.task.run(tasks);
+    });
+
+    grunt.registerTask("dist", "Default tasks", function() {
+        var tasks = ["jshint", "clean", "handlebars", "shell:mkBuildDir", "shell:copyTemplates",
+                     "shell:ln", "less", "csso", "requirejs", "shell:favicon", "index"];
 
         init();
 
@@ -549,7 +567,7 @@ module.exports = function(grunt) {
     grunt.registerTask("tests", "Run tests", function() {
         init();
 
-        grunt.task.run(["jshint", "nodeunit"]);
+        grunt.task.run(["jshint", "nodeunit", "casperjs"]);
     });
 
     grunt.registerTask("xgettext", "Extracts translatable messages and generates a new .pot file",
