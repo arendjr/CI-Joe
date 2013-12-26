@@ -9,7 +9,6 @@ lib-cov
 *.dat
 *.out
 *.pid
-*.gz
 
 pids
 logs
@@ -37,4 +36,4 @@ CI-Joe*.files
 CI-Joe*.includes
 
 # Test build
-tests/build
+dist/ci-joe-test
