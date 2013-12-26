@@ -114,7 +114,7 @@ Tests
 To run the tests, make sure you have PhantomJS >= 1.9 and CasperJS >= 1.0
 installed, then run the script:
 
-    ./tests.sh
+    ./run_tests.sh
 
 
 
