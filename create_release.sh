@@ -1,10 +1,20 @@
 #!/bin/bash
 
-mkdir dist/ci-joe-$1
-mkdir dist/ci-joe-$1/www
 
+DEST_DIR=dist/ci-joe-$1
+
+# clean-up previous build
+rm -Rf $DEST_DIR
+
+# make sure we use a clean config for releases
+mv config/app.yaml config.app.yaml.safe
+git checkout config/app.yaml
+
+# copy all assets to release destination dir
+mkdir $DEST_DIR
 cp -R app \
       config \
+      Gruntfile.js \
       joe.sh \
       lib \
       LICENSE.GPL.txt \
@@ -12,16 +22,26 @@ cp -R app \
       package.json \
       README.md \
       slave.sh \
-      dist/ci-joe-$1
-cp -R www/build \
-      www/css \
-      www/favicon.png \
-      www/fonts \
-      www/img \
-      www/js \
-      www/translations \
-      dist/ci-joe-$1/www
+      www \
+      $DEST_DIR
 
-pushd dist
-tar czf ci-joe-$1.tar.gz ci-joe-$1
+# restore config
+mv config.app.yaml.safe config/app.yaml
+
+# create dist build
+pushd $DEST_DIR
+grunt dist
+EXIT_CODE=$?
 popd
+
+# create tarball, if the build was successful
+if [ $EXIT_CODE -eq 0 ]; then
+    if [ "$2" != "--no-tarball" ]; then
+        pushd dist
+        tar czf ci-joe-$1.tar.gz ci-joe-$1
+        rm -R ci-joe-$1
+        popd
+    fi
+fi
+
+exit $EXIT_CODE

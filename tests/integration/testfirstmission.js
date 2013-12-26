@@ -2,79 +2,89 @@
 
     "use strict";
 
-    var casper = require("casper").create();
-    var tester = require("./tests/tester").newTester(casper);
+    var casper = require("casper").create({ viewportSize: { width: 1024, height: 768 } });
+    var tester = require("./tests/integration/tester").newTester(casper);
 
-    tester.start("groups", ["mock=1", "reply_timeout=10", "token=token0123456789"], function() {
+    tester.start(function() {
 
-        tester.waitForSelector(".action-group[data-group-id='gHelden']", function() {
-            tester.assertElementCount(".page .action-group", 3);
+        tester.waitForSelector(".js-main .action-new", function() {
+            tester.assertExists(".js-main .js-empty-placeholder");
 
-            tester.click(".js-tab-handle[data-tab-id='all']");
+            tester.click(".js-main .action-new");
         });
 
-        tester.wait(30, function() {
-            tester.assertElementCount(".page .action-group", 13);
+        tester.waitForSelector(".modal .js-name-input", function() {
+            tester.type(".js-name-input", "Test mission");
 
-            tester.type(".page .js-search-input", "engineers");
-
-            tester.assertElementCount(".page .action-group", 2);
-
-            tester.type(".page .js-search-input", "");
-
-            tester.assertElementCount(".page .action-group", 13);
-
-            tester.click(".action-group[data-group-id='gGamebase']");
+            tester.click(".action-add-action");
         });
 
-        tester.wait(30, function() {
-            tester.assertTextExists("This group does no longer exist.");
+        tester.waitForSelector(".modal .js-description-input", function() {
+            tester.type(".js-description-input", "Test action");
+            tester.type(".js-command-input",
+                        "sleep 1\n" +
+                        "echo Waited 1 second\n" +
+                        "sleep 1\n" +
+                        "echo Waited 2 seconds");
 
-            tester.back();
+            tester.click(".action-save");
         });
 
-        tester.wait(30, function() {
-            tester.assertElementCount(".page .action-group", 13);
+        tester.waitForSelector(".modal .js-name-input", function() {
+            tester.assertElementValue(".js-name-input", "Test mission");
+            tester.assertElementText(".action-edit-action", "Test action");
 
-            tester.click(".action-group[data-group-id='gDeviant']");
+            tester.click(".action-save");
         });
 
-        tester.wait(30, function() {
-            tester.assertTextExists("Paint it black, or like black velvet");
+        tester.waitForSelector(".js-main .action-mission", function() {
+            tester.assertElementCount(".action-mission", 1);
+            tester.assertSelectorHasText(".action-mission", "Test mission");
+            tester.assertSelectorHasText(".action-mission", "Unavailable");
+            tester.assertVisible(".action-mission .glyphicon-play-circle");
 
-            tester.click(".js-tabs .action-dropdown-toggle");
-
-            tester.click(".action-delete");
-
-            tester.assertTextExists("Are you sure you want to delete the group");
-
-            tester.click(".js-confirm-button");
+            tester.click(".action-start-mission");
         });
 
-        tester.wait(30, function() {
-            tester.assertTextExists("The group has been deleted");
-            tester.assertElementCount(".page .action-group", 12);
-
-            tester.click(".js-tab-handle[data-tab-id='mine']");
+        tester.wait(500, function() {
+            tester.assertNotVisible(".action-mission .glyphicon-play-circle");
         });
 
-        tester.wait(30, function() {
-            tester.assertElementCount(".page .action-group", 3);
+        tester.wait(2000, function() {
+            tester.assertSelectorDoesntHaveText(".action-mission", "Unavailable");
+            tester.assertSelectorHasText(".action-mission", "Success");
 
-            tester.emitGroupMembershipUpdate("my_memberships:uArend:nUSGP", {
-                event: "create",
-                group: "gElite",
-                role: "invitee",
-                user: "uArend"
-            });
+            tester.assertVisible(".action-mission .glyphicon-play-circle");
+
+            tester.click(".action-mission");
         });
 
-        tester.wait(30, function() {
-            tester.assertElementCount(".page .action-group", 4);
+        tester.waitForSelector(".js-main h2", function() {
+            tester.assertSelectorHasText(".js-main", "Command exited with exit code 0");
 
-            tester.assertTextExists("elite commanders");
+            tester.assertSelectorHasText(".js-main pre", "Waited 1 second");
+            tester.assertSelectorHasText(".js-main pre", "Waited 2 seconds");
+
+            tester.click(".action-home");
         });
 
+        tester.waitForSelector(".js-main .action-mission", function() {
+            tester.click(".action-edit");
+        });
+
+        tester.waitForSelector(".modal .js-name-input", function() {
+            tester.type(".js-name-input", "Test mission");
+
+            tester.click(".action-remove");
+        });
+
+        tester.waitForSelector(".modal .action-confirm", function() {
+            tester.click(".action-confirm");
+        });
+
+        tester.waitWhileSelector(".modal", function() {
+            tester.assertElementCount(".action-mission", 0);
+        });
     });
 
     casper.run();

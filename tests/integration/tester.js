@@ -4,7 +4,9 @@
 "use strict";
 
 
-var _ = require("./js/lib/underscore");
+var _ = require("./tests/integration/lodash");
+
+var TEST_PORT = 18080;
 
 
 function position(index) {
@@ -191,8 +193,8 @@ Tester.prototype.setSessionStorageItem = function(key, value) {
 
 Tester.prototype.start = function(callback) {
 
-    var url = "http://localhost:18080/build/";
-    console.log("Test URL: " + url.replace(":18080", ":8080"));
+    var url = "http://localhost:" + TEST_PORT + "/";
+    console.log("Test URL: " + url.replace(":" + TEST_PORT, ":8080"));
 
     this.casper.start(url, function() {
         this.evaluate(function() {
@@ -230,6 +232,12 @@ Tester.prototype.type = function(selector, text) {
             $el.keyup();
         }
         $el.blur();
+
+        var event = document.createEvent("Event");
+        event.initEvent("change", true, true);
+        $el.each(function() {
+            this.dispatchEvent(event);
+        });
     }, selector, text);
 };
 

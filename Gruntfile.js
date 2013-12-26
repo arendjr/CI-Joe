@@ -275,7 +275,7 @@ module.exports = function(grunt) {
                 clientSources: createPaths("www/js/", _.filter(clientSources.js, function(src) {
                     return src.slice(0, 10) !== "bootstrap/";
                 }), ".js"),
-                clientTests: createPaths("www/tests/", clientSources.tests, "-test.js")
+                clientTests: createPaths("tests/integration/test", clientSources.tests, ".js")
             },
 
             less: {
@@ -454,18 +454,19 @@ module.exports = function(grunt) {
                 "README.md",
                 "node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js",
                 "slave.sh",
-                "tests.sh",
+                "run_tests.sh",
+                "tests/integration/tester.js",
                 "tools/install-git-hooks.sh",
                 "tools/git-pre-commit",
                 "www/index.html.tmpl"
             ];
             lines = lines.concat(createPaths(serverSources.js, ".js"));
-            lines = lines.concat(createPaths("tests/", serverSources.tests, "-test.js"));
+            lines = lines.concat(createPaths("tests/unit/test", serverSources.tests, "-test.js"));
+            lines = lines.concat(createPaths("tests/integration/test", clientSources.tests, ".js"));
             lines = lines.concat(createPaths("www/css/", clientSources.css, ".css"));
             lines = lines.concat(createPaths("www/css/", clientSources.less, ".less"));
             lines = lines.concat(createPaths("www/js/", clientSources.js, ".js"));
             lines = lines.concat(createPaths("www/js/lib/", clientSources.libs, ".js"));
-            lines = lines.concat(createPaths("www/tests/", clientSources.tests, "-test.js"));
             lines = lines.concat(createPaths("www/tmpl/", clientSources.tmpl, ".handlebars"));
             grunt.file.write("CI-Joe.files", lines.join("\n"));
             grunt.log.ok("CI-Joe.files written.");
@@ -574,7 +575,7 @@ module.exports = function(grunt) {
     grunt.registerTask("tests", "Run tests", function() {
         init();
 
-        grunt.task.run(["jshint", "nodeunit", "casperjs"]);
+        grunt.task.run(["casperjs"]);
     });
 
     grunt.registerTask("xgettext", "Extracts translatable messages and generates a new .pot file",

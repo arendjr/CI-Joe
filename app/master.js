@@ -99,7 +99,6 @@ function main() {
     function terminate() {
         slaveDriver.destruct();
         server.close();
-        console.log("Quit.");
         process.exit();
     }
 
