@@ -35,3 +35,6 @@ CI-Joe*.creator
 CI-Joe*.creator.user
 CI-Joe*.files
 CI-Joe*.includes
+
+# Test build
+tests/build

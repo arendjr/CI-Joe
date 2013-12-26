@@ -19,7 +19,7 @@
             });
 
             if (grunt.config("isPackaged")) {
-                print("<script src=\"js/lib/require.js\"></script>");
+                print("<script src=\"require.js\"></script>");
             } else {
                 print("<script src=\"/js/lib/require.js\"></script>");
             }
@@ -30,7 +30,7 @@
                 "Joe.config.defaults = /*defaults_start*/{}/*defaults_end*/;" +
                 "require.config(" + JSON.stringify(grunt.config("requirejsConfig")) + ");" +
                 "function main(){" +
-                    "require(['application','tmpl'],function(Application){" +
+                    "require(['application'],function(Application){" +
                         "Joe.application=new Application();" +
                     "});" +
                 "}" +
