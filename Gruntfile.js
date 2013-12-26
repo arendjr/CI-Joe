@@ -68,8 +68,8 @@ module.exports = function(grunt) {
         }
 
         var dotIndex = filename.lastIndexOf(".");
-        var basename = (dotIndex === -1 ? filename : filename.substr(0, dotIndex));
-        var extension = (dotIndex === -1 ? "" : filename.substr(dotIndex + 1));
+        var basename = (dotIndex === -1 ? filename : filename.slice(0, dotIndex));
+        var extension = (dotIndex === -1 ? "" : filename.slice(dotIndex + 1));
 
         if (subdir === "app" || subdir === "lib") {
             if (extension === "js") {
@@ -94,9 +94,9 @@ module.exports = function(grunt) {
                     clientSources.libs.push(basename);
                 }
             }
-        } else if (subdir.substr(0, 7) === "www/js/") {
+        } else if (subdir.slice(0, 7) === "www/js/") {
             if (extension === "js") {
-                clientSources.js.push(subdir.substr(7) + "/" + basename);
+                clientSources.js.push(subdir.slice(7) + "/" + basename);
             }
         } else if (subdir === "www/tmpl") {
             if (extension === "handlebars") {
@@ -123,11 +123,9 @@ module.exports = function(grunt) {
             fileNames = prefix;
             prefix = "";
         }
-        var paths = [];
-        fileNames.forEach(function(fileName) {
-            paths.push(prefix + fileName + (extension || ""));
+        return fileNames.map(function(fileName) {
+            return prefix + fileName + (extension || "");
         });
-        return paths;
     }
 
 
@@ -138,19 +136,20 @@ module.exports = function(grunt) {
         options = options || {};
 
         var paths = {};
-        var jsPrefix = (config.isPackaged ? "js/" : "/js/");
+        var jsPrefix = (config.isPackaged ? "" : "/js/");
+        var buildPrefix = (config.isPackaged ? "../../www/build/" : "../build/");
         if (options.compiled) {
             clientSources.js.forEach(function(baseName) {
-                paths[baseName] = jsPrefix + "application";
+                paths[baseName] = "application";
             });
             clientSources.libs.forEach(function(baseName) {
-                paths[baseName] = jsPrefix + "application";
+                paths[baseName] = "application";
             });
             clientSources.tmpl.forEach(function(baseName) {
-                paths["tmpl/" + baseName] = jsPrefix + "application";
+                paths["tmpl/" + baseName] = "application";
             });
             clientSources.translations.forEach(function(locale) {
-                paths["translations/" + locale] = jsPrefix + locale;
+                paths["translations/" + locale] = "translations/" + locale;
             });
         } else {
             clientSources.js.forEach(function(baseName) {
@@ -160,13 +159,12 @@ module.exports = function(grunt) {
                 paths[baseName] = jsPrefix + "lib/" + baseName;
             });
             clientSources.tmpl.forEach(function(baseName) {
-                paths["tmpl/" + baseName] = "tmpl/" + baseName;
+                paths["tmpl/" + baseName] = buildPrefix + "tmpl/" + baseName;
             });
             clientSources.translations.forEach(function(locale) {
-                paths["translations/" + locale] = "translations/" + locale;
+                paths["translations/" + locale] = buildPrefix + "translations/" + locale;
             });
         }
-        paths.tmpl = jsPrefix + "tmpl";
         return paths;
     }
 
@@ -193,10 +191,6 @@ module.exports = function(grunt) {
         }).join("");
         return result;
     }
-
-
-    // see shell:cleanupBuild task for explanation...
-    var productionRE = "^((\\w|-)+-\\w{32}\\.(css|js)|index\\.html|img)$";
 
 
     function init() {
@@ -251,8 +245,7 @@ module.exports = function(grunt) {
                 all: {
                     files: _.object(
                         createPaths("www/build/tmpl/", clientSources.tmpl, ".js"),
-                        createPaths(config.isPackaged ? "www/build/tmpl/" : "www/tmpl/",
-                                    clientSources.tmpl, ".handlebars")
+                        createPaths("www/tmpl/", clientSources.tmpl, ".handlebars")
                     )
                 }
             },
@@ -320,20 +313,25 @@ module.exports = function(grunt) {
 
             requirejs: {
                 options: {
-                    appDir: ".",
+                    appDir: "www/js/",
                     baseUrl: "./",
                     dir: "build",
                     enforceDefine: true,
+                    optimize: "none",
                     optimizeCss: false,
                     keepBuildDir: true,
                     fileExclusionRegExp: /^\.|^Gruntfile.js$|^node_modules/,
                     paths: createRequirePaths(),
                     preserveLicenseComments: false,
                     shim: {
-                        "bootstrap/collapse":  { deps: ["jquery"], exports: "$.fn.collapse" },
-                        "bootstrap/modal":  { deps: ["jquery"], exports: "$.fn.modal" },
-                        "bootstrap/transition":  { deps: ["jquery"],
-                                                   exports: "$.fn.emulateTransitionEnd" },
+                        "bootstrap/alert": { deps: ["jquery"], exports: "$.fn.alert" },
+                        "bootstrap/collapse": { deps: ["jquery"], exports: "$.fn.collapse" },
+                        "bootstrap/modal": { deps: ["jquery"], exports: "$.fn.modal" },
+                        "bootstrap/popover": { deps: ["bootstrap/tooltip", "jquery"],
+                                                         exports: "$.fn.popover" },
+                        "bootstrap/tooltip": { deps: ["jquery"], exports: "$.fn.tooltip" },
+                        "bootstrap/transition": { deps: ["jquery"],
+                                                  exports: "$.fn.emulateTransitionEnd" },
                         "canvasloader": { deps: [], exports: "CanvasLoader" },
                         "handlebars": { exports: "Handlebars" },
                         "jquery.pnotify": { deps: ["jquery"], exports: "$.pnotify" },
@@ -346,9 +344,7 @@ module.exports = function(grunt) {
                     options: {
                         modules: [
                             {
-                                name: "www/js/application",
-                                include: createPaths("www/js/", clientSources.js, ".js")
-                                    .concat(createPaths("www/tmpl/", clientSources.tmpl, ".js"))
+                                name: "application"
                             }
                         ]
                     }
@@ -375,20 +371,25 @@ module.exports = function(grunt) {
                 },
                 cleanupBuild: {
                     // the build directory contains a lot of crust (mostly due to require.js),
-                    // which we would not want to be deployed to production... for this reason we
+                    // which we would not want to be included for distribution... for this reason we
                     // remove every file and directory from the build directory that does not match
                     // the production regex
-                    command: "for f in `ls build`; do " +
-                                 "if [ ! `echo $f | egrep \"" + productionRE + "\"` ]; then " +
-                                     "rm -R \"build/$f\"; " +
-                                 "fi;" +
-                             "done"
+                    command: "mkdir www2;" +
+                             "cp www/build/all.css www2;" +
+                             "cp www/build/index.html www2;" +
+                             "cp www/build/favicon.png www2;" +
+                             "cp -R www/fonts www2;" +
+                             "cp -R www/img www2;" +
+                             "cp www/js/lib/require.js www2;" +
+                             "mkdir www2/translations;" +
+                             "cp www/translations/*.js www2/translations;" +
+                             "rm -Rf www;" +
+                             "cp build/application.js www2;" +
+                             "rm -Rf build;" +
+                             "mv www2 www;"
                 },
                 copyTemplates: {
                     command: "cp -R www/build/tmpl build/www/tmpl"
-                },
-                favicon: {
-                    command: "cp www/favicon.png www/build"
                 },
                 msgmerge: {
                     command: msgmergeCommand()
@@ -446,10 +447,14 @@ module.exports = function(grunt) {
         grunt.registerTask("files-file", "Generate CI-Joe.files for Qt Creator", function() {
             var lines = [
                 "config/app.yaml",
+                "create_release.sh",
                 "Gruntfile.js",
+                "joe.sh",
                 "package.json",
                 "README.md",
                 "node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js",
+                "slave.sh",
+                "tests.sh",
                 "tools/install-git-hooks.sh",
                 "tools/git-pre-commit",
                 "www/index.html.tmpl"
@@ -545,7 +550,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dist", "Default tasks", function() {
         var tasks = ["jshint", "clean", "handlebars", "shell:mkBuildDir", "shell:copyTemplates",
-                     "shell:ln", "less", "csso", "requirejs", "shell:favicon", "index"];
+                     "less", "csso", "requirejs", "index", "po2json", "shell:cleanupBuild"];
+
+        config.isPackaged = true;
 
         init();
 

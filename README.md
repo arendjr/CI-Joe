@@ -46,8 +46,8 @@ accomodate the veterans:
 Roadmap
 -------
 
-Because C.I. Joe is currently in planning/pre-alpha phase, all its upcoming
-features are still on the roadmap:
+C.I. Joe is currently in alpha phase, with most of its features nothing but
+but bullet points on the roadmap:
 
  * **Master-slave architecture.** This allows for running jobs in parallel,
    optionally on multiple build machines.
