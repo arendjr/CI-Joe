@@ -5,6 +5,7 @@ C.I. Joe - Because knowing is half the battle!
 
  * **[Goals](#goals)**
  * **[Roadmap](#roadmap)**
+ * **[Usage](#usage)**
  * **[Tests](#tests)**
  * **[FAQ](#faq)**
  * **[License](#license)**
@@ -106,6 +107,17 @@ terminology that's used. Here are some of the most important terms:
    powers because he is at many places at the same time, simultaneously
    performing missions as he goes. In reality, this is made possible by
    delegating most of the actual work to his slaves.
+
+
+Usage
+-----
+
+Download the latest tarball from the dist/ directory and extract it to a
+convenient location. From the extracted directory, run the following command:
+
+    ./joe.sh
+
+C.I. Joe will now be running on http://localhost:8080/
 
 
 Tests
