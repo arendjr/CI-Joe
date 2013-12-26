@@ -7,6 +7,7 @@ C.I. Joe - Because knowing is half the battle!
  * **[Roadmap](#roadmap)**
  * **[Usage](#usage)**
  * **[Tests](#tests)**
+ * **[Terminology](#terminology)**
  * **[FAQ](#faq)**
  * **[License](#license)**
 
@@ -85,6 +86,30 @@ Want to add anything to the roadmap? Now is the time!
 [File an issue!](https://github.com/arendjr/CI-Joe/issues/new)
 
 
+Usage
+-----
+
+First, make sure you have Node.js 0.10.x installed.
+
+Then download the latest tarball from the dist/ directory and extract it to a
+convenient location. From the extracted directory, run the following command:
+
+    ./joe.sh
+
+C.I. Joe will now start and be reachable on
+                             [http://localhost:8080/](http://localhost:8080/).
+
+
+Tests
+-----
+
+To run the tests, make sure you have PhantomJS >= 1.9 and CasperJS >= 1.0
+installed, then run the script:
+
+    ./run_tests.sh
+
+
+
 Terminology
 -----------
 
@@ -107,27 +132,6 @@ terminology that's used. Here are some of the most important terms:
    powers because he is at many places at the same time, simultaneously
    performing missions as he goes. In reality, this is made possible by
    delegating most of the actual work to his slaves.
-
-
-Usage
------
-
-Download the latest tarball from the dist/ directory and extract it to a
-convenient location. From the extracted directory, run the following command:
-
-    ./joe.sh
-
-C.I. Joe will now be running on http://localhost:8080/
-
-
-Tests
------
-
-To run the tests, make sure you have PhantomJS >= 1.9 and CasperJS >= 1.0
-installed, then run the script:
-
-    ./run_tests.sh
-
 
 
 F.A.Q.
