@@ -1,5 +1,5 @@
 define("lightbox/editmission",
-       ["i18n", "laces", "lightbox", "tmpl/editmission"],
+       ["i18n", "laces", "lightbox", "tmpl/editmission", "tmpl/scheduleoptions"],
        function(i18n, Laces, Lightbox, tmpl) {
 
     "use strict";
@@ -29,6 +29,8 @@ define("lightbox/editmission",
                 this.title = i18n("New Mission");
             }
 
+            this._initScbeduleOptions();
+
             this.mission = mission;
 
             this.subscribe(mission, "change:actions", "renderContent");
@@ -40,13 +42,17 @@ define("lightbox/editmission",
             "click .action-remove-action": "_removeAction",
             "click .action-remove": "_remove",
             "click .action-save": "_save",
-            "click .action-toggle-advanced": "_toggleAdvanced"
+            "click .action-toggle-advanced": "_toggleAdvanced",
+            "click .action-toggle-schedule": "_toggleSchedule"
         },
 
         renderContent: function() {
 
             var tie = new Laces.Tie(this.mission, tmpl.editmission);
             this.$(".js-content").html(tie.render());
+
+            var scheduleTie = new Laces.Tie(this.scheduleOptions, tmpl.scheduleoptions);
+            this.$(".js-schedule").html(scheduleTie.render());
         },
 
         _addAction: function() {
@@ -60,6 +66,21 @@ define("lightbox/editmission",
 
             var index = this.targetData(event, "action-index");
             this.openLightbox("EditAction", { action: this.mission.actions[index] });
+        },
+
+        _initScbeduleOptions: function() {
+
+            this.scheduleOptions = new Laces.Model({
+                scheduleType: "manual",
+                manualSchedule: function() { return this.scheduleType === "manual"; },
+                hourlySchedule: function() { return this.scheduleType === "hourly"; },
+                dailySchedule: function() { return this.scheduleType === "daily"; },
+                weeklySchedule: function() { return this.scheduleType === "weekly"; },
+                manualLabelClass: function() { return this.manualSchedule ? "" : "text-normal"; },
+                hourlyLabelClass: function() { return this.hourlySchedule ? "" : "text-normal"; },
+                dailyLabelClass: function() { return this.dailySchedule ? "" : "text-normal"; },
+                weeklyLabelClass: function() { return this.weeklySchedule ? "" : "text-normal"; }
+            });
         },
 
         _removeAction: function(event) {
@@ -103,13 +124,25 @@ define("lightbox/editmission",
 
         _toggleAdvanced: function() {
 
-            var $chevron = this.$(".js-chevron"), $advanced = this.$(".js-advanced");
+            var $chevron = this.$(".js-advanced-chevron"), $advanced = this.$(".js-advanced");
             if ($chevron.hasClass("glyphicon-chevron-right")) {
                 $chevron.removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
                 $advanced.show();
             } else {
                 $chevron.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
                 $advanced.hide();
+            }
+        },
+
+        _toggleSchedule: function() {
+
+            var $chevron = this.$(".js-schedule-chevron"), $schedule = this.$(".js-schedule");
+            if ($chevron.hasClass("glyphicon-chevron-right")) {
+                $chevron.removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+                $schedule.show();
+            } else {
+                $chevron.removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+                $schedule.hide();
             }
         }
 
