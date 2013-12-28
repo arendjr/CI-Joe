@@ -1,0 +1,19 @@
+<label class="col-sm-12">{{i18n "Run this mission..."}}</label>
+<div data-tie="radio: scheduleType">
+    <div class="form-group">
+        <span class="col-sm-2 text-right"><input type="radio" value="manual" id="radio-manual"></span>
+        <label for="radio-manual" class="col-sm-10" data-tie="class: manualLabelClass">{{i18n "Only when explicitly triggered"}}</label>
+    </div>
+    <div class="form-group">
+        <span class="col-sm-2 text-right"><input type="radio" value="hourly" id="radio-hourly"></span>
+        <label for="radio-hourly" class="col-sm-10" data-tie="class: hourlyLabelClass">{{i18n "Every hour"}}</label>
+    </div>
+    <div class="form-group">
+        <span class="col-sm-2 text-right"><input type="radio" value="daily" id="radio-daily"></span>
+        <label for="radio-daily" class="col-sm-10" data-tie="class: dailyLabelClass">{{i18n "Every day"}}</label>
+    </div>
+    <div class="form-group">
+        <span class="col-sm-2 text-right"><input type="radio" value="weekly" id="radio-weekly"></span>
+        <label for="radio-weekly" class="col-sm-10" data-tie="class: weeklyLabelClass">{{i18n "Every week"}}</label>
+    </div>
+</div>
