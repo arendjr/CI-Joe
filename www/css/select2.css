@@ -1,5 +1,5 @@
 /*
-Version: 3.4.3 Timestamp: Tue Sep 17 06:47:14 PDT 2013
+Version: 3.4.5 Timestamp: Mon Nov  4 08:22:42 PST 2013
 */
 .select2-container {
     margin: 0;
@@ -244,6 +244,14 @@ Version: 3.4.3 Timestamp: Tue Sep 17 06:47:14 PDT 2013
     margin-top: 4px;
 }
 
+.select2-search input.select2-active {
+    background: #fff url('/img/select2-spinner.gif') no-repeat 100%;
+    background: url('/img/select2-spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
+    background: url('/img/select2-spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url('/img/select2-spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url('/img/select2-spinner.gif') no-repeat 100%, linear-gradient(top, #fff 85%, #eee 99%);
+}
+
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
     border: 1px solid #5897fb;
@@ -384,6 +392,10 @@ disabled look for disabled choices in the results dropdown
     display: none;
 }
 
+.select2-more-results.select2-active {
+    background: #f4f4f4 url('/img/select2-spinner.gif') no-repeat 100%;
+}
+
 .select2-more-results {
     background: #f4f4f4;
     display: list-item;
@@ -466,6 +478,10 @@ disabled look for disabled choices in the results dropdown
     -webkit-box-shadow: none;
             box-shadow: none;
     background: transparent !important;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+    background: #fff url('/img/select2-spinner.gif') no-repeat 100% !important;
 }
 
 .select2-default {
@@ -585,13 +601,6 @@ disabled look for disabled choices in the results dropdown
     height: 100px;
     overflow: scroll;
 }
-
-.select2-loader {
-    position: absolute;
-    right: 6px;
-    top: 6px;
-}
-
 /* Retina-ize icons */
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
