@@ -143,7 +143,8 @@ Tester.prototype.assertSelection = function(selector, selection, message) {
                          "should have selection " + JSON.stringify(selection);
 
     this.test.assertEvalEquals(function(selector) {
-        return $(selector).select2("data");
+        var data = $(selector).select2("data");
+        return (data instanceof Array ? _.pluck(data, "id") : data.id);
     }, selection, message, [selector]);
 };
 

@@ -249,18 +249,18 @@ define("lightbox/editmission",
                             options.time = formatTime(hours[0], minutes[0]);
                         } else {
                             options.scheduleType = "daily";
-                            options.exceptDays = (days.length < 7);
+                            options.exceptDays = (days.length > 0 && days.length < 7);
                             options.time = formatTime(hours[0], minutes[0]);
                         }
                     } else if (consecutiveHours) {
                         options.scheduleType = "hourly";
                         options.minute = minutes[0];
-                        options.exceptHours = (hours.length < 24);
+                        options.exceptHours = (hours.length > 0 && hours.length < 24);
                         if (options.exceptHours) {
                             options.exceptHourStart = formatTime(firstExcludedHour, 0);
                             options.exceptHourEnd = formatTime(lastExcludedHour + 1, 0);
                         }
-                        options.exceptDays = (days.length < 7);
+                        options.exceptDays = (days.length > 0 && days.length < 7);
                     } else {
                         options.scheduleType = "custom";
                     }
@@ -313,8 +313,8 @@ define("lightbox/editmission",
                         startHour++;
                     }
                     var endHour = _.parseInt(options.exceptHourEnd.slice(0, 2));
-                    if (_.parseInt(options.exceptHourEnd.slice(3, 5)) <= options.minute) {
-                        endHour--;
+                    if (_.parseInt(options.exceptHourEnd.slice(3, 5)) > options.minute) {
+                        endHour++;
                     }
                     if (startHour < endHour) {
                         hours = _.difference(_.range(24), _.range(startHour, endHour));
