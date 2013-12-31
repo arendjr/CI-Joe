@@ -576,7 +576,7 @@ module.exports = function(grunt) {
     grunt.registerTask("tests", "Run tests", function() {
         init();
 
-        grunt.task.run(["casperjs"]);
+        grunt.task.run(["jshint", "casperjs"]);
     });
 
     grunt.registerTask("xgettext", "Extracts translatable messages and generates a new .pot file",
