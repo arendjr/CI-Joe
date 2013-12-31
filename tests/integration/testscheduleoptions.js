@@ -4,6 +4,7 @@
 
     var casper = require("casper").create({ viewportSize: { width: 1024, height: 768 } });
     var tester = require("./tests/integration/tester").newTester(casper);
+    var _ = require("./tests/integration/lodash");
 
     tester.start(function() {
 
@@ -34,6 +35,11 @@
         tester.waitForSelector(".modal .action-toggle-schedule", function() {
             tester.assertElementChecked("input[type=radio][value='hourly']");
 
+            tester.assertEvalEquals(function() {
+                /* global Joe: false */
+                return Joe.application.missions.at(0).schedule;
+            }, { days: [0, 1, 3, 5, 6], hours: _.range(7, 22), minutes: [15] });
+
             tester.assertElementValue(".js-hourly-minute", "15");
             tester.assertElementValue(".js-except-hour-start", "22:00");
             tester.assertElementValue(".js-except-hour-end", "07:00");
@@ -52,6 +58,11 @@
 
         tester.waitForSelector(".modal .action-toggle-schedule", function() {
             tester.assertElementChecked("input[type=radio][value='hourly']");
+
+            tester.assertEvalEquals(function() {
+                /* global Joe: false */
+                return Joe.application.missions.at(0).schedule;
+            }, { days: [0, 1, 3, 5, 6], hours: [], minutes: [15] });
 
             tester.assertElementChecked(".js-hourly-except-hours", false);
             tester.assertElementValue(".js-hourly-minute", "15");
@@ -76,6 +87,11 @@
 
         tester.waitForSelector(".modal .action-toggle-schedule", function() {
             tester.assertElementChecked("input[type=radio][value='daily']");
+
+            tester.assertEvalEquals(function() {
+                /* global Joe: false */
+                return Joe.application.missions.at(0).schedule;
+            }, { days: [1, 2, 4, 5, 6], hours: [12], minutes: [30] });
 
             tester.assertElementValue(".js-daily-time", "12:30");
             tester.assertSelection(".js-daily-excluded-days", [0, 3]);

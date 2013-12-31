@@ -35,7 +35,7 @@ fi
 
 
 echo "Starting tests..."
-grunt tests
+grunt tests $1
 
 if [ $? -eq 0 ]; then
     rm -Rf $DEST_DIR
