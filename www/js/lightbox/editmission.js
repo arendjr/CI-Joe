@@ -322,7 +322,7 @@ define("lightbox/editmission",
                         hours = _.range(endHour, startHour);
                     }
                 }
-                minutes = [options.minute];
+                minutes = [_.parseInt(options.minute)];
                 mission.schedule = { days: days, hours: hours, minutes: minutes };
                 break;
             case "daily":
