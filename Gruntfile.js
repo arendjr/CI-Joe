@@ -48,7 +48,8 @@ module.exports = function(grunt) {
 
         // all JavaScript test files
         tests: (serverTest || clientTest) ? (clientTest ? [clientTest] : []) : [
-            "firstmission"
+            "firstmission",
+            "scheduleoptions"
         ],
 
         // translation files
