@@ -53,7 +53,8 @@ define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
             jobs: [],
             lastJobStatus: "",
             name: "",
-            shell: ""
+            shell: "",
+            schedule: null
         },
 
         plural: "missions",

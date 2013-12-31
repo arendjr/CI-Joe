@@ -49,19 +49,6 @@ function Tester(casper) {
     }
 }
 
-Tester.prototype.addRecipient = function(selector, id, name) {
-
-    this.evaluate(function(selector, id, name) {
-        var $recipients = $(selector);
-        var data = $recipients.select2("data");
-        data.push({ id: id, text: name });
-
-        $recipients.select2("open");
-        $recipients.select2("data", data).trigger("change");
-        $recipients.select2("close");
-    }, selector, id, name);
-};
-
 Tester.prototype.assertElementAttribute = function(selector, name, value, message) {
 
     message = message || "Element with selector \"" + selector + "\" " +
@@ -70,6 +57,17 @@ Tester.prototype.assertElementAttribute = function(selector, name, value, messag
     this.test.assertEvalEquals(function(selector, name) {
         return $(selector).attr(name);
     }, value, message, [selector, name]);
+};
+
+Tester.prototype.assertElementChecked = function(selector, checked, message) {
+
+    checked = (typeof checked === "undefined" ? true : checked);
+    message = message || "Element with selector \"" + selector + "\" " +
+                         "should" + (checked ? "" : "n't") + " be checked";
+
+    this.test.assertEvalEquals(function(selector) {
+        return $(selector).prop("checked");
+    }, checked, message, [selector]);
 };
 
 Tester.prototype.assertElementCount = function(selector, count, message) {
@@ -139,19 +137,14 @@ Tester.prototype.assertNthElementText = function(selector, index, text, message)
     }, text, message, [selector, index]);
 };
 
-Tester.prototype.assertRecipient = function(selector, index, id, name) {
+Tester.prototype.assertSelection = function(selector, selection, message) {
 
-    var data = this.evaluate(function(selector, index) {
-        return $(selector).select2("data")[index];
-    }, selector, index);
+    message = message || "Element with selector \"" + selector + "\" " +
+                         "should have selection " + JSON.stringify(selection);
 
-    var message = "ID of " + position(index) + " recipient in Select2 input \"" + selector + "\" " +
-                  "should be \"" + id + "\"";
-    this.test.assertEquals(data.id, id, message);
-
-    message = "Name of " + position(index) + " recipient in Select2 input \"" + selector + "\" " +
-              "should be \"" + name + "\"";
-    this.test.assertEquals(data.text, name, message);
+    this.test.assertEvalEquals(function(selector) {
+        return $(selector).select2("data");
+    }, selection, message, [selector]);
 };
 
 Tester.prototype.assertSignalCount = function(channel, count) {
@@ -171,10 +164,19 @@ Tester.prototype.assertSignalCount = function(channel, count) {
 Tester.prototype.select = function(selector, id, name) {
 
     this.evaluate(function(selector, id, name) {
-        var $recipients = $(selector);
-        $recipients.select2("open");
-        $recipients.select2("data", { id: id, text: name }).trigger("change");
+        var $el = $(selector);
+        $el.select2("open");
+        $el.select2("data", { id: id, text: name }).trigger("change");
     }, selector, id, name);
+};
+
+Tester.prototype.selectMultiple = function(selector, array) {
+
+    this.evaluate(function(selector, array) {
+        var $el = $(selector);
+        $el.select2("open");
+        $el.select2("data", array).trigger("change");
+    }, selector, array);
 };
 
 Tester.prototype.setLocalStorageItem = function(key, value) {

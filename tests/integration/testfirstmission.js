@@ -73,8 +73,6 @@
         });
 
         tester.waitForSelector(".modal .js-name-input", function() {
-            tester.type(".js-name-input", "Test mission");
-
             tester.click(".action-remove");
         });
 
