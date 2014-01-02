@@ -37,3 +37,7 @@ CI-Joe*.includes
 
 # Test build
 dist/ci-joe-test
+
+# C.I. Joe output
+action-results
+workspaces

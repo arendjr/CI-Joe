@@ -1,0 +1,17 @@
+<div class="js-job-output" data-job-id="{{id}}">
+    <p class="action-expand-job clickable">
+        <small><i class="glyphicon" data-tie="class: chevron"></i></small>
+        <strong>{{i18n "Job"}} {{id}}</strong>
+        <span class="label" data-tie="class: statusLabelClass, text: statusLabelText"></span>
+    </p>
+    <div data-tie="visible: expanded">
+        {{#each actionResults}}
+        <pre>{{{colored output}}}</pre>
+        {{#if endTime}}
+        <p>{{i18n "Command exited with exit code %1" exitCode}}</p>
+        {{/if}}
+        {{else}}
+        <p>{{i18n "No output available."}}</p>
+        {{/each}}
+    </div>
+</div>

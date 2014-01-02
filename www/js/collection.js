@@ -120,10 +120,14 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
          *
          * @param event Name of the event to observe. May be a space-separated list of event names.
          * @param callback Callback function to execute when the event fires.
+         * @param options Optional options object. May contain the following properties:
+         *                context - Context to use for the callback function.
+         *                initialFire - Boolean determining whether the callback should be initially
+         *                              called.
          */
-        on: function(event, callback) {
+        on: function(event, callback, options) {
 
-            this.models.on(event, callback);
+            this.models.on(event, callback, options);
         },
 
         /**
@@ -172,7 +176,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
             var attrs = data[this.ModelClass.prototype.type];
             var model = this.get(attrs.id);
             if (model) {
-                model.set(attrs);
+                model.set(_.omit(attrs, "id"));
             }
         },
 

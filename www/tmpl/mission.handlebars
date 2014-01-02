@@ -1,11 +1,2 @@
 <h2 data-tie="text: name"></h2>
-<p>{{i18n "Last run:"}} <span class="label" data-tie="class: lastJobStatusLabelClass, text: lastJobStatusLabelText"></span></p>
-{{#each jobs}}
-{{#if actionResults}}
-<h3>{{i18n "Job"}} {{id}}</h3>
-{{#each actionResults}}
-<pre>{{{colored output}}}</pre>
-<p>{{i18n "Command exited with exit code %1" exitCode}}</p>
-{{/each}}
-{{/if}}
-{{/each}}
+<div class="js-jobs"></div>

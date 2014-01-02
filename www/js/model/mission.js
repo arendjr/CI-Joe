@@ -1,4 +1,4 @@
-define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
+define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n, _, Model, Job) {
 
     "use strict";
 
@@ -8,41 +8,43 @@ define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
 
             this.defaultShell = this.application.config.defaults.shell;
 
-            this.set("isQueued", function() {
-                return this.lastJobStatus === "queued";
+            var self = this;
+            this.set("jobs", this.jobs, { setFilter: function(jobs) {
+                return _.map(jobs, function(job) {
+                    if (job instanceof Job) {
+                        return job;
+                    } else {
+                        var existingJob = _.find(self.jobs, { id: job.id });
+                        if (existingJob && existingJob instanceof Job) {
+                            existingJob.set(_.omit(job, "id"));
+                            return existingJob;
+                        } else {
+                            return new Job(self.application, _.extend({ missionId: self.id }, job));
+                        }
+                    }
+                });
+            }});
+
+            this.set("lastJob", function() {
+                return this.jobs[this.jobs.length - 1];
             });
-            this.set("isRunning", function() {
-                return this.lastJobStatus === "running";
-            });
-            this.set("isStopped", function() {
-                return this.lastJobStatus !== "queued" && this.lastJobStatus !== "running";
+            this.set("lastJobStatus", function() {
+                return this.lastJob ? this.lastJob.status : "n/a";
             });
             this.set("lastJobStatusLabelClass", function() {
-                switch (this.lastJobStatus) {
-                case "queued":
-                case "running":
-                    return "label-info";
-                case "success":
-                    return "label-success";
-                case "failed":
-                    return "label-danger";
-                default:
-                    return "label-default";
-                }
+                return this.lastJob ? this.lastJob.statusLabelClass : "";
             });
             this.set("lastJobStatusLabelText", function() {
-                switch (this.lastJobStatus) {
-                case "queued":
-                    return i18n("Queued").toString();
-                case "running":
-                    return i18n("Running...").toString();
-                case "success":
-                    return i18n("Success").toString();
-                case "failed":
-                    return i18n("Failed").toString();
-                default:
-                    return i18n("Unavailable").toString();
-                }
+                return this.lastJob ? this.lastJob.statusLabelText : "";
+            });
+            this.set("isQueued", function() {
+                return this.lastJob ? this.lastJob.isQueued : false;
+            });
+            this.set("isRunning", function() {
+                return this.lastJob ? this.lastJob.isRunning : false;
+            });
+            this.set("isStopped", function() {
+                return this.lastJob ? this.lastJob.isStopped : true;
             });
         },
 
@@ -50,11 +52,17 @@ define("model/mission", ["i18n", "lodash", "model"], function(i18n, _, Model) {
             actions: [],
             assignedSlaves: [],
             environment: {},
+            isQueued: false,
+            isRunning: false,
+            isStopped: true,
             jobs: [],
-            lastJobStatus: "",
+            lastJob: undefined,
+            lastJobStatus: "n/a",
+            lastJobStatusLabelClass: "",
+            lastJobStatusLabelText: "",
             name: "",
-            shell: "",
-            schedule: null
+            schedule: null,
+            shell: ""
         },
 
         plural: "missions",

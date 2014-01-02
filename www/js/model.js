@@ -170,7 +170,11 @@ define("model",
 
             if (typeof key === "object") {
                 _.each(key, function(value, key) {
-                    Laces.Model.prototype.set.call(this, key, value);
+                    if (_.has(this, key)) {
+                        this[key] = value;
+                    } else {
+                        Laces.Model.prototype.set.call(this, key, value);
+                    }
                 }, this);
             } else {
                 Laces.Model.prototype.set.apply(this, arguments);
