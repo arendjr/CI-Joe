@@ -1,10 +1,15 @@
 define("handlebars.helpers",
-       ["handlebars", "i18n", "jquery", "jquery.util", "l10n", "lodash"],
-       function(Handlebars, i18n, $, $util, l10n, _) {
+       ["ansi_up", "handlebars", "i18n", "jquery", "jquery.util", "l10n", "lodash"],
+       function(AnsiUp, Handlebars, i18n, $, $util, l10n, _) {
 
     "use strict";
 
     Handlebars.registerHelper("clip", $.clip);
+
+    Handlebars.registerHelper("colored", function(text) {
+
+        return AnsiUp.ansi_to_html(_.escape(text));
+    });
 
     Handlebars.registerHelper("date", _.bind(l10n.date, l10n));
 
