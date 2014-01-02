@@ -32,10 +32,10 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
                 return this.lastJob ? this.lastJob.status : "n/a";
             });
             this.set("lastJobStatusLabelClass", function() {
-                return this.lastJob ? this.lastJob.statusLabelClass : "";
+                return this.lastJob ? this.lastJob.statusLabelClass : "label-default";
             });
             this.set("lastJobStatusLabelText", function() {
-                return this.lastJob ? this.lastJob.statusLabelText : "";
+                return this.lastJob ? this.lastJob.statusLabelText : i18n("Unavailable").toString();
             });
             this.set("isQueued", function() {
                 return this.lastJob ? this.lastJob.isQueued : false;
