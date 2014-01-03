@@ -1,12 +1,16 @@
 default: 
-  defaults:
-    shell: bash -xe
+  defaults: 
+    shell: "bash -xe"
   server: 
     scheme: http
     hostname: localhost
     port: 8080
   slaves: 
-    - id: slave0
+    - id: slave1
       name: Local
       type: local
+    - id: slave2
+      name: Local
+      type: local
+  campaigns: []
   missions: []

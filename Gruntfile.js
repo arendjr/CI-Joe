@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 
         var paths = {};
         var jsPrefix = (config.isPackaged ? "" : "/js/");
-        var buildPrefix = (config.isPackaged ? "../../www/build/" : "../build/");
+        var buildPrefix = (config.isPackaged ? "../../www/build/" : "/build/");
         if (options.compiled) {
             clientSources.js.forEach(function(baseName) {
                 paths[baseName] = "application";
@@ -282,7 +282,7 @@ module.exports = function(grunt) {
             less: {
                 options: {
                     paths: ["www/img"],
-                    strictMath: false
+                    strictMath: true
                 },
                 all: {
                     files: _.object(
@@ -507,11 +507,11 @@ module.exports = function(grunt) {
          */
         var cssIncludes = [];
         if (config.isPackaged) {
-            cssIncludes.push("all.css");
+            cssIncludes.push("/all.css");
         } else {
             clientSources.lessRoots.forEach(function(lessFileName) {
                 if (config.lessPrecompiled) {
-                    cssIncludes.push("css/" + lessFileName + ".css");
+                    cssIncludes.push("/build/css/" + lessFileName + ".css");
                 } else {
                     cssIncludes.push("/css/" + lessFileName + ".less");
                 }

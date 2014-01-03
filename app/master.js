@@ -22,21 +22,28 @@ function main() {
         yaml.updateConfig(_.cloneDeep(config), "config/app.yaml", "active");
     });
 
+    var fs = require("fs");
+    var hasBuild = fs.existsSync("www/build");
+
+    function serveIndex(req, res) {
+        var fs = require("fs");
+        var index = fs.readFileSync("www/" + (hasBuild ? "build/" : "") + "index.html").toString();
+        index = index.replace(/\/\*defaults_start\*\/.*\/\*defaults_end\*\//,
+                              JSON.stringify(config.defaults));
+        res.send(index);
+    }
+
     var express = require("express");
     var app = express();
     var server = require(config.server.scheme).createServer(app);
     var io = require("socket.io").listen(server);
 
     app.use(express.bodyParser());
-
-    app.get(/^\/build(?:\/[a-z0-9/]*)?$/, function(req, res) {
-        var fs = require("fs");
-        var index = fs.readFileSync("www/build/index.html").toString();
-        index = index.replace(/\/\*defaults_start\*\/.*\/\*defaults_end\*\//,
-                              JSON.stringify(config.defaults));
-        res.send(index);
-    });
-
+    if (hasBuild) {
+        app.get(/^\/build(?:\/[a-z0-9/]*)?$/, serveIndex);
+    } else {
+        app.get(/^\/(?:(?:campaigns?|headquarters|missions?|settings)(?:[a-z0-9/]*)?)?$/, serveIndex);
+    }
     app.use(express.static("www"));
 
     var ClientPool = require("../lib/clientpool");

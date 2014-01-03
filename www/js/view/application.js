@@ -1,9 +1,8 @@
 define("view/application",
        ["bootstrap/collapse", "bootstrap/modal", "bootstrap/transition", "jquery", "keys", "view",
-        "view/navbar", "view/missionssidebar", "view/slavessidebar", "tmpl/exception",
-        "tmpl/skeleton"],
+        "view/header", "tmpl/exception", "tmpl/sidebar", "tmpl/skeleton"],
        function(BootstrapCollapse, BootstrapModal, BootstrapTransition, $, Keys, View,
-                NavbarView, MissionsSidebarView, SlavesSidebarView, tmpl) {
+                HeaderView, MissionsSidebarView, SlavesSidebarView, tmpl) {
 
     "use strict";
 
@@ -16,8 +15,7 @@ define("view/application",
             this.application.notificationBus.subscribe("server-push:exception", function(data) {
                 this.exception = data;
 
-                this.$(".js-exception").remove();
-                this.$(".js-main").prepend(tmpl.exception(data));
+                this.$(".js-exception").html(tmpl.exception(data));
             }, this);
         },
 
@@ -49,18 +47,10 @@ define("view/application",
 
             this.$el.html(tmpl.skeleton());
 
-            var navbar = new NavbarView(this);
-            this.$(".js-navbar").html(navbar.render());
+            var header = new HeaderView(this);
+            this.$(".js-header").html(header.render());
 
-            var missionsSidebar = new MissionsSidebarView(this, {
-                missions: this.application.missions
-            });
-            this.$(".js-sidebar").append(missionsSidebar.render());
-
-            var slavesSidebar = new SlavesSidebarView(this, {
-                slaves: this.application.slaves
-            });
-            this.$(".js-sidebar").append(slavesSidebar.render());
+            this.$(".js-sidebar").html(tmpl.sidebar());
 
             return this.$el;
         },

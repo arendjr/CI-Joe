@@ -17,6 +17,9 @@ fi
 # copy tests to release
 cp -R tests $DEST_DIR
 
+# copy Grunt dependencies to release
+cp -R node_modules/grunt* $DEST_DIR/node_modules
+
 # adjust config
 pushd $DEST_DIR
 mv config/app.yaml config/app.yaml.orig

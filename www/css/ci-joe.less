@@ -1,23 +1,27 @@
 
 @import "variables.less";
 
+@header-height: 69px;
+
+
 a, .clickable {
     cursor: pointer;
 }
 
-.btn.btn-progress {
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-    background-repeat: repeat;
-    background-size: 14px 14px;
-    -webkit-animation: progress-bar-stripes 4s linear infinite;
-    animation: progress-bar-stripes 4s linear infinite;
-    -webkit-transition: width 0.6s ease;
-    transition: width 0.6s ease;
-    box-shadow: none;
+body {
+    background: #f3f3f3;
+    color: #3b3b3d;
+    font-size: 1.4em;
+    height: 100%;
 }
-.btn-primary.btn-progress {
-    background-color: @btn-primary-bg;
+
+footer {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+html {
+    height: 100%;
 }
 
 .command-input {
@@ -34,6 +38,84 @@ a, .clickable {
 
 .text-normal {
     font-weight: normal;
+}
+
+
+/**********
+ * Header *
+ **********/
+
+.header {
+    background: #3b3a3f;
+    border-bottom: 2px solid #2c2b30;
+}
+.header-logo {
+    background: url(/img/logo.png);
+    color: transparent;
+    display: inline-block;
+    height: (@header-height - 2px);
+    width: 130px;
+}
+.header-logo:hover {
+    color: transparent;
+}
+
+
+/***********
+ * Sidebar *
+ ***********/
+
+.sidebar {
+    background: #ebebeb;
+    border-right: 2px solid #c2c2c2;
+    height: calc(100% - @header-height);
+    left: 0px;
+    position: relative;
+    width: 198px;
+}
+
+.sidebar-item {
+    padding: 20px;
+}
+.sidebar-divider {
+    border-bottom: 1px solid #c2c2c2;
+    border-top: 0;
+    height: 0;
+    margin: 0 5px;
+}
+
+
+/********
+ * Main *
+ ********/
+
+.main {
+    background: #f3f3f3;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    top: 71px;
+    width: calc(100% - 200px);
+}
+
+
+/********************
+ * Progress buttons *
+ ********************/
+
+.btn.btn-progress {
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-repeat: repeat;
+    background-size: 14px 14px;
+    -webkit-animation: progress-bar-stripes 4s linear infinite;
+    animation: progress-bar-stripes 4s linear infinite;
+    -webkit-transition: width 0.6s ease;
+    transition: width 0.6s ease;
+    box-shadow: none;
+}
+.btn-primary.btn-progress {
+    background-color: @btn-primary-bg;
 }
 
 
