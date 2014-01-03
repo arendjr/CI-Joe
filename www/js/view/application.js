@@ -20,8 +20,17 @@ define("view/application",
         },
 
         events: {
+            "click .action-campaigns": function() {
+                this.application.navigateTo("campaigns");
+            },
+            "click .action-headquarters": function() {
+                this.application.navigateTo("headquarters");
+            },
             "click .action-home": function() {
                 this.application.navigateTo("");
+            },
+            "click .action-missions": function() {
+                this.application.navigateTo("missions");
             },
             "click .action-mission": function(event) {
                 var id = this.targetData(event, "mission-id");

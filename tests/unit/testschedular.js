@@ -7,9 +7,9 @@ var Schedular = require("../../lib/schedular");
 
 function MockCommandPost() {
 
-    this.missions = [
+    this.campaigns = [
         {
-            id: "mission0",
+            id: "campaign0",
             schedule: {
                 days: [1, 2, 3, 4, 5],
                 hours: [9, 11, 13, 15, 17],
@@ -17,7 +17,7 @@ function MockCommandPost() {
             }
         },
         {
-            id: "mission1",
+            id: "campaign1",
             schedule: {
                 days: [1, 3, 5],
                 hours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -25,7 +25,7 @@ function MockCommandPost() {
             }
         },
         {
-            id: "mission2",
+            id: "campaign2",
             schedule: {
                 days: [],
                 hours: [],
@@ -34,12 +34,12 @@ function MockCommandPost() {
         }
     ];
 
-    this.jobQueue = [];
+    this.activeCampaigns = [];
 }
 
-MockCommandPost.prototype.startJob = function(missionId) {
+MockCommandPost.prototype.startCampaign = function(campaignId) {
 
-    this.jobQueue.push(_.find(this.missions, { id: missionId }));
+    this.activeCampaigns.push(_.find(this.campaigns, { id: campaignId }));
 };
 
 
@@ -57,8 +57,8 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 31, 20, 45, 0, 0);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"), ["mission2"]);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"), ["campaign2"]);
         test.done();
     },
 
@@ -66,8 +66,8 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 30, 17, 30, 0, 0);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"), ["mission0", "mission2"]);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"), ["campaign0", "campaign2"]);
         test.done();
     },
 
@@ -75,9 +75,9 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 30, 17, 30, 0, 0);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"), ["mission0", "mission2"]);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"), ["campaign0", "campaign2"]);
         test.done();
     },
 
@@ -85,9 +85,9 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 30, 17, 0, 0, 0);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"),
-                       ["mission0", "mission1", "mission2"]);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"),
+                       ["campaign0", "campaign1", "campaign2"]);
         test.done();
     },
 
@@ -95,8 +95,8 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 30, 17, 30, 19, 732);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"), ["mission0", "mission2"]);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"), ["campaign0", "campaign2"]);
         test.done();
     },
 
@@ -104,8 +104,8 @@ module.exports = {
 
         test.expect(1);
         var date = new Date(2013, 11, 30, 17, 39, 0, 0);
-        this.schedular._scheduleJobsForTime(date.getTime());
-        test.deepEqual(_.pluck(this.commandPost.jobQueue, "id"), []);
+        this.schedular._scheduleCampaignsForTime(date.getTime());
+        test.deepEqual(_.pluck(this.commandPost.activeCampaigns, "id"), []);
         test.done();
     },
 
@@ -115,7 +115,7 @@ module.exports = {
         test.equal(this.schedular.scheduleTimer, 0);
         this.schedular.updateSchedules();
         test.notEqual(this.schedular.scheduleTimer, 0);
-        this.commandPost.missions.splice(0, 3);
+        this.commandPost.campaigns.splice(0, 3);
         this.schedular.updateSchedules();
         test.equal(this.schedular.scheduleTimer, 0);
         test.done();

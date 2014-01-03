@@ -56,23 +56,14 @@ function main() {
 
     jobRunner.on("output", function(data) {
         socket.emit("job:output", {
-            actionIndex: jobRunner.actionIndex,
-            data: data,
-            jobId: jobRunner.job.id,
-            missionId: jobRunner.mission.id
-        });
-    });
-    jobRunner.on("action-finished", function(data) {
-        socket.emit("job:action-finished", {
-            actionIndex: data.actionIndex,
-            exitCode: data.exitCode,
+            output: data,
             jobId: jobRunner.job.id,
             missionId: jobRunner.mission.id
         });
     });
     jobRunner.on("finished", function(data) {
         socket.emit("job:finished", {
-            job: _.extend({ actionResults: data.job.actionResults }, data.job.toJSON()),
+            job: _.extend({ results: data.job.results }, data.job.toJSON()),
             missionId: data.mission.id
         });
         socket.emit("queue:request-job");

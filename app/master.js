@@ -69,16 +69,16 @@ function main() {
         });
 
         socket.on("slave", function(data) {
-            var slave = slaveDriver.getSlaveByName(data.name);
+            var slave = slaveDriver.getSlave(data.id);
             if (slave) {
                 if (slave.socket) {
                     socket.emit("slave:rejected");
 
-                    console.log("Duplicate slave '" + data.name + "' rejected.");
+                    console.log("Duplicate slave '" + slave.name + "' rejected.");
                 } else {
                     slave.assignSocket(socket);
 
-                    console.log("Slave '" + data.name + "' connected.");
+                    console.log("Slave '" + slave.name + "' connected.");
                 }
             }
         });

@@ -8,6 +8,10 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
 
             this.defaultShell = this.application.config.defaults.shell;
 
+            this.set("advancedOptionsChevron", function() {
+                return "fa-chevron-" + (this.advancedOptionsExpanded ? "down" : "right");
+            });
+
             var self = this;
             this.set("jobs", this.jobs, { setFilter: function(jobs) {
                 return _.map(jobs, function(job) {
@@ -49,8 +53,9 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
         },
 
         defaults: {
-            actions: [],
+            advancedOptionsExpanded: false,
             assignedSlaves: [],
+            command: "",
             environment: {},
             isQueued: false,
             isRunning: false,
@@ -61,8 +66,8 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             lastJobStatusLabelClass: "",
             lastJobStatusLabelText: "",
             name: "",
-            schedule: null,
-            shell: ""
+            shell: "",
+            timeout: 0
         },
 
         plural: "missions",

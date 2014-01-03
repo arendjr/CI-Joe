@@ -11,7 +11,7 @@ define("view/mission",
             this.mission = options.mission;
             this.mission.jobs.on("add", this._onNewJobs, { context: this });
 
-            this.subscribe("server-push:missions:update-action-results", this._onActionResults);
+            this.subscribe("server-push:missions:update-results", this._onResults);
 
             this.$jobs = null;
         },
@@ -30,7 +30,7 @@ define("view/mission",
             var lastJob = this.mission.lastJob;
             if (lastJob) {
                 lastJob.expanded = true;
-                lastJob.fetchActionResults({ context: this }).then(function() {
+                lastJob.fetchResults({ context: this }).then(function() {
                     var tie = new Laces.Tie(lastJob, tmpl.joboutput);
                     var $jobOutput = this.$(".js-job-output[data-job-id='" + lastJob.id + "']");
                     $jobOutput.replaceWith(tie.render());
@@ -57,7 +57,12 @@ define("view/mission",
             }
         },
 
-        _onActionResults: function(data) {
+        _onNewJobs: function(event) {
+
+            _.each(event.elements, _.bind(this._renderJob, this));
+        },
+
+        _onResults: function(data) {
 
             if (data.missionId === this.mission.id) {
                 var job = _.find(this.mission.jobs, { id: data.jobId });
@@ -72,11 +77,6 @@ define("view/mission",
                     }
                 }
             }
-        },
-
-        _onNewJobs: function(event) {
-
-            _.each(event.elements, _.bind(this._renderJob, this));
         },
 
         _renderJob: function(job) {

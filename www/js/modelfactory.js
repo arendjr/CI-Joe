@@ -1,6 +1,8 @@
 define("modelfactory",
-       ["model/mission", "model/missions", "model/slave", "model/slaves", "lodash"],
-       function(MissionModel, MissionsModel, SlaveModel, SlavesModel, _) {
+       ["model/campaign", "model/campaigns", "model/mission", "model/missions", "model/slave",
+        "model/slaves", "lodash"],
+       function(CampaignModel, CampaignsModel, MissionModel, MissionsModel, SlaveModel,
+                SlavesModel, _) {
 
     "use strict";
 
@@ -32,6 +34,10 @@ define("modelfactory",
             var application = this.application;
 
             switch (type) {
+            case "campaign":
+                return new CampaignModel(application, attributes);
+            case "campaigns":
+                return new CampaignsModel(application, attributes);
             case "mission":
                 return new MissionModel(application, attributes);
             case "missions":

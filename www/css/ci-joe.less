@@ -1,7 +1,8 @@
 
 @import "variables.less";
 
-@header-height: 69px;
+@header-height: 68px;
+@sidebar-width: 16em;
 
 
 a, .clickable {
@@ -10,7 +11,7 @@ a, .clickable {
 
 body {
     background: #f3f3f3;
-    color: #3b3b3d;
+    color: @text-color;
     font-size: 1.4em;
     height: 100%;
 }
@@ -51,10 +52,12 @@ html {
 }
 .header-logo {
     background: url(/img/logo.png);
+    background-size: contain;
     color: transparent;
     display: inline-block;
-    height: (@header-height - 2px);
-    width: 130px;
+    height: 36px;
+    margin: 15px;
+    width: 126px;
 }
 .header-logo:hover {
     color: transparent;
@@ -66,22 +69,34 @@ html {
  ***********/
 
 .sidebar {
-    background: #ebebeb;
-    border-right: 2px solid #c2c2c2;
+    background: @gray-lighter;
+    border-right: 0.2em solid #c2c2c2;
     height: calc(100% - @header-height);
     left: 0px;
     position: relative;
-    width: 198px;
+    width: 15.8em;
 }
 
 .sidebar-item {
-    padding: 20px;
+    border-bottom: 0.1em solid #c2c2c2;
+    font-size: 1.1em;
+    margin: 0 1em;
+    padding: 0.8em;
 }
-.sidebar-divider {
-    border-bottom: 1px solid #c2c2c2;
-    border-top: 0;
-    height: 0;
-    margin: 0 5px;
+.sidebar-item.active {
+    background: #5c6167;
+    color: #fff;
+    margin: 0;
+    padding: 0.8em 1.8em;
+}
+.sidebar-icon {
+    font-size: 1.6em;
+    margin: 0.2em 0.2em 0 0;
+    text-align: center;
+    position: relative;
+    top: -0.15em;
+    vertical-align: middle;
+    width: 1em;
 }
 
 
@@ -92,10 +107,62 @@ html {
 .main {
     background: #f3f3f3;
     bottom: 0px;
-    right: 0px;
+    padding: 0 15% 0 5%;
     position: absolute;
+    right: 0px;
     top: 71px;
-    width: calc(100% - 200px);
+    width: calc(100% - @sidebar-width);
+}
+
+
+/**************
+ * Page title *
+ **************/
+
+.page-title {
+    border-bottom: 1px solid #c2c2c2;
+    font-size: 2em;
+    margin: 20px 0;
+    padding: 0 0 0.5em;
+}
+
+.page-title-action {
+    float: right;
+    font-size: 60%;
+}
+
+
+/**************
+ * Flat tables *
+ **************/
+
+.table-flat {
+    border: 1px solid #c2c2c2;
+    width: 100%;
+
+    tbody {
+        background: #fff;
+    }
+    thead {
+        border-bottom: 1px solid #c2c2c2;
+    }
+    td {
+        border-left: 1px solid #c2c2c2;
+        padding: 0.7em;
+    }
+    td:first-child {
+        border-left: 0;
+    }
+    tr {
+        border-top: 1px solid #c2c2c2;
+    }
+    tr:first-child {
+        border-top: 0;
+    }
+}
+
+.table-flat-head {
+    background: @gray-lighter;
 }
 
 
@@ -116,6 +183,36 @@ html {
 }
 .btn-primary.btn-progress {
     background-color: @btn-primary-bg;
+}
+
+
+/*********
+ * Icons *
+ *********/
+
+.fa-circle-border {
+    border: solid 0.2em @text-color;
+    border-radius: 1em;
+    height: 1.8em;
+    padding: 0.3em;
+    text-align: center;
+    vertical-align: middle;
+    width: 1.8em;
+}
+
+.fa-action {
+    border-color: @link-color;
+    color: @link-color;
+}
+
+.fa-gray {
+    border-color: @gray-light;
+    color: @gray-light;
+}
+
+.fa-fighter-jet {
+    -webkit-transform: rotate(-25deg);
+    transform: rotate(-25deg);
 }
 
 
@@ -228,3 +325,28 @@ html {
 .pvm { padding-top: 10px; padding-bottom: 10px }
 .pvl { padding-top: 15px; padding-bottom: 15px }
 .pvh { padding-top: 20px; padding-bottom: 20px }
+
+
+/*****************
+ * Column widths *
+ *****************/
+
+.c05 { width:  5% }
+.c10 { width: 10% }
+.c15 { width: 15% }
+.c20 { width: 20% }
+.c25 { width: 25% }
+.c30 { width: 30% }
+.c35 { width: 35% }
+.c40 { width: 40% }
+.c45 { width: 45% }
+.c50 { width: 50% }
+.c55 { width: 55% }
+.c60 { width: 60% }
+.c65 { width: 65% }
+.c70 { width: 70% }
+.c75 { width: 75% }
+.c80 { width: 80% }
+.c85 { width: 85% }
+.c90 { width: 90% }
+.c95 { width: 95% }

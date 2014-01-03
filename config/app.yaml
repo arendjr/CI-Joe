@@ -7,10 +7,10 @@ default:
     port: 8080
   slaves: 
     - id: slave1
-      name: Local
+      name: Local Slave 1
       type: local
     - id: slave2
-      name: Local
+      name: Local Slave 2
       type: local
   campaigns: []
   missions: []

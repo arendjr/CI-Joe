@@ -5,13 +5,13 @@
         <span class="label" data-tie="class: statusLabelClass, text: statusLabelText"></span>
     </p>
     <div data-tie="visible: expanded">
-        {{#each actionResults}}
+        {{#with results}}
         <pre>{{{colored output}}}</pre>
         {{#if endTime}}
         <p>{{i18n "Command exited with exit code %1" exitCode}}</p>
         {{/if}}
         {{else}}
         <p>{{i18n "No output available."}}</p>
-        {{/each}}
+        {{/with}}
     </div>
 </div>

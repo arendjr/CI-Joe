@@ -49,23 +49,23 @@ define("model/job", ["i18n", "lodash", "model"], function(i18n, _, Model) {
         },
 
         defaults: {
-            actionResults: [],
             assignedSlave: "",
             expanded: false,
             missionId: "",
+            results: {},
             status: ""
         },
 
-        fetchActionResults: function(options) {
+        fetchResults: function(options) {
 
             options = options || {};
 
-            var url = _.result(this, "url") + "action-results/";
+            var url = _.result(this, "url") + "results/";
 
             var self = this;
             var promise = this.application.api.ajax(url, { context: options.context });
             promise.then(function(data) {
-                self.actionResults = data.actionResults;
+                self.results = data.results;
             });
             return promise;
         },

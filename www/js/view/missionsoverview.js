@@ -1,7 +1,7 @@
 define("view/missionsoverview",
-       ["continuouspager", "jquery", "tmpl/missionitem", "tmpl/missionsoverview",
+       ["i18n", "continuouspager", "jquery", "tmpl/missionitem", "tmpl/missionsoverview",
         "tmpl/nomissions"],
-       function(ContinuousPager, $, tmpl) {
+       function(i18n, ContinuousPager, $, tmpl) {
 
     "use strict";
 
@@ -19,9 +19,9 @@ define("view/missionsoverview",
         },
 
         events: {
+            "click .action-edit": "_edit",
             "click .action-new": "_new",
-            "mouseover .action-mission": "_hoverMission",
-            "mouseout .action-mission": "_leaveMission"
+            "click .action-remove": "_remove"
         },
 
         _hoverMission: function(event) {
@@ -38,9 +38,33 @@ define("view/missionsoverview",
             $mission.find(".js-no-hover").show();
         },
 
+        _edit: function(event) {
+
+            var mission = this.collections.get(this.targetData(event, "mission-id"));
+            this.openLightbox("EditMission", { mission: mission });
+        },
+
         _new: function() {
 
             this.openLightbox("EditMission");
+        },
+
+        _remove: function(event) {
+
+            var $action = this.$(".action-remove");
+            $action.html($("<i>").addClass("fa fa-refresh fa-spin"));
+
+            var mission = this.collections.get(this.targetData(event, "mission-id"));
+
+            this.application.confirm(i18n("Are you sure you want to remove the mission <b>%1</b>?")
+                                     .arg(mission.name), {
+                context: this,
+                title: i18n("Remove mission")
+            }).then(function() {
+                mission.remove({ context: this }).fail(function(error) {
+                    this.showError(i18n("Could not remove the mission"), error);
+                });
+            });
         }
 
     });

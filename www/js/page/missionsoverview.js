@@ -1,4 +1,6 @@
-define("page/mainoverview", ["page", "view/missionsoverview"], function(Page, MissionsOverviewView) {
+define("page/missionsoverview",
+       ["page", "view/missionsoverview"],
+       function(Page, MissionsOverviewView) {
 
     "use strict";
 
@@ -9,7 +11,9 @@ define("page/mainoverview", ["page", "view/missionsoverview"], function(Page, Mi
             return new MissionsOverviewView(this.application, {
                 missions: this.application.missions
             });
-        }
+        },
+
+        section: "missions"
 
     });
 

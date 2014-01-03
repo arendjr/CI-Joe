@@ -194,6 +194,9 @@ define("application",
             this.api = new API(this);
             this.api.restoreSession();
 
+            this.campaigns = this.modelFactory.create("campaigns");
+            this.campaigns.fetch();
+
             this.missions = this.modelFactory.create("missions");
             this.missions.fetch();
 

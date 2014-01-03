@@ -1,17 +1,18 @@
 define("pagefactory",
-       ["lodash", "page/dashboard", "page/error", "page/login", "page/mainoverview",
-        "page/mission"],
-       function(_, DashboardPage, ErrorPage, LoginPage, MainOverviewPage,
-                MissionPage) {
+       ["lodash", "page/campaignsoverview", "page/error", "page/headquarters", "page/login",
+        "page/mission", "page/missionsoverview"],
+       function(_, CampaignsOverviewPage, ErrorPage, HeadquartersPage, LoginPage,
+                MissionPage, MissionsOverviewPage) {
 
     "use strict";
 
     var PAGE_MAP = {
-        Dashboard: DashboardPage,
+        CampaignsOverview: CampaignsOverviewPage,
         Error: ErrorPage,
+        Headquarters: HeadquartersPage,
         Login: LoginPage,
-        MainOverview: MainOverviewPage,
-        Mission: MissionPage
+        Mission: MissionPage,
+        MissionsOverview: MissionsOverviewPage
     };
 
     /**

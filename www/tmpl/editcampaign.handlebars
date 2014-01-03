@@ -1,0 +1,17 @@
+<div class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">{{i18n "Name"}}:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control js-name-input" placeholder="{{i18n 'Name'}}" data-tie="value: name">
+        </div>
+    </div>
+    <h5>{{i18n "Phases"}}</h5>
+    <p>TODO</p>
+    <h5>{{i18n "Workspaces"}}</h5>
+    <p>TODO</p>
+    <h5 class="action-toggle-schedule clickable">
+        <small><i class="fa" data-tie="class: scheduleOptionsChevron"></i></small>
+        {{i18n "Schedule"}}
+    </h5>
+    <div class="js-schedule" data-tie="visible: scheduleOptionsExpanded"></div>
+</div>

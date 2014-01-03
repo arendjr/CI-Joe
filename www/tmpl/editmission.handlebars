@@ -5,34 +5,22 @@
             <input type="text" class="form-control js-name-input" placeholder="{{i18n 'Name'}}" data-tie="value: name">
         </div>
     </div>
-    <h5>{{i18n "Actions"}}</h5>
-    {{#each actions}}
-    <div class="form-group" data-action-index="{{@index}}">
-        <label class="col-sm-11"><a class="action-edit-action" data-tie="text: actions[{{@index}}].description"></a></label>
-        <div class="col-sm-1">
-            <a class="glyphicon glyphicon-minus action-remove-action"></a>
-        </div>
-    </div>
-    {{/each}}
     <div class="form-group">
-        <label class="col-sm-11 control-label"></label>
-        <div class="col-sm-1">
-            <a class="glyphicon glyphicon-plus action-add-action"></a>
+        <label class="col-sm-2 control-label">{{i18n "Command"}}:</label>
+        <div class="col-sm-10">
+            <textarea rows="6" class="form-control command-input js-command-input" data-tie="value: command"></textarea>
         </div>
     </div>
-    <h5 class="action-toggle-schedule clickable">
-        <small><i class="glyphicon glyphicon-chevron-right js-schedule-chevron"></i></small>
-        {{i18n "Schedule"}}
-    </h5>
-    <div class="js-schedule" style="display: none"></div>
     <h5 class="action-toggle-advanced clickable">
-        <small><i class="glyphicon glyphicon-chevron-right js-advanced-chevron"></i></small>
+        <small><i class="fa" data-tie="class: advancedOptionsChevron"></i></small>
         {{i18n "Advanced"}}
     </h5>
-    <div class="form-group js-advanced" style="display: none">
-        <label class="col-sm-2 control-label">{{i18n "Shell"}}:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control js-shell-input" placeholder="{{defaultShell}}" data-tie="value: shell">
+    <div class="js-advanced" data-tie="visible: advancedOptionsExpanded">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{i18n "Shell"}}:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control js-shell-input" placeholder="{{defaultShell}}" data-tie="value: shell">
+            </div>
         </div>
     </div>
 </div>

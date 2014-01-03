@@ -89,6 +89,22 @@ define("navigationcontroller",
         },
 
         /**
+         * Highlights the section of the current page in the sidebar.
+         */
+        highlightSidebarSection: function() {
+
+            var page = this.currentPage;
+            var section = page && page.section;
+            if (section) {
+                var $active = $(".js-sidebar .active");
+                if ($active.data("section") !== section) {
+                    $active.removeClass("active");
+                    $(".js-sidebar [data-section='" + section + "']").addClass("active");
+                }
+            }
+        },
+
+        /**
          * Navigates to a specific path.
          *
          * You may choose to use the convenience method application.navigateTo() instead.
@@ -158,6 +174,8 @@ define("navigationcontroller",
                 }
 
                 this.currentPage = this._pages[this._currentPageIndex];
+
+                this.highlightSidebarSection();
             }
         },
 

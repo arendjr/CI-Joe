@@ -55,9 +55,21 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
         },
 
         routes: {
-            "": function(path) { this.openPage("MainOverview", undefined, path); },
-            "dashboard(/:path)": function(path) { this.openPage("Dashboard", undefined, path); },
-            "mission/:id(/:path)": function(id, path) { this.openPage("Mission", id, path); }
+            "": function(path) {
+                this.openPage("CampaignsOverview", undefined, path);
+            },
+            "campaigns(/:path)": function(path) {
+                this.openPage("CampaignsOverview", undefined, path);
+            },
+            "headquarters(/:path)": function(path) {
+                this.openPage("Headquarters", undefined, path);
+            },
+            "missions(/:path)": function(path) {
+                this.openPage("MissionsOverview", undefined, path);
+            },
+            "mission/:id(/:path)": function(id, path) {
+                this.openPage("Mission", id, path);
+            }
         },
 
         lightboxes: {},
