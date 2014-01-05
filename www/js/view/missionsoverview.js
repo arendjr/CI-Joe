@@ -40,7 +40,7 @@ define("view/missionsoverview",
 
         _edit: function(event) {
 
-            var mission = this.collections.get(this.targetData(event, "mission-id"));
+            var mission = this.collection.get(this.targetData(event, "mission-id"));
             this.openLightbox("EditMission", { mission: mission });
         },
 
@@ -54,7 +54,7 @@ define("view/missionsoverview",
             var $action = this.$(".action-remove");
             $action.html($("<i>").addClass("fa fa-refresh fa-spin"));
 
-            var mission = this.collections.get(this.targetData(event, "mission-id"));
+            var mission = this.collection.get(this.targetData(event, "mission-id"));
 
             this.application.confirm(i18n("Are you sure you want to remove the mission <b>%1</b>?")
                                      .arg(mission.name), {

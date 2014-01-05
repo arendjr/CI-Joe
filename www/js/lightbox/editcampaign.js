@@ -21,7 +21,7 @@ define("lightbox/editcampaign",
             } else {
                 var name = i18n("Unnamed Campaign").toString();
                 var index = 1;
-                while (_.any(this.application.campaigns, { name: name })) {
+                while (this.application.campaigns.any({ name: name })) {
                     index++;
                     name = i18n("Unnamed Campaign") + " " + index;
                 }

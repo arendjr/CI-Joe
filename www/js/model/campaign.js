@@ -1,4 +1,4 @@
-define("model/campaign", ["i18n", "lodash", "model"], function(i18n, _, Model) {
+define("model/campaign", ["model"], function(Model) {
 
     "use strict";
 

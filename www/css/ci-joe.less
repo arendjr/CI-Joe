@@ -52,6 +52,7 @@ html {
 }
 .header-logo {
     background: url(/img/logo.png);
+    background-repeat: no-repeat;
     background-size: contain;
     color: transparent;
     display: inline-block;
@@ -61,6 +62,23 @@ html {
 }
 .header-logo:hover {
     color: transparent;
+}
+.header-menu-icon {
+    color: #fff;
+    display: none;
+    float: left;
+    font-size: 25px;
+    line-height: 25px;
+    padding: 20px;
+}
+.header-menu-icon:hover {
+    color: #fff;
+}
+
+@media all and (max-width: 767px) {
+    .header-menu-icon {
+        display: inline-block;
+    }
 }
 
 
@@ -99,6 +117,15 @@ html {
     width: 1em;
 }
 
+@media all and (max-width: 767px) {
+    .sidebar {
+        border-right: 0;
+        display: none;
+        position: static;
+        width: 100%;
+    }
+}
+
 
 /********
  * Main *
@@ -112,6 +139,14 @@ html {
     right: 0px;
     top: 71px;
     width: calc(100% - @sidebar-width);
+}
+
+@media all and (max-width: 767px) {
+    .main {
+        padding: 0 2%;
+        position: static;
+        width: 100%;
+    }
 }
 
 
@@ -193,11 +228,11 @@ html {
 .fa-circle-border {
     border: solid 0.2em @text-color;
     border-radius: 1em;
-    height: 1.8em;
+    height: 2em;
     padding: 0.3em;
     text-align: center;
     vertical-align: middle;
-    width: 1.8em;
+    width: 2em;
 }
 
 .fa-action {

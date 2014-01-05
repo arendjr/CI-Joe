@@ -26,7 +26,7 @@ define("lightbox/editmission",
             } else {
                 var name = i18n("Unnamed Mission").toString();
                 var index = 1;
-                while (_.any(this.application.missions, { name: name })) {
+                while (this.application.missions.any({ name: name })) {
                     index++;
                     name = i18n("Unnamed Mission") + " " + index;
                 }

@@ -26,8 +26,8 @@ define("view/campaignsoverview",
 
         _edit: function(event) {
 
-            var campaign = this.collections.get(this.targetData(event, "campaign-id"));
-            this.openLightbox("EditCampaign", { mission: campaign });
+            var campaign = this.collection.get(this.targetData(event, "campaign-id"));
+            this.openLightbox("EditCampaign", { campaign: campaign });
         },
 
         _new: function() {
@@ -40,7 +40,7 @@ define("view/campaignsoverview",
             var $action = this.$(".action-remove");
             $action.html($("<i>").addClass("fa fa-refresh fa-spin"));
 
-            var campaign = this.collections.get(this.targetData(event, "campaign-id"));
+            var campaign = this.collection.get(this.targetData(event, "campaign-id"));
 
             this.application.confirm(i18n("Are you sure you want to remove the campaign <b>%1</b>?")
                                      .arg(campaign.name), {
