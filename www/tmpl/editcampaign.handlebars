@@ -1,17 +1,20 @@
-<div class="form-horizontal" role="form">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">{{i18n "Name"}}:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control js-name-input" placeholder="{{i18n 'Name'}}" data-tie="value: name">
-        </div>
-    </div>
+<h1 class="page-title">
+    {{i18n "Campaigns"}} <i class="fa fa-angle-double-right"></i> <strong data-tie="text: name, default: {{i18n 'New campaign'}}"></strong>
+</h1>
+<div class="page-column-left">
+    <label>{{i18n "Callsign"}}</label>
+    <p><input type="text" class="form-control js-name-input" placeholder="{{i18n 'Enter name'}}" data-tie="value: name"></p>
+    <div class="js-schedule mth"></div>
+    <h5 class="action-toggle-advanced clickable">
+        {{i18n "Advanced"}}
+        <small><i class="fa" data-tie="class: advancedOptionsChevron"></i></small>
+    </h5>
+    <div class="js-advanced" data-tie="visible: advancedOptionsExpanded"></div>
+</div>
+<div class="page-column-right">
     <h5>{{i18n "Phases"}}</h5>
     <p>TODO</p>
-    <h5>{{i18n "Workspaces"}}</h5>
-    <p>TODO</p>
-    <h5 class="action-toggle-schedule clickable">
-        <small><i class="fa" data-tie="class: scheduleOptionsChevron"></i></small>
-        {{i18n "Schedule"}}
-    </h5>
-    <div class="js-schedule" data-tie="visible: scheduleOptionsExpanded"></div>
 </div>
+<hr class="clearfix page-section-separator">
+<button class="btn btn-primary pull-right action-save">{{i18n "Save"}}</button>
+<button class="btn pull-right mrs action-cancel">{{i18n "Cancel"}}</button>

@@ -6,17 +6,17 @@ define("model/campaign", ["model"], function(Model) {
 
         initialize: function() {
 
-            this.set("scheduleOptionsChevron", function() {
-                return "fa-chevron-" + (this.scheduleOptionsExpanded ? "down" : "right");
+            this.set("advancedOptionsChevron", function() {
+                return "fa-chevron-" + (this.advancedOptionsExpanded ? "down" : "right");
             });
         },
 
         defaults: {
+            advancedOptionsExpanded: false,
             name: "",
             phases: [],
             runs: [],
             schedule: null,
-            scheduleOptionsExpanded: false,
             workspaces: []
         },
 

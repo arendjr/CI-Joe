@@ -203,6 +203,9 @@ define("application",
             this.slaves = this.modelFactory.create("slaves");
             this.slaves.fetch();
 
+            this.workspaces = this.modelFactory.create("workspaces");
+            this.workspaces.fetch();
+
             this.setLocale($.localStorage("lang"), { context: this }).then(function() {
                 Status.init();
 

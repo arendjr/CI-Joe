@@ -26,13 +26,13 @@ define("view/campaignsoverview",
 
         _edit: function(event) {
 
-            var campaign = this.collection.get(this.targetData(event, "campaign-id"));
-            this.openLightbox("EditCampaign", { campaign: campaign });
+            var campaignId = this.targetData(event, "campaign-id");
+            this.application.navigateTo("campaign/" + campaignId + "/edit");
         },
 
         _new: function() {
 
-            this.openLightbox("EditCampaign");
+            this.application.navigateTo("campaign/new");
         },
 
         _remove: function(event) {

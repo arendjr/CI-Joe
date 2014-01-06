@@ -1,8 +1,8 @@
 define("modelfactory",
        ["model/campaign", "model/campaigns", "model/mission", "model/missions", "model/slave",
-        "model/slaves", "lodash"],
+        "model/slaves", "model/workspace", "model/workspaces", "lodash"],
        function(CampaignModel, CampaignsModel, MissionModel, MissionsModel, SlaveModel,
-                SlavesModel, _) {
+                SlavesModel, WorkspaceModel, WorkspacesModel, _) {
 
     "use strict";
 
@@ -46,6 +46,10 @@ define("modelfactory",
                 return new SlaveModel(application, attributes);
             case "slaves":
                 return new SlavesModel(application, attributes);
+            case "workspace":
+                return new WorkspaceModel(application, attributes);
+            case "workspaces":
+                return new WorkspacesModel(application, attributes);
             default:
                 throw new Error("Unknown model type: " + type);
             }

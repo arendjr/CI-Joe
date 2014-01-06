@@ -1,72 +1,79 @@
-<label class="col-sm-12">{{i18n "Run this campaign..."}}</label>
+<label>{{i18n "Execute this campaign..."}}</label>
 <div data-tie="radio: scheduleType">
-    <div class="form-group">
-        <span class="col-sm-2 text-right"><input type="radio" value="manual" id="radio-manual"></span>
-        <label for="radio-manual" class="col-sm-10" data-tie="class: manualLabelClass">
+    <div>
+        <label data-tie="class: manualLabelClass">
+            <input type="radio" value="manual">
             {{i18n "Only when explicitly ordered"}}
         </label>
     </div>
-    <div class="form-group">
-        <span class="col-sm-2 text-right"><input type="radio" value="hourly" id="radio-hourly"></span>
-        <label for="radio-hourly" class="col-sm-10" data-tie="class: hourlyLabelClass">
+    <div>
+        <label data-tie="class: hourlyLabelClass">
+            <input type="radio" value="hourly">
             {{i18n "Every hour"}}
-            <span class="text-normal" data-tie="visible: hourlySchedule">{{i18n "at"}}
-            <input type="number" class="js-hourly-minute" data-tie="value: minute" style="width: 50px"> {{i18n "minutes"}}</span>
+            <span class="text-normal" data-tie="visible: hourlySchedule">
+                {{i18n "at"}}
+                <input type="number" class="js-hourly-minute" data-tie="value: minute" style="width: 50px">
+                {{i18n "minutes"}}
+            </span>
         </label>
-        <div data-tie="visible: hourlySchedule">
-            <span class="col-sm-10 col-sm-offset-2 mtm">
-                <label class="text-normal"><input type="checkbox" class="js-hourly-except-hours" data-tie="checked: exceptHours"> {{i18n "Except from"}}</label>
-                <input type="time" step="01:00" class="js-except-hour-start" data-tie="value: exceptHourStart"> {{i18n "till"}}
-                <input type="time" step="01:00" class="js-except-hour-end" data-tie="value: exceptHourEnd">
-            </span>
-            <span class="col-sm-10 col-sm-offset-2 mtm">
-                <label class="text-normal"><input type="checkbox" class="js-hourly-except-days" data-tie="checked: exceptDays"> {{i18n "Except on"}}</label>
-                <select class="js-excluded-days js-hourly-excluded-days" multiple style="width: 300px"></select>
-            </span>
-        </div>
     </div>
-    <div class="form-group">
-        <span class="col-sm-2 text-right"><input type="radio" value="daily" id="radio-daily"></span>
-        <label for="radio-daily" class="col-sm-10" data-tie="class: dailyLabelClass">
+    <div data-tie="visible: hourlySchedule">
+        <span class="col-sm-10 col-sm-offset-2 mtm">
+            <label class="text-normal"><input type="checkbox" class="js-hourly-except-hours" data-tie="checked: exceptHours"> {{i18n "Except from"}}</label>
+            <input type="time" step="01:00" class="js-except-hour-start" data-tie="value: exceptHourStart"> {{i18n "till"}}
+            <input type="time" step="01:00" class="js-except-hour-end" data-tie="value: exceptHourEnd">
+        </span>
+        <span class="col-sm-10 col-sm-offset-2 mtm">
+            <label class="text-normal"><input type="checkbox" class="js-hourly-except-days" data-tie="checked: exceptDays"> {{i18n "Except on"}}</label>
+            <select class="js-excluded-days js-hourly-excluded-days" multiple style="width: 300px"></select>
+        </span>
+    </div>
+    <div>
+        <label data-tie="class: dailyLabelClass">
+            <input type="radio" value="daily">
             {{i18n "Every day"}}
-            <span class="text-normal" data-tie="visible: dailySchedule">{{i18n "at"}}
-            <input type="time" class="js-daily-time" data-tie="value: time"></span>
-        </label>
-        <div data-tie="visible: dailySchedule">
-            <span class="col-sm-10 col-sm-offset-2 mtm">
-                <label class="text-normal"><input type="checkbox" class="js-daily-except-days" data-tie="checked: exceptDays"> {{i18n "Except on"}}</label>
-                <select class="js-excluded-days js-daily-excluded-days" multiple style="width: 300px"></select>
+            <span class="text-normal" data-tie="visible: dailySchedule">
+                {{i18n "at"}}
+                <input type="time" class="js-daily-time" data-tie="value: time">
             </span>
-        </div>
+        </label>
     </div>
-    <div class="form-group">
-        <span class="col-sm-2 text-right"><input type="radio" value="weekly" id="radio-weekly"></span>
-        <label for="radio-weekly" class="col-sm-10" data-tie="class: weeklyLabelClass">
+    <div data-tie="visible: dailySchedule">
+        <span class="col-sm-10 col-sm-offset-2 mtm">
+            <label class="text-normal"><input type="checkbox" class="js-daily-except-days" data-tie="checked: exceptDays"> {{i18n "Except on"}}</label>
+            <select class="js-excluded-days js-daily-excluded-days" multiple style="width: 300px"></select>
+        </span>
+    </div>
+    <div>
+        <label data-tie="class: weeklyLabelClass">
+            <input type="radio" value="weekly">
             {{i18n "Every week"}}
-            <span class="text-normal" data-tie="visible: weeklySchedule"> {{i18n "on"}}
-                <select class="js-weekly-day" style="width: 150px; margin-bottom: 3px"></select> {{i18n "at"}}
+            <span class="text-normal" data-tie="visible: weeklySchedule">
+                {{i18n "on"}}
+                <select class="js-weekly-day" style="width: 150px; margin-bottom: 3px"></select>
+                {{i18n "at"}}
                 <input type="time" class="js-weekly-time" data-tie="value: time">
             </span>
         </label>
     </div>
-    <div class="form-group">
-        <span class="col-sm-2 text-right"><input type="radio" value="custom" id="radio-custom"></span>
-        <label for="radio-custom" class="col-sm-10" data-tie="class: customLabelClass">
+    <div>
+        <label data-tie="class: customLabelClass">
+            <input type="radio" value="custom">
             {{i18n "According to a custom schedule"}}
         </label>
-        <div data-tie="visible: customSchedule">
-            <span class="col-sm-11 col-sm-offset-1 mtm">
-                <span class="col-sm-3 text-right mts">{{i18n "Day(s):"}}</span>
-                <select class="js-custom-days" multiple placeholder="{{i18n '(Every day)'}}" style="width: 300px"></select>
-            </span>
-            <span class="col-sm-11 col-sm-offset-1 mtm">
-                <span class="col-sm-3 text-right mts">{{i18n "Hour(s):"}}</span>
-                <select class="js-custom-hours" multiple placeholder="{{i18n '(Every hour)'}}" style="width: 300px"></select>
-            </span>
-            <span class="col-sm-11 col-sm-offset-1 mtm">
-                <span class="col-sm-3 text-right mts">{{i18n "Minute(s):"}}</span>
-                <select class="js-custom-minutes" multiple placeholder="{{i18n '(Every minute)'}}" style="width: 300px"></select>
-            </span>
-        </div>
+    </div>
+    <div data-tie="visible: customSchedule">
+        <span class="col-sm-11 col-sm-offset-1 mtm">
+            <span class="col-sm-3 text-right mts">{{i18n "Day(s):"}}</span>
+            <select class="js-custom-days" multiple placeholder="{{i18n '(Every day)'}}" style="width: 300px"></select>
+        </span>
+        <span class="col-sm-11 col-sm-offset-1 mtm">
+            <span class="col-sm-3 text-right mts">{{i18n "Hour(s):"}}</span>
+            <select class="js-custom-hours" multiple placeholder="{{i18n '(Every hour)'}}" style="width: 300px"></select>
+        </span>
+        <span class="col-sm-11 col-sm-offset-1 mtm">
+            <span class="col-sm-3 text-right mts">{{i18n "Minute(s):"}}</span>
+            <select class="js-custom-minutes" multiple placeholder="{{i18n '(Every minute)'}}" style="width: 300px"></select>
+        </span>
     </div>
 </div>

@@ -1,10 +1,10 @@
-define("lightbox/editcampaign",
-       ["i18n", "laces", "lightbox", "lodash", "view/scheduleoptions", "tmpl/editcampaign"],
-       function(i18n, Laces, Lightbox, _, ScheduleOptionsView, tmpl) {
+define("view/editcampaign",
+       ["i18n", "laces", "lodash", "view", "view/scheduleoptions", "tmpl/editcampaign"],
+       function(i18n, Laces, _, View, ScheduleOptionsView, tmpl) {
 
     "use strict";
 
-    return Lightbox.extend({
+    return View.extend({
 
         initialize: function(options) {
 
@@ -14,39 +14,34 @@ define("lightbox/editcampaign",
             ];
 
             var campaign = this.createModel("campaign");
-            if (options.campaign) {
-                campaign.set(options.campaign.toJSON());
-
-                this.title = i18n("Edit %1").arg(campaign.name);
-            } else {
-                var name = i18n("Unnamed Campaign").toString();
-                var index = 1;
-                while (this.application.campaigns.any({ name: name })) {
-                    index++;
-                    name = i18n("Unnamed Campaign") + " " + index;
-                }
-                campaign.name = name;
-
-                this.title = i18n("New Campaign");
-            }
-
+            campaign.set(options.campaign);
             this.campaign = campaign;
+
+            this.scheduleOptions = null;
         },
 
         events: {
+            "click .action-cancel": "_cancel",
             "click .action-save": "_save",
-            "click .action-toggle-schedule": "_toggleSchedule"
+            "click .action-toggle-advanced": "_toggleAdvanced"
         },
 
-        renderContent: function() {
+        render: function() {
 
             this.removeChildren();
 
             var tie = new Laces.Tie(this.campaign, tmpl.editcampaign);
-            this.$(".js-content").html(tie.render());
+            this.$el.html(tie.render());
 
             this.scheduleOptions = new ScheduleOptionsView(this, { model: this.campaign });
             this.$(".js-schedule").html(this.scheduleOptions.render());
+
+            return this.$el;
+        },
+
+        _cancel: function() {
+
+            this.application.navigateTo("campaigns");
         },
 
         _save: function() {
@@ -65,9 +60,9 @@ define("lightbox/editcampaign",
             });
         },
 
-        _toggleSchedule: function() {
+        _toggleAdvanced: function() {
 
-            this.campaign.scheduleOptionsExpanded = !this.campaign.scheduleOptionsExpanded;
+            this.campaign.advancedOptionsExpanded = !this.campaign.advancedOptionsExpanded;
         }
 
     });

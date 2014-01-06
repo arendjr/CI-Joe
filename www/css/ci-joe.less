@@ -87,8 +87,8 @@ html {
  ***********/
 
 .sidebar {
-    background: @gray-lighter;
-    border-right: 0.2em solid #c2c2c2;
+    background: @gray-lightest;
+    border-right: 0.2em solid @gray-lighter;
     height: calc(100% - @header-height);
     left: 0px;
     position: relative;
@@ -96,7 +96,7 @@ html {
 }
 
 .sidebar-item {
-    border-bottom: 0.1em solid #c2c2c2;
+    border-bottom: 0.1em solid @gray-lighter;
     font-size: 1.1em;
     margin: 0 1em;
     padding: 0.8em;
@@ -156,7 +156,7 @@ html {
 
 .page-title {
     border-bottom: 1px solid #c2c2c2;
-    font-size: 2em;
+    font-size: 1.6em;
     margin: 20px 0;
     padding: 0 0 0.5em;
 }
@@ -164,6 +164,24 @@ html {
 .page-title-action {
     float: right;
     font-size: 60%;
+}
+
+.page-column-left {
+    float: left;
+    width: 48%;
+}
+.page-column-right {
+    float: left;
+    margin-left: 4%;
+    width: 48%;
+}
+
+.page-section-separator {
+    border-top: 0;
+    border-bottom: 0.1em solid @gray-lighter;
+    margin: 1em 0;
+    height: 0px;
+    width: 100%;
 }
 
 
@@ -197,7 +215,7 @@ html {
 }
 
 .table-flat-head {
-    background: @gray-lighter;
+    background: @gray-lightest;
 }
 
 

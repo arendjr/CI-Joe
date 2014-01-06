@@ -18,6 +18,7 @@ define("status", ["i18n", "lodash"], function(i18n, _) {
                 [-5, "Not Found", i18n("The requested data does not exist (anymore)")],
                 [-6, "Server Error", i18n("The server encountered an unexpected error")],
                 [-7, "Already Started", i18n("The mission was already started")],
+                [-8, "Unknown Campaign", i18n("No such campaign")],
                 [-1000, "No Connection", i18n("Communication with C.I. Joe has been lost")],
                 [-1001, "Unexpected Reply", i18n("Unexpected reply from the server")]
 

@@ -61,6 +61,12 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
             "campaigns(/:path)": function(path) {
                 this.openPage("CampaignsOverview", undefined, path);
             },
+            "campaign/new": function(path) {
+                this.openPage("NewCampaign", undefined, path);
+            },
+            "campaign/:id/edit": function(id, path) {
+                this.openPage("EditCampaign", id, path);
+            },
             "headquarters(/:path)": function(path) {
                 this.openPage("Headquarters", undefined, path);
             },

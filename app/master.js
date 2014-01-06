@@ -59,6 +59,9 @@ function main() {
         });
     });
 
+    var Barracks = require("../lib/barracks");
+    var barracks = new Barracks(config, clientPool);
+
     var CommandPost = require("../lib/commandpost");
     var commandPost = new CommandPost(config, slaveDriver, clientPool);
 
@@ -92,7 +95,7 @@ function main() {
     });
 
     var ApiController = require("../lib/apicontroller");
-    var apiController = new ApiController(commandPost, slaveDriver);
+    var apiController = new ApiController(commandPost, slaveDriver, barracks);
     apiController.attachTo(app);
 
     app.use(function(err, req, res, next) {

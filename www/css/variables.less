@@ -13,7 +13,8 @@
 @gray-dark:              #3a393e;
 @gray:                   lighten(#000, 33.5%); // #555
 @gray-light:             #a3a3a3;
-@gray-lighter:           #ebebeb;
+@gray-lighter:           #c2c2c2;
+@gray-lightest:          #ebebeb;
 
 // Brand colors
 // -------------------------
@@ -66,7 +67,7 @@
 // -------------------------
 // Based on 14px font-size and 1.428 line-height (~20px to start)
 
-@padding-base-vertical:          6px;
+@padding-base-vertical:          5px;
 @padding-base-horizontal:        12px;
 
 @padding-large-vertical:         10px;
@@ -78,9 +79,9 @@
 @line-height-large:              1.33;
 @line-height-small:              1.5;
 
-@border-radius-base:             4px;
-@border-radius-large:            6px;
-@border-radius-small:            3px;
+@border-radius-base:             2px;
+@border-radius-large:            4px;
+@border-radius-small:            1px;
 
 @component-active-bg:            @brand-primary;
 
@@ -104,31 +105,25 @@
 // Buttons
 // -------------------------
 
-@btn-font-weight:                normal;
+@btn-font-weight:                bold;
 
 @btn-default-color:              #333;
 @btn-default-bg:                 #fff;
-@btn-default-border:             #ccc;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
-@btn-primary-border:             darken(@btn-primary-bg, 5%);
 
 @btn-success-color:              #fff;
 @btn-success-bg:                 @brand-success;
-@btn-success-border:             darken(@btn-success-bg, 5%);
 
 @btn-warning-color:              #fff;
 @btn-warning-bg:                 @brand-warning;
-@btn-warning-border:             darken(@btn-warning-bg, 5%);
 
 @btn-danger-color:               #fff;
 @btn-danger-bg:                  @brand-danger;
-@btn-danger-border:              darken(@btn-danger-bg, 5%);
 
 @btn-info-color:                 #fff;
 @btn-info-bg:                    @brand-info;
-@btn-info-border:                darken(@btn-info-bg, 5%);
 
 @btn-link-disabled-color:        @gray-light;
 
@@ -140,7 +135,7 @@
 @input-bg-disabled:              @gray-lighter;
 
 @input-color:                    @gray;
-@input-border:                   #ccc;
+@input-border:                   @gray-lighter;
 @input-border-radius:            @border-radius-base;
 @input-border-focus:             #66afe9;
 
