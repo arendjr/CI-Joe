@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         less: [], // determined automatically
 
         // LESS files which need to be imported from the root
-        lessRoots: ["bootstrap", "theme", "ci-joe"],
+        lessRoots: ["bootstrap", "select2", "theme", "ci-joe"],
 
         // all CSS files
         css: [], // determined automatically
