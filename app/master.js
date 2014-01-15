@@ -63,7 +63,7 @@ function main() {
     var barracks = new Barracks(config, clientPool);
 
     var CommandPost = require("../lib/commandpost");
-    var commandPost = new CommandPost(config, slaveDriver, clientPool);
+    var commandPost = new CommandPost(config, barracks, slaveDriver, clientPool);
 
     io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
