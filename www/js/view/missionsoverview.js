@@ -51,9 +51,6 @@ define("view/missionsoverview",
 
         _remove: function(event) {
 
-            var $action = this.$(".action-remove");
-            $action.html($("<i>").addClass("fa fa-refresh fa-spin"));
-
             var mission = this.collection.get(this.targetData(event, "mission-id"));
 
             this.application.confirm(i18n("Are you sure you want to remove the mission <b>%1</b>?")
@@ -61,7 +58,12 @@ define("view/missionsoverview",
                 context: this,
                 title: i18n("Remove mission")
             }).then(function() {
+                var $action = this.$(".action-remove");
+                $action.removeClass("icon-trash").addClass("icon-refresh fa-spin");
+
                 mission.remove({ context: this }).fail(function(error) {
+                    $action.removeClass("icon-refresh fa-spin").addClass("icon-trash");
+
                     this.showError(i18n("Could not remove the mission"), error);
                 });
             });

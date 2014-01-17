@@ -28,10 +28,6 @@ html {
     font-family: Fixed, monospace;
 }
 
-.glyphicon {
-    top: 2px;
-}
-
 .text-bold {
     font-weight: bold;
 }
@@ -165,6 +161,13 @@ html {
     font-size: 60%;
 }
 
+.page-title-button {
+    float: right;
+    font-size: 60%;
+    position: relative;
+    top: -6px;
+}
+
 .page-column-left {
     float: left;
     min-width: 340px;
@@ -201,7 +204,8 @@ html {
     }
     td {
         border-left: 1px solid @gray-lighter;
-        padding: 0.7em;
+        line-height: 1;
+        padding: 10px;
     }
     td:first-child {
         border-left: 0;
@@ -261,29 +265,36 @@ html {
  * Icons *
  *********/
 
-.fa-circle-border {
-    border: solid 0.2em @text-color;
-    border-radius: 1em;
-    height: 2em;
-    padding: 0.3em;
-    text-align: center;
-    vertical-align: middle;
-    width: 2em;
-}
-
-.fa-action {
-    border-color: @link-color;
-    color: @link-color;
-}
-
-.fa-gray {
-    border-color: @gray-light;
-    color: @gray-light;
-}
-
 .fa-fighter-jet {
     -webkit-transform: rotate(-25deg);
     transform: rotate(-25deg);
+}
+
+.icon {
+    background-size: contain;
+    display: inline-block;
+    height: 29px;
+    width: 29px;
+}
+
+.icon-edit {
+    background: url(/img/edit.png) no-repeat;
+}
+
+.icon-play {
+    background: url(/img/play.png) no-repeat;
+}
+
+.icon-refresh {
+    background: url(/img/refresh.png) no-repeat;
+}
+
+.icon-stop {
+    background: url(/img/stop.png) no-repeat;
+}
+
+.icon-trash {
+    background: url(/img/trash.png) no-repeat;
 }
 
 
