@@ -59,11 +59,8 @@ function main() {
         });
     });
 
-    var Barracks = require("../lib/barracks");
-    var barracks = new Barracks(config, clientPool);
-
     var CommandPost = require("../lib/commandpost");
-    var commandPost = new CommandPost(config, barracks, slaveDriver, clientPool);
+    var commandPost = new CommandPost(config, slaveDriver, clientPool);
 
     io.set("log level", 1);
     io.sockets.on("connection", function(socket) {
@@ -95,7 +92,7 @@ function main() {
     });
 
     var ApiController = require("../lib/apicontroller");
-    var apiController = new ApiController(commandPost, slaveDriver, barracks);
+    var apiController = new ApiController(commandPost, slaveDriver);
     apiController.attachTo(app);
 
     app.use(function(err, req, res, next) {
