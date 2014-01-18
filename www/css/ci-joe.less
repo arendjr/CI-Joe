@@ -28,6 +28,10 @@ html {
     font-family: Fixed, monospace;
 }
 
+.inline {
+    display: inline-block;
+}
+
 .text-bold {
     font-weight: bold;
 }
@@ -136,6 +140,16 @@ html {
     width: calc(100% - @sidebar-width);
 }
 
+@media all and (max-width: 1259px) {
+    .main {
+        padding: 0 8% 0 4%;
+    }
+}
+@media all and (max-width: 1099px) {
+    .main {
+        padding: 0 4% 0 2%;
+    }
+}
 @media all and (max-width: 767px) {
     .main {
         padding: 0 2%;

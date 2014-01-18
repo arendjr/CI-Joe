@@ -18,7 +18,7 @@ define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
         TRANSLATIONS: ["nl-NL"],
 
         /**
-         * Returns a nicely formatted date/time indicator, adjusted to the local timezone.
+         * Returns a nicely formatted date indicator, adjusted to the local timezone.
          *
          * @param date The date, specified as a JavaScript Date object or as a ISO 8601
          *             formatted string. If ommitted, the current date is used.
@@ -37,11 +37,30 @@ define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
         },
 
         /**
-         * The currently active date format, as used by the jQuery datepicker.
+         * The currently active date format, as used by the date() method.
          *
          * Don't set this property directly, instead it should be set by setLocale().
          */
         dateFormat: "mm/dd/yy",
+
+        /**
+         * Returns a nicely formatted date/time indicator, adjusted to the local timezone.
+         *
+         * @param date The date, specified as a JavaScript Date object or as a ISO 8601
+         *             formatted string. If ommitted, the current date is used.
+         */
+        dateTime: function(date) {
+
+            if (date instanceof Date) {
+                // good! really proud of you, caller!
+            } else if (typeof date === "string") {
+                date = new Date(date);
+            } else {
+                date = new Date();
+            }
+
+            return $.formatDate(date, this.dateFormat) + " " + $.formatTime(date, this.timeFormat);
+        },
 
         /**
          * Detect the proper locale to use, based on the browser's language settings.
@@ -126,7 +145,8 @@ define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
 
             this.locale = locale;
 
-            var dateFormat;
+            var dateFormat = "yy-mm-dd",
+                timeFormat = "H:mm";
 
             var country = locale.substr(3);
             switch (country) {
@@ -140,155 +160,65 @@ define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
                 break;
             case "AU":
                 dateFormat = "d.m.yy";
+                timeFormat = "h:mm a";
                 break;
             case "BE":
             case "DE":
                 dateFormat = "d.m.yy";
                 break;
             case "FR":
+                dateFormat = "dd/mm/yy";
+                timeFormat = "H\\hmm";
+                break;
+            case "GB":
+                timeFormat = "h:mm A";
+                break;
             case "IT":
                 dateFormat = "dd/mm/yy";
                 break;
             case "JP":
                 dateFormat = "yy年m月d日 (w)";
+                timeFormat = "H時m分";
                 break;
             case "NL":
                 dateFormat = "dd-mm-yy";
                 break;
             case "US":
                 dateFormat = "mm/dd/yy";
+                timeFormat = "h:mm A";
                 break;
-            default:
-                dateFormat = "yy-mm-dd";
             }
 
             this.dateFormat = dateFormat;
+            this.timeFormat = timeFormat;
             this._initConstants();
         },
 
         /**
-         * Returns a timestamp, adjusted to the local timezone and formatted relative to the current
-         * time.
+         * Returns a nicely formatted time indicator, adjusted to the local timezone.
          *
-         * @param date The timestamp, specified as a JavaScript Date object or as a ISO 8601
-         *             formatted string. If ommitted, the current date is used.
-         * @param options Optional options object. If the showTime property is set to false, the
-         *                timestamp reflects the date only.
+         * @param date The time, specified as a JavaScript Date object or as a ISO 8601
+         *             formatted string. If ommitted, the current time is used.
          */
-        timestamp: function(date, options) {
-
-            options = options || {};
-            var showTime = (options.showTime !== false);
-
-            var now = new Date();
+        time: function(date) {
 
             if (date instanceof Date) {
                 // good! really proud of you, caller!
             } else if (typeof date === "string") {
-                date = $.parseDate(date);
+                date = new Date(date);
             } else {
-                date = now;
+                date = new Date();
             }
 
-            function wrap(text, absolute) {
-                if (absolute) {
-                    return "<span class=\"timestamp\">" + text + "</span>";
-                } else {
-                    startTimestampUpdater();
-                    return "<span class=\"timestamp js-timestamp\" " +
-                                 "data-date=\"" + date.getTime() + "\" " +
-                                 "data-options=\"" + _.escape(JSON.stringify(options)) + "\">" +
-                           text +
-                           "</span>";
-                }
-            }
-
-            var MINUTE = 60;
-            var HOUR = 60 * MINUTE;
-            var DAY = 24 * HOUR;
-
-            var year = date.getFullYear();
-            var month = this.MONTHS[date.getMonth()];
-            var weekDay = this.DAYS[date.getDay()];
-            var day = date.getDate();
-            var hours = date.getHours();
-            var minutes = date.getMinutes();
-
-            var locale = this.locale;
-            var language = locale.substr(0, 2);
-
-            var timeText = "";
-            var dateText = "";
-            var longDateText = "";
-            if (language === "en" && locale !== "en-CA") {
-                var amPm = (hours >= 12 ? "PM" : "AM");
-                if (locale === "en-AU") {
-                    amPm = amPm.toLowerCase();
-                }
-
-                hours %= 12;
-                if (hours === 0) {
-                    hours = 12;
-                }
-
-                timeText = hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + " " + amPm;
-                dateText = month + " " + day;
-                longDateText = dateText + ", " + year;
-            } else if (language === "ja") {
-                timeText = hours + "時" + minutes + "分";
-                dateText = $.formatDate(date, this.dateFormat);
-            } else {
-                var timeSeparator = (locale === "fr-FR" ? "h" : ":");
-                timeText = hours + timeSeparator + (minutes < 10 ? "0" + minutes : minutes);
-
-                if (language === "es") {
-                    dateText = day + " de " + month;
-                    longDateText = dateText + " de " + year;
-                } else {
-                    var dateSeparator = (language === "de" ? ". " : " ");
-                    dateText = day + dateSeparator + month;
-                    longDateText = dateText + " " + year;
-                }
-            }
-
-            var diff = (now.getTime() - date.getTime()) / 1000;
-            if (date.getDate() === now.getDate() && date.getMonth() === now.getMonth() &&
-                date.getFullYear() === now.getFullYear()) {
-                if (showTime) {
-                    if (diff > HOUR) {
-                        return wrap(i18n("%1 hour ago", "%1 hours ago")
-                                    .arg(Math.floor(diff / HOUR)));
-                    } else if (diff > MINUTE) {
-                        var numMinutes = Math.round(diff / MINUTE);
-                        return wrap(i18n("%1 minute ago", "%1 minutes ago").arg(numMinutes));
-                    } else {
-                        return wrap(i18n("Just now"));
-                    }
-                } else {
-                    return wrap(timeText, true);
-                }
-            }
-
-            if (language === "ja") {
-                if (diff < 2 * DAY && date.getDay() === now.getDay() - 1) {
-                    return wrap(i18n("Yesterday") + (showTime ? timeText : ""), true);
-                } else {
-                    return wrap(showTime ? dateText + " " + timeText : dateText, true);
-                }
-            } else if (diff > 6 * DAY || date.getDay() > now.getDay() - 1) {
-                if (date.getFullYear() === now.getFullYear()) {
-                    return wrap(showTime ? i18n("%1 at %2").arg(dateText, timeText) : dateText,
-                                true);
-                } else {
-                    return wrap(longDateText, true);
-                }
-            } else if (date.getDay() === now.getDay() - 1) {
-                return wrap(showTime ? i18n("Yesterday at %1").arg(timeText) : i18n("Yesterday"),
-                            true);
-            } else {
-                return wrap(showTime ? i18n("%1 at %2").arg(weekDay, timeText) : weekDay, true);
-            }
+            return $.formatTime(date, this.timeFormat);
         },
+
+        /**
+         * The currently active time format, as used by the time() method.
+         *
+         * Don't set this property directly, instead it should be set by setLocale().
+         */
+        timeFormat: "H:mm",
 
         _initConstants: function() {
 
@@ -343,28 +273,6 @@ define("l10n", ["i18n", "jquery", "lodash"], function(i18n, $, _) {
         }
 
     };
-
-    var timestampUpdateInterval = null;
-
-    function updateTimestamps() {
-
-        var $timestamps = $(".js-timestamp");
-        if ($timestamps.length) {
-            $timestamps.each2(function(i, $el) {
-                $el.replaceWith(l10n.timestamp(new Date($el.data("date")), $el.data("options")));
-            });
-        } else {
-            clearInterval(timestampUpdateInterval);
-            timestampUpdateInterval = null;
-        }
-    }
-
-    function startTimestampUpdater() {
-
-        if (!timestampUpdateInterval) {
-            timestampUpdateInterval = setInterval(updateTimestamps, 30000);
-        }
-    }
 
     l10n._initLocales();
 

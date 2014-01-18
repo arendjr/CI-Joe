@@ -24,24 +24,11 @@ define("view/missionsoverview",
             "click .action-remove": "_remove"
         },
 
-        _hoverMission: function(event) {
-
-            var $mission = $(event.target).closest(".action-mission");
-            $mission.find(".js-hover").show();
-            $mission.find(".js-no-hover").hide();
-        },
-
-        _leaveMission: function(event) {
-
-            var $mission = $(event.target).closest(".action-mission");
-            $mission.find(".js-hover").hide();
-            $mission.find(".js-no-hover").show();
-        },
-
         _edit: function(event) {
 
             var mission = this.collection.get(this.targetData(event, "mission-id"));
             this.openLightbox("EditMission", { mission: mission });
+            return false;
         },
 
         _new: function() {
@@ -67,6 +54,7 @@ define("view/missionsoverview",
                     this.showError(i18n("Could not remove the mission"), error);
                 });
             });
+            return false;
         }
 
     });

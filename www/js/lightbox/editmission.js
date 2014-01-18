@@ -18,11 +18,6 @@ define("lightbox/editmission",
                 mission.set(options.mission.toJSON());
 
                 this.title = i18n("Edit %1").arg(mission.name);
-
-                this.buttons.unshift({
-                    label: i18n("Remove"),
-                    extraClass: "action-remove btn-danger pull-left"
-                });
             } else {
                 var name = i18n("Unnamed Mission").toString();
                 var index = 1;

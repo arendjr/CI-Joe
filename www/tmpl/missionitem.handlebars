@@ -1,8 +1,12 @@
 <tr class="clickable action-mission" data-mission-id="{{id}}">
     <td data-tie="text: name"></td>
+    <td data-tie="attr[data-timestamp]: lastSuccess"></td>
+    <td data-tie="attr[data-timestamp]: lastFailure"></td>
     <td>
-        <a class="action-stop-mission"><i class="icon-stop" data-tie="visible: isQueued"></i></a>
-        <a class="action-stop-mission"><i class="icon-stop" data-tie="visible: isRunning"></i></a>
-        <a class="action-start-mission"><i class="icon-play" data-tie="visible: isStopped"></i></a>
+        <a class="action-stop-mission icon icon-stop" data-tie="visible: isQueued"></a>
+        <a class="action-stop-mission icon icon-stop" data-tie="visible: isRunning"></a>
+        <a class="action-start-mission icon icon-play" data-tie="visible: isStopped"></a>
+        <a class="action-edit icon icon-edit"></a>
+        <a class="action-remove icon icon-trash"></a>
     </td>
 </tr>

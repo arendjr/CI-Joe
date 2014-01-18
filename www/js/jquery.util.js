@@ -54,16 +54,76 @@ define("jquery.util",
      *
      * @param date Date object to format.
      * @param format The format to use. The following sequences have special meaning:
-     *               'd' - Numerical day of the month, without trailing zero.
-     *               'dd' - Numerical day of the month, with trailing zero.
-     *               'm' - Numerical month, without trailing zero.
-     *               'mm' - Numerical month, with trailing zero.
+     *               'd' - Numerical day of the month, without leading zero.
+     *               'dd' - Numerical day of the month, with leading zero.
+     *               'm' - Numerical month, without leading zero.
+     *               'mm' - Numerical month, with leading zero.
      *               'w' - Short day of the week ("Wed", "Sat", ...)
      *               'y' - 2-digit year, without century.
      *               'yy' - 4-digit year, with century.
-     *
      */
     $.formatDate = function(date, format) {
+
+        var i = 0, output = "";
+
+        // check whether a format character is doubled
+        function lookAhead(match) {
+            var matches = (i + 1 < format.length && format.charAt(i + 1) === match);
+            if (matches) {
+                i++;
+            }
+            return matches;
+        }
+
+        // format a number, with leading zero if necessary
+        function formatNumber(match, value, len) {
+            var num = "" + value;
+            if (lookAhead(match)) {
+                while (num.length < len) {
+                    num = "0" + num;
+                }
+            }
+            return num;
+        }
+
+        for (; i < format.length; i++) {
+            switch (format.charAt(i)) {
+            case "d":
+                output += formatNumber("d", date.getDate(), 2);
+                break;
+            case "m":
+                output += formatNumber("m", date.getMonth() + 1, 2);
+                break;
+            case "w":
+                output += l10n.SHORT_DAYS[date.getDay()];
+                break;
+            case "y":
+                output += (lookAhead("y") ? date.getFullYear() :
+                    (date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
+                break;
+            default:
+                output += format.charAt(i);
+            }
+        }
+        return output;
+    };
+
+    /**
+     * Formats a time.
+     *
+     * @param date Date object to format.
+     * @param format The format to use. The following sequences have special meaning:
+     *               'h' - Hours in 12-hour format, without leading zero.
+     *               'hh' - Hours in 12-hour format, with leading zero.
+     *               'H' - Hours in 24-hour format, without leading zero.
+     *               'HH' - Hours in 24-hour format, with leading zero.
+     *               'm' - Minutes, without leading zero.
+     *               'mm' - Minutes, with leading zero.
+     *               'a' - am/pm.
+     *               'A' - AM/PM.
+     *               '\' - Escapes the next character.
+     */
+    $.formatTime = function(date, format) {
 
         var i = 0, output = "", literal = false;
 
@@ -89,25 +149,27 @@ define("jquery.util",
 
         for (; i < format.length; i++) {
             if (literal) {
-                if (format.charAt(i) === "'" && !lookAhead("'")) {
-                    literal = false;
-                } else {
-                    output += format.charAt(i);
-                }
+                output += format.charAt(i);
+                literal = false;
             } else {
                 switch (format.charAt(i)) {
-                case "d":
-                    output += formatNumber("d", date.getDate(), 2);
+                case "h":
+                    output += formatNumber("h", (date.getHours() % 12) || 12, 2);
+                    break;
+                case "H":
+                    output += formatNumber("H", date.getHours(), 2);
                     break;
                 case "m":
-                    output += formatNumber("m", date.getMonth() + 1, 2);
+                    output += formatNumber("m", date.getMinutes(), 2);
                     break;
-                case "w":
-                    output += l10n.SHORT_DAYS[date.getDay()];
+                case "a":
+                    output += (date.getHours() < 12 ? "am" : "pm");
                     break;
-                case "y":
-                    output += (lookAhead("y") ? date.getFullYear() :
-                        (date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
+                case "A":
+                    output += (date.getHours() < 12 ? "AM" : "PM");
+                    break;
+                case "\\":
+                    literal = true;
                     break;
                 default:
                     output += format.charAt(i);
@@ -293,6 +355,22 @@ define("jquery.util",
     };
 
     /**
+     * Overrides the $.html() function to detach children of an element before overwriting its
+     * contents. This helps preserve event listeners bound to the previous content (which may later
+     * be reinserted).
+     */
+    var fnHtml = $.fn.html;
+    $.fn.html = function() {
+
+        if (arguments.length > 0) {
+            this.children().detach();
+            return fnHtml.apply(this, arguments);
+        } else {
+            return fnHtml.call(this);
+        }
+    };
+
+    /**
      * Selects all text inside an input or textarea element.
      */
     $.fn.selectText = function() {
@@ -393,21 +471,6 @@ define("jquery.util",
         }
 
         return this;
-    };
-
-    /**
-     * Overrides the $.html() function to detach children of an element before overwriting its
-     * contents. This helps preserve event listeners bound to the previous content (which may later
-     * be reinserted).
-     */
-    var fnHtml = $.fn.html;
-    $.fn.html = function() {
-        if (arguments.length > 0) {
-            this.children().detach();
-            return fnHtml.apply(this, arguments);
-        } else {
-            return fnHtml.call(this);
-        }
     };
 
     return $;

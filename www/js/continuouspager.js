@@ -1,6 +1,6 @@
 define("continuouspager",
-       ["jquery.util", "laces.tie", "lodash", "view", "tmpl/continuouspager"],
-       function($, Laces, _, View, tmpl) {
+       ["jquery.util", "laces.tie", "lodash", "timestamps", "view", "tmpl/continuouspager"],
+       function($, Laces, _, Timestamps, View, tmpl) {
 
     "use strict";
 
@@ -97,6 +97,8 @@ define("continuouspager",
             var $el = $(tie.render()).children();
 
             $el.attr("data-item-id", model.id);
+
+            Timestamps.process($el.find("[data-timestamp]"));
 
             return $el;
         },

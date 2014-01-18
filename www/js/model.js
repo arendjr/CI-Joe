@@ -197,11 +197,14 @@ define("model",
         toJSON: function() {
 
             var json = {};
-            _.each(this.keys(), function(key) {
-                if (key !== "id" || !this.isNew()) {
+            _.each(this.serializableProperties || this.keys(), function(key) {
+                if (key !== "id") {
                     json[key] = this[key];
                 }
             }, this);
+            if (!this.isNew()) {
+                json.id = this.id;
+            }
             return json;
         },
 

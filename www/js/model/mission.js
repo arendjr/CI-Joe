@@ -61,16 +61,30 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             isRunning: false,
             isStopped: true,
             jobs: [],
+            lastFailure: 0,
             lastJob: undefined,
             lastJobStatus: "n/a",
             lastJobStatusLabelClass: "",
             lastJobStatusLabelText: "",
+            lastSuccess: 0,
             name: "",
             shell: "",
-            timeout: 0
+            standalone: false,
+            timeout: 0,
+            workspace: ""
         },
 
         plural: "missions",
+
+        serializableProperties: [
+            "assignedSlaves",
+            "command",
+            "environment",
+            "name",
+            "shell",
+            "timeout",
+            "workspace"
+        ],
 
         /**
          * Starts execution of the mission.

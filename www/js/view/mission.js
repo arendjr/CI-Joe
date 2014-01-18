@@ -53,7 +53,7 @@ define("view/mission",
             job.expanded = !job.expanded;
 
             if (job.expanded) {
-                job.fetchActionResults();
+                job.fetchResults();
             }
         },
 

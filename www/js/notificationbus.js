@@ -163,7 +163,10 @@ define("notificationbus", ["lodash", "setzerotimeout"], function(_, setZeroTimeo
                 host = host.substr(0, host.length - 1);
             }
 
-            var socket = io.connect(host);
+            var socket = io.connect(host, {
+                "reconnection limit": 60 * 60 * 1000,
+                "max reconnection attempts": Infinity
+            });
             if (!socket) {
                 console.log("Failed to connect to notification host " + host);
                 return;

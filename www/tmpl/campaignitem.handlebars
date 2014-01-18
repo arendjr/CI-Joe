@@ -1,6 +1,9 @@
 <tr class="clickable action-campaign" data-campaign-id="{{id}}">
     <td data-tie="text: name"></td>
     <td>
-        <a class="action-edit icon icon-edit"></a><a class="action-remove icon icon-trash mls"></a>
+        <a class="action-stop-campaign icon icon-stop" data-tie="visible: isActive"></a>
+        <a class="action-start-campaign icon icon-play" data-tie="visible: isStopped"></a>
+        <a class="action-edit icon icon-edit"></a>
+        <a class="action-remove icon icon-trash"></a>
     </td>
 </tr>
