@@ -1,6 +1,7 @@
 define("lightbox/editmission",
-       ["i18n", "laces.tie", "lightbox", "lodash", "tmpl/editmission"],
-       function(i18n, Laces, Lightbox, _, tmpl) {
+       ["i18n", "laces.tie", "lightbox", "lodash", "model/workspace", "tmpl/editmission",
+        "tmpl/workspaceoptions"],
+       function(i18n, Laces, Lightbox, _, Workspace, tmpl) {
 
     "use strict";
 
@@ -31,6 +32,8 @@ define("lightbox/editmission",
             }
 
             this.mission = mission;
+
+            this.workspace = null;
         },
 
         events: {
@@ -40,8 +43,28 @@ define("lightbox/editmission",
 
         renderContent: function() {
 
-            var tie = new Laces.Tie(this.mission, tmpl.editmission);
+            var mission = this.mission;
+
+            var tie = new Laces.Tie(mission, tmpl.editmission);
             this.$(".js-content").html(tie.render());
+
+            if (mission.standalone) {
+                var workspace = mission.workspace;
+                if (workspace) {
+                    if (workspace instanceof Workspace) {
+                        // good...
+                    } else {
+                        workspace = this.application.workspaces.get(workspace);
+                    }
+                } else {
+                    workspace = new Workspace(this.application);
+                }
+
+                tie = new Laces.Tie(workspace, tmpl.workspaceoptions);
+                this.$(".js-workspace").html(tie.render());
+
+                this.workspace = workspace;
+            }
         },
 
         _save: function() {
@@ -49,7 +72,13 @@ define("lightbox/editmission",
             var $button = this.$(".action-save");
             $button.addClass("btn-progress");
 
-            this.mission.save({ context: this }).then(function() {
+            var mission = this.mission;
+
+            if (mission.standalone) {
+                mission.workspace = this.workspace;
+            }
+
+            mission.save({ context: this }).then(function() {
                 this.resolve();
             }, function(error) {
                 this.showError(i18n("Could not save the mission"), error);

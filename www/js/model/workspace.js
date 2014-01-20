@@ -5,7 +5,8 @@ define("model/workspace", ["model"], function(Model) {
     return Model.extend({
 
         defaults: {
-            name: ""
+            name: "",
+            type: "empty"
         },
 
         plural: "workspaces",

@@ -187,7 +187,7 @@ define("collection", ["jquery.util", "laces", "model", "lodash"], function($, La
     });
 
     // mixin useful LoDash methods
-    _.each(["any", "each", "filter", "find", "findIndex", "reject"], function(func) {
+    _.each(["any", "each", "filter", "find", "findIndex", "reject", "without"], function(func) {
         Collection.prototype[func] = function(callback, context) {
             return _[func](this.models, callback, context || this);
         };

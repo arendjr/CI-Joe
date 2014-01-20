@@ -69,7 +69,7 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             lastSuccess: 0,
             name: "",
             shell: "",
-            standalone: false,
+            standalone: true,
             timeout: 0,
             workspace: ""
         },
@@ -92,6 +92,15 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
         start: function() {
 
             return this.application.api.ajax(this.url() + "start", { type: "POST" });
+        },
+
+        toJSON: function() {
+
+            var json = Model.prototype.toJSON.call(this);
+            if (typeof this.workspace !== "string") {
+                json.workspace = this.workspace.toJSON();
+            }
+            return json;
         },
 
         type: "mission"
