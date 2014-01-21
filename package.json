@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "~3.4.0",
-    "laces.js": "~0.1.1",
+    "laces.js": "~0.1.2",
     "lodash": "~2.2.0",
     "socket.io": "~0.9.16",
     "socket.io-client": "~0.9.16",

@@ -52,7 +52,7 @@ define("view/editcampaign",
             this.scheduleOptions.save();
 
             this.campaign.save({ context: this }).then(function() {
-                this.resolve();
+                this.application.navigation.goBack();
             }, function(error) {
                 this.showError(i18n("Could not save the campaign"), error);
             }).always(function() {

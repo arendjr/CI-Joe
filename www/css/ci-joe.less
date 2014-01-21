@@ -256,6 +256,7 @@ html {
     background-color: @btn-primary-bg;
 }
 
+
 /******************
  * Input elements *
  ******************/
@@ -309,6 +310,31 @@ html {
 
 .icon-trash {
     background: url(/img/trash.png) no-repeat;
+}
+
+
+/********************
+ * Status indicator *
+ ********************/
+
+.status-indicator {
+    font-size: 21px;
+    text-align: center;
+}
+.status-unavailable {
+    color: @gray;
+}
+.status-queued {
+    color: @brand-info;
+}
+.status-running {
+    color: @brand-info;
+}
+.status-failed {
+    color: @brand-danger;
+}
+.status-success {
+    color: @brand-success;
 }
 
 

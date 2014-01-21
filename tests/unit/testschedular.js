@@ -2,12 +2,13 @@
 
 
 var _ = require("lodash");
+var Campaigns = require("../../lib/campaigns");
 var Schedular = require("../../lib/schedular");
 
 
 function MockCommandPost() {
 
-    this.campaigns = [
+    this.campaigns = new Campaigns({ campaigns: [
         {
             id: "campaign0",
             schedule: {
@@ -32,14 +33,14 @@ function MockCommandPost() {
                 minutes: [0, 15, 30, 45]
             }
         }
-    ];
+    ] });
 
     this.activeCampaigns = [];
 }
 
 MockCommandPost.prototype.startCampaign = function(campaignId) {
 
-    this.activeCampaigns.push(_.find(this.campaigns, { id: campaignId }));
+    this.activeCampaigns.push(this.campaigns.find({ id: campaignId }));
 };
 
 

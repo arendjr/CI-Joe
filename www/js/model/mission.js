@@ -35,6 +35,9 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             this.set("lastJobStatus", function() {
                 return this.lastJob ? this.lastJob.status : "n/a";
             });
+            this.set("lastJobStatusClass", function() {
+                return this.lastJob ? this.lastJob.statusClass : "status-unavailable";
+            });
             this.set("lastJobStatusLabelClass", function() {
                 return this.lastJob ? this.lastJob.statusLabelClass : "label-default";
             });

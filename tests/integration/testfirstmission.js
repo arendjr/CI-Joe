@@ -7,8 +7,8 @@
 
     tester.start(function() {
 
-        tester.waitForSelector(".js-main .action-missions", function() {
-            tester.click(".js-main .action-missions");
+        tester.waitForSelector(".action-missions", function() {
+            tester.click(".action-missions");
 
             tester.assertExists(".js-main .js-empty-placeholder");
 
@@ -29,7 +29,7 @@
         tester.waitForSelector(".js-main .action-mission", function() {
             tester.assertElementCount(".action-mission", 1);
             tester.assertSelectorHasText(".action-mission", "Test mission");
-            tester.assertSelectorHasText(".action-mission", "Unavailable");
+            tester.assertExists(".action-mission .status-unavailable");
             tester.assertVisible(".action-mission .action-start-mission");
 
             tester.click(".action-start-mission");
@@ -40,10 +40,10 @@
         });
 
         tester.wait(2000, function() {
-            tester.assertSelectorDoesntHaveText(".action-mission", "Unavailable");
-            tester.assertSelectorHasText(".action-mission", "Success");
+            tester.assertDoesntExist(".action-mission .status-unavailable");
+            tester.assertExists(".action-mission .status-success");
 
-            tester.assertVisible(".action-mission .glyphicon-play-circle");
+            tester.assertVisible(".action-mission .action-start-mission");
 
             tester.click(".action-mission");
         });
@@ -58,11 +58,7 @@
         });
 
         tester.waitForSelector(".js-main .action-mission", function() {
-            tester.click(".action-edit");
-        });
-
-        tester.waitForSelector(".modal .js-name-input", function() {
-            tester.click(".action-remove");
+            tester.click(".action-mission .action-remove");
         });
 
         tester.waitForSelector(".modal .action-confirm", function() {

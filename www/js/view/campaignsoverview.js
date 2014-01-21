@@ -44,7 +44,7 @@ define("view/campaignsoverview",
                 context: this,
                 title: i18n("Remove campaign")
             }).then(function() {
-                var $action = this.$(".action-remove");
+                var $action = $(event.target).closest(".action-remove");
                 $action.removeClass("icon-trash").addClass("icon-refresh fa-spin");
 
                 campaign.remove({ context: this }).fail(function(error) {

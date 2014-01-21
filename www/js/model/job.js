@@ -19,6 +19,9 @@ define("model/job", ["i18n", "lodash", "model"], function(i18n, _, Model) {
             this.set("isStopped", function() {
                 return this.status !== "queued" && this.status !== "running";
             });
+            this.set("statusClass", function() {
+                return "status-" + this.status;
+            });
             this.set("statusLabelClass", function() {
                 switch (this.status) {
                 case "queued":

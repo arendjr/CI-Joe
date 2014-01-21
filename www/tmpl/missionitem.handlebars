@@ -1,4 +1,8 @@
 <tr class="clickable action-mission" data-mission-id="{{id}}">
+    <td class="status-indicator" data-tie="class: lastJobStatusClass">
+        <i class="fa fa-dot-circle-o" data-tie="visible: !isRunning"></i>
+        <i class="fa fa-spin fa-spinner" data-tie="visible: isRunning"></i>
+    </td>
     <td data-tie="text: name"></td>
     <td data-tie="attr[data-timestamp]: lastSuccess"></td>
     <td data-tie="attr[data-timestamp]: lastFailure"></td>
