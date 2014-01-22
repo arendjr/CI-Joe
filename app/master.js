@@ -42,7 +42,7 @@ function main() {
     if (hasBuild) {
         app.get(/^\/build(?:\/[a-z0-9/]*)?$/, serveIndex);
     } else {
-        app.get(/^\/(?:(?:campaigns?|headquarters|missions?|settings)(?:[a-z0-9/]*)?)?$/, serveIndex);
+        app.get(/^\/((campaigns?|headquarters|missions?|settings)([a-z0-9/]*)?)?$/, serveIndex);
     }
     app.use(express.static("www"));
 

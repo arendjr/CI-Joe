@@ -358,11 +358,11 @@ LacesMap.prototype.set = function(key, value, options) {
         }
     } else if (options.setFilter) {
         setter = function(newValue) {
-            //try {
+            try {
                 self._setValue(key, options.setFilter(newValue));
-            //} catch (exception) {
-            //    self.log("Invalid value for property " + key + ": " + newValue);
-            //}
+            } catch (exception) {
+                self.log("Invalid value for property " + key + ": " + newValue);
+            }
         };
     }
 
