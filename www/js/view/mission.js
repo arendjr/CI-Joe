@@ -27,7 +27,7 @@ define("view/mission",
 
         render: function() {
 
-            var lastJob = this.mission.lastJob;
+            var lastJob = this.mission.jobs[this.mission.jobs.length - 1];
             if (lastJob) {
                 lastJob.expanded = true;
                 lastJob.fetchResults({ context: this }).then(function() {

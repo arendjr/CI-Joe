@@ -29,29 +29,17 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
                 });
             }});
 
-            this.set("lastJob", function() {
-                return this.jobs[this.jobs.length - 1];
-            });
-            this.set("lastJobStatus", function() {
-                return this.lastJob ? this.lastJob.status : "n/a";
-            });
-            this.set("lastJobStatusClass", function() {
-                return this.lastJob ? this.lastJob.statusClass : "status-unavailable";
-            });
-            this.set("lastJobStatusLabelClass", function() {
-                return this.lastJob ? this.lastJob.statusLabelClass : "label-default";
-            });
-            this.set("lastJobStatusLabelText", function() {
-                return this.lastJob ? this.lastJob.statusLabelText : i18n("Unavailable").toString();
+            this.set("statusClass", function() {
+                return "status-" + this.status;
             });
             this.set("isQueued", function() {
-                return this.lastJob ? this.lastJob.isQueued : false;
+                return this.status === "queued";
             });
             this.set("isRunning", function() {
-                return this.lastJob ? this.lastJob.isRunning : false;
+                return this.status === "running";
             });
             this.set("isStopped", function() {
-                return this.lastJob ? this.lastJob.isStopped : true;
+                return this.status !== "queued" && this.status !== "running";
             });
         },
 
@@ -65,14 +53,11 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             isStopped: true,
             jobs: [],
             lastFailure: 0,
-            lastJob: undefined,
-            lastJobStatus: "n/a",
-            lastJobStatusLabelClass: "",
-            lastJobStatusLabelText: "",
             lastSuccess: 0,
             name: "",
             shell: "",
             standalone: true,
+            status: "n/a",
             timeout: 0,
             workspace: ""
         },
