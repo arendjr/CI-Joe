@@ -55,6 +55,8 @@
             tester.assertSelectorHasText(".js-main pre", "Waited 2 seconds");
 
             tester.click(".action-home");
+
+            tester.click(".action-missions");
         });
 
         tester.waitForSelector(".js-main .action-mission", function() {

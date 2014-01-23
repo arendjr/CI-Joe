@@ -10,10 +10,6 @@ lib-cov
 *.out
 *.pid
 
-pids
-logs
-results
-
 npm-debug.log
 
 node_modules
@@ -39,5 +35,5 @@ CI-Joe*.includes
 dist/ci-joe-test
 
 # C.I. Joe output
-action-results
+jobs
 workspaces

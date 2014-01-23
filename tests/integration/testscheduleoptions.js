@@ -10,9 +10,7 @@
 
         tester.waitForSelector(".js-main .action-new", function() {
             tester.click(".js-main .action-new");
-        });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
             tester.click(".action-toggle-schedule");
 
             tester.click("input[type=radio][value='hourly']");
@@ -26,18 +24,18 @@
             tester.click(".action-save");
         });
 
-        tester.waitForSelector(".js-main .action-mission", function() {
+        tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
                 tester.click(".action-edit");
             });
         });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
+        tester.then(".modal .action-toggle-schedule", function() {
             tester.assertElementChecked("input[type=radio][value='hourly']");
 
             tester.assertEvalEquals(function() {
                 /* global Joe: false */
-                return Joe.application.missions.at(0).schedule;
+                return Joe.application.campaigns.at(0).schedule;
             }, { days: [0, 1, 3, 5, 6], hours: _.range(7, 22), minutes: [15] });
 
             tester.assertElementValue(".js-hourly-minute", "15");
@@ -50,18 +48,18 @@
             tester.click(".action-save");
         });
 
-        tester.waitForSelector(".js-main .action-mission", function() {
+        tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
                 tester.click(".action-edit");
             });
         });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
+        tester.then(function() {
             tester.assertElementChecked("input[type=radio][value='hourly']");
 
             tester.assertEvalEquals(function() {
                 /* global Joe: false */
-                return Joe.application.missions.at(0).schedule;
+                return Joe.application.campaigns.at(0).schedule;
             }, { days: [0, 1, 3, 5, 6], hours: [], minutes: [15] });
 
             tester.assertElementChecked(".js-hourly-except-hours", false);
@@ -79,18 +77,18 @@
             tester.click(".action-save");
         });
 
-        tester.waitForSelector(".js-main .action-mission", function() {
+        tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
                 tester.click(".action-edit");
             });
         });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
+        tester.then(function() {
             tester.assertElementChecked("input[type=radio][value='daily']");
 
             tester.assertEvalEquals(function() {
                 /* global Joe: false */
-                return Joe.application.missions.at(0).schedule;
+                return Joe.application.campaigns.at(0).schedule;
             }, { days: [1, 2, 4, 5, 6], hours: [12], minutes: [30] });
 
             tester.assertElementValue(".js-daily-time", "12:30");
@@ -104,13 +102,13 @@
             tester.click(".action-save");
         });
 
-        tester.waitForSelector(".js-main .action-mission", function() {
+        tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
                 tester.click(".action-edit");
             });
         });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
+        tester.then(function() {
             tester.assertElementChecked("input[type=radio][value='weekly']");
 
             tester.assertSelection(".js-weekly-day", 1);
@@ -128,13 +126,13 @@
             tester.click(".action-save");
         });
 
-        tester.waitForSelector(".js-main .action-mission", function() {
+        tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
                 tester.click(".action-edit");
             });
         });
 
-        tester.waitForSelector(".modal .action-toggle-schedule", function() {
+        tester.then(function() {
             tester.assertElementChecked("input[type=radio][value='custom']");
 
             tester.assertSelection(".js-custom-days", [1, 2]);
@@ -149,7 +147,7 @@
         });
 
         tester.waitWhileSelector(".modal", function() {
-            tester.assertElementCount(".action-mission", 0);
+            tester.assertElementCount(".action-campaign", 0);
         });
     });
 
