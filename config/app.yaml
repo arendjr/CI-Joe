@@ -7,9 +7,11 @@ default:
     port: 8080
   slaves: 
     - id: slave1
+      applicability: general
       name: Local Slave 1
       type: local
     - id: slave2
+      applicability: general
       name: Local Slave 2
       type: local
   campaigns: []
