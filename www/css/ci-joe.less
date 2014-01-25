@@ -292,24 +292,54 @@ html {
     width: 29px;
 }
 
+.icon-check {
+    background: url(/img/check.png) no-repeat;
+}
 .icon-edit {
     background: url(/img/edit.png) no-repeat;
 }
-
 .icon-play {
     background: url(/img/play.png) no-repeat;
 }
-
 .icon-refresh {
     background: url(/img/refresh.png) no-repeat;
 }
-
+.icon-remove {
+    background: url(/img/remove.png) no-repeat;
+}
 .icon-stop {
     background: url(/img/stop.png) no-repeat;
 }
-
 .icon-trash {
     background: url(/img/trash.png) no-repeat;
+}
+
+
+/**********
+ * Phases *
+ **********/
+
+.phase {
+    background: #fff;
+    border-radius: @border-radius-small;
+    margin-bottom: 5px;
+}
+.phase-id {
+    color: @gray;
+    padding: 7px 10px 5px;
+}
+.phase-missions {
+    padding: 5px 10px 7px;
+}
+.phase-editable-mission {
+    background: @link-color;
+    border-radius: @border-radius-small;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 5px;
+}
+.phase-remove-mission {
+    color: #fff;
 }
 
 

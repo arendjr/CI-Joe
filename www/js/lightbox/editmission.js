@@ -20,6 +20,15 @@ define("lightbox/editmission",
 
                 this.title = i18n("Edit %1").arg(mission.name);
             } else {
+                if (options.campaign) {
+                    mission.campaigns.push(options.campaign);
+                    mission.standalone = false;
+
+                    if (options.campaign.workspaces.length === 1) {
+                        mission.workspace = options.campaign.workspaces[0].id;
+                    }
+                }
+
                 var name = i18n("Unnamed Mission").toString();
                 var index = 1;
                 while (this.application.missions.any({ name: name })) {
@@ -64,13 +73,15 @@ define("lightbox/editmission",
                 this.$(".js-workspace").html(tie.render());
 
                 this.workspace = workspace;
+            } else {
+                var workspaces = _.flatten(_.pluck(mission.campaigns, "workspaces"));
+                if (workspaces.length > 1) {
+                    // TODO: select workspace
+                }
             }
         },
 
         _save: function() {
-
-            var $button = this.$(".action-save");
-            $button.addClass("btn-progress");
 
             var mission = this.mission;
 
@@ -78,13 +89,20 @@ define("lightbox/editmission",
                 mission.workspace = this.workspace;
             }
 
-            mission.save({ context: this }).then(function() {
-                this.resolve();
-            }, function(error) {
-                this.showError(i18n("Could not save the mission"), error);
-            }).always(function() {
-                $button.removeClass("btn-progress");
-            });
+            if (this.options.saveModel !== false) {
+                var $button = this.$(".action-save");
+                $button.addClass("btn-progress");
+
+                mission.save({ context: this }).then(function() {
+                    this.resolve(mission);
+                }, function(error) {
+                    this.showError(i18n("Could not save the mission"), error);
+                }).always(function() {
+                    $button.removeClass("btn-progress");
+                });
+            } else {
+                this.resolve(mission);
+            }
         },
 
         _toggleAdvanced: function() {

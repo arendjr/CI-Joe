@@ -18,7 +18,7 @@
         </label>
     </div>
     <div data-tie="visible: hourlySchedule">
-        <span class="col-sm-12">
+        <div class="col-sm-12">
             <label class="text-normal">
                 <input type="checkbox" class="inline-checkbox js-hourly-except-hours" data-tie="checked: exceptHours">
                 {{i18n "Except from"}}
@@ -26,14 +26,14 @@
             <input type="time" step="01:00" class="inline-control js-except-hour-start" data-tie="value: exceptHourStart">
             {{i18n "till"}}
             <input type="time" step="01:00" class="inline-control js-except-hour-end" data-tie="value: exceptHourEnd">
-        </span>
-        <span class="col-sm-12">
+        </div>
+        <div class="col-sm-12">
             <label class="text-normal">
                 <input type="checkbox" class="inline-checkbox js-hourly-except-days" data-tie="checked: exceptDays">
                 {{i18n "Except on"}}
             </label>
             <select class="js-excluded-days js-hourly-excluded-days" multiple style="width: 15em"></select>
-        </span>
+        </div>
     </div>
     <div>
         <label data-tie="class: dailyLabelClass">
@@ -46,13 +46,13 @@
         </label>
     </div>
     <div data-tie="visible: dailySchedule">
-        <span class="col-sm-12">
+        <div class="col-sm-12">
             <label class="text-normal">
                 <input type="checkbox" class="inline-checkbox js-daily-except-days" data-tie="checked: exceptDays">
                 {{i18n "Except on"}}
             </label>
             <select class="js-excluded-days js-daily-excluded-days" multiple style="width: 15em"></select>
-        </span>
+        </div>
     </div>
     <div>
         <label data-tie="class: weeklyLabelClass">
@@ -73,17 +73,17 @@
         </label>
     </div>
     <div data-tie="visible: customSchedule">
-        <span class="col-sm-12">
+        <div class="col-sm-12">
             <span class="col-sm-3 text-right mts">{{i18n "Day(s):"}}</span>
             <select class="js-custom-days" multiple placeholder="{{i18n 'Every day'}}" style="width: 15em"></select>
-        </span>
-        <span class="col-sm-12">
+        </div>
+        <div class="col-sm-12">
             <span class="col-sm-3 text-right mts">{{i18n "Hour(s):"}}</span>
             <select class="mtt js-custom-hours" multiple placeholder="{{i18n 'Every hour'}}" style="width: 15em"></select>
-        </span>
-        <span class="col-sm-12">
+        </div>
+        <div class="col-sm-12">
             <span class="col-sm-3 text-right mts">{{i18n "Minute(s):"}}</span>
             <select class="mtt js-custom-minutes" multiple placeholder="{{i18n 'Every minute'}}" style="width: 15em"></select>
-        </span>
+        </div>
     </div>
 </div>

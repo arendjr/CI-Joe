@@ -3,7 +3,7 @@
 </h1>
 <div class="page-column-left">
     <label>{{i18n "Callsign"}}</label>
-    <p><input type="text" class="form-control js-name-input" placeholder="{{i18n 'Enter name'}}" data-tie="value: name"></p>
+    <p><input type="text" class="form-control js-name-input" placeholder="{{i18n 'Enter name'}}" data-tie="value: name" autofocus></p>
     <div class="js-schedule mth"></div>
     <h5 class="action-toggle-advanced clickable">
         {{i18n "Advanced"}}
@@ -12,8 +12,9 @@
     <div class="js-advanced" data-tie="visible: advancedOptionsExpanded"></div>
 </div>
 <div class="page-column-right">
+    <a class="action-add-phase pull-right">{{i18n "Add phase"}}<i class="fa fa-plus mhm"></i></a>
     <label>{{i18n "Phases"}}</label>
-    <p>TODO</p>
+    <div class="js-phases"></div>
 </div>
 <hr class="clearfix page-section-separator">
 <button class="btn btn-primary pull-right action-save">{{i18n "Save"}}</button>

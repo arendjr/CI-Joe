@@ -1,0 +1,25 @@
+<div class="phase-id">{{i18n "Phase"}} <span class="js-phase-id">{{id}}</span></div>
+<div class="phase-missions js-missions">
+    {{#each missions}}
+    {{#if ../editable}}
+    <span class="phase-editable-mission">
+        <a class="action-delete-mission phase-remove-mission" data-mission-index="{{@index}}"><i class="fa fa-times"></i></a>
+        {{name}}
+    </span>
+    {{else}}
+    <a class="action-edit-mission inline mtm" data-mission-index="{{@index}}">{{name}}</a>
+    |
+    {{/if}}
+    {{/each}}
+    {{#if editable}}
+    <a class="action-confirm-changes"><i class="icon icon-check pull-right"></i></a>
+    <a class="action-discard-changes"><i class="icon icon-remove pull-right mrm"></i></a>
+    {{else}}
+    <a class="action-add-mission"><i class="fa fa-plus mrm mtm"></i>{{#unless missions}}{{i18n "Add mission"}}{{/unless}}</a>
+    <a class="action-remove-phase"><i class="icon icon-trash pull-right"></i></a>
+    {{#if missions}}
+    <a class="action-edit-phase"><i class="icon icon-edit pull-right mrm"></i></a>
+    {{/if}}
+    {{/if}}
+</div>
+<div class="clearfix pbm"></div>

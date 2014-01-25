@@ -46,6 +46,7 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
         defaults: {
             advancedOptionsExpanded: false,
             assignedSlaves: [],
+            campaigns: [],
             command: "",
             environment: {},
             isQueued: false,
@@ -57,7 +58,7 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             name: "",
             shell: "",
             standalone: true,
-            status: "n/a",
+            status: "unavailable",
             timeout: 0,
             workspace: ""
         },
@@ -85,7 +86,7 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
         toJSON: function() {
 
             var json = Model.prototype.toJSON.call(this);
-            if (typeof this.workspace !== "string") {
+            if (this.workspace instanceof Model) {
                 json.workspace = this.workspace.toJSON();
             }
             return json;
