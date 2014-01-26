@@ -14,6 +14,14 @@ default:
       applicability: general
       name: Local Slave 2
       type: local
+    - id: slave3
+      applicability: general
+      name: Local Slave 3
+      type: local
+    - id: slave4
+      applicability: general
+      name: Local Slave 4
+      type: local
   campaigns: []
   missions: []
   workspaces: []
