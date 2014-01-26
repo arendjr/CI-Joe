@@ -20,12 +20,13 @@ define("lightbox/editmission",
 
                 this.title = i18n("Edit %1").arg(mission.name);
             } else {
-                if (options.campaign) {
-                    mission.campaigns.push(options.campaign);
+                var campaign = options.campaign;
+                if (campaign) {
+                    mission.campaigns.push(campaign);
                     mission.standalone = false;
 
-                    if (options.campaign.workspaces.length === 1) {
-                        mission.workspace = options.campaign.workspaces[0].id;
+                    if (campaign.workspaces.length === 1) {
+                        mission.workspace = campaign.workspaces[0];
                     }
                 }
 

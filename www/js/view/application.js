@@ -28,6 +28,10 @@ define("view/application",
                 this.application.navigateTo("headquarters");
                 this._hideSidebar();
             },
+            "click .action-help": function() {
+                this.application.navigateTo("help");
+                this._hideSidebar();
+            },
             "click .action-home": function() {
                 this.application.navigateTo("");
                 this._hideSidebar();
@@ -39,6 +43,10 @@ define("view/application",
             "click .action-mission": function(event) {
                 var id = this.targetData(event, "mission-id");
                 this.application.navigateTo("mission/" + id);
+            },
+            "click .action-settings": function() {
+                this.application.navigateTo("settings");
+                this._hideSidebar();
             },
             "click .action-show-stacktrace": function() {
                 var $pre = $("<pre>").text(this.exception.stacktrace);

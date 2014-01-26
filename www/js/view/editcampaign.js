@@ -1,6 +1,6 @@
 define("view/editcampaign",
        ["i18n", "laces", "lodash", "view", "view/phase", "view/scheduleoptions",
-        "tmpl/editcampaign"],
+        "tmpl/editcampaign", "tmpl/nophases"],
        function(i18n, Laces, _, View, PhaseView, ScheduleOptionsView,
                 tmpl) {
 
@@ -70,6 +70,9 @@ define("view/editcampaign",
 
             var index = event.index;
             var $phases = this.$(".js-phases");
+            if (index === 0) {
+                $phases.empty();
+            }
             _.each(event.elements, function(phase, i) {
                 var phaseView = new PhaseView(this, {
                     campaign: this.campaign,
@@ -95,14 +98,18 @@ define("view/editcampaign",
         _renderPhases: function() {
 
             var $phases = this.$(".js-phases");
-            _.each(this.campaign.phases, function(phase, index) {
-                var phaseView = new PhaseView(this, {
-                    campaign: this.campaign,
-                    phase: phase,
-                    index: index
-                });
-                $phases.append(phaseView.render());
-            }, this);
+            if (this.campaign.phases.length > 0) {
+                _.each(this.campaign.phases, function(phase, index) {
+                    var phaseView = new PhaseView(this, {
+                        campaign: this.campaign,
+                        phase: phase,
+                        index: index
+                    });
+                    $phases.append(phaseView.render());
+                }, this);
+            } else {
+                $phases.html(tmpl.nophases());
+            }
         },
 
         _save: function() {

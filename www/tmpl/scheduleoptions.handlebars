@@ -1,14 +1,14 @@
 <label>{{i18n "Execute this campaign..."}}</label>
 <div data-tie="radio: scheduleType">
-    <div>
+    <div class="mts">
         <label data-tie="class: manualLabelClass">
-            <input type="radio" value="manual" class="inline-radio">
+            <input type="radio" value="manual" class="inline-radio mrs">
             {{i18n "Only when explicitly ordered"}}
         </label>
     </div>
-    <div>
+    <div class="mts">
         <label data-tie="class: hourlyLabelClass">
-            <input type="radio" value="hourly" class="inline-radio">
+            <input type="radio" value="hourly" class="inline-radio mrs">
             {{i18n "Every hour"}}
             <span class="text-normal" data-tie="visible: hourlySchedule">
                 {{i18n "at"}}
@@ -19,7 +19,7 @@
     </div>
     <div data-tie="visible: hourlySchedule">
         <div class="col-sm-12">
-            <label class="text-normal">
+            <label class="text-normal mll">
                 <input type="checkbox" class="inline-checkbox js-hourly-except-hours" data-tie="checked: exceptHours">
                 {{i18n "Except from"}}
             </label>
@@ -28,16 +28,16 @@
             <input type="time" step="01:00" class="inline-control js-except-hour-end" data-tie="value: exceptHourEnd">
         </div>
         <div class="col-sm-12">
-            <label class="text-normal">
+            <label class="text-normal mll">
                 <input type="checkbox" class="inline-checkbox js-hourly-except-days" data-tie="checked: exceptDays">
                 {{i18n "Except on"}}
             </label>
             <select class="js-excluded-days js-hourly-excluded-days" multiple style="width: 15em"></select>
         </div>
     </div>
-    <div>
+    <div class="mts">
         <label data-tie="class: dailyLabelClass">
-            <input type="radio" value="daily" class="inline-radio">
+            <input type="radio" value="daily" class="inline-radio mrs">
             {{i18n "Every day"}}
             <span class="text-normal" data-tie="visible: dailySchedule">
                 {{i18n "at"}}
@@ -47,16 +47,16 @@
     </div>
     <div data-tie="visible: dailySchedule">
         <div class="col-sm-12">
-            <label class="text-normal">
+            <label class="text-normal mll">
                 <input type="checkbox" class="inline-checkbox js-daily-except-days" data-tie="checked: exceptDays">
                 {{i18n "Except on"}}
             </label>
             <select class="js-excluded-days js-daily-excluded-days" multiple style="width: 15em"></select>
         </div>
     </div>
-    <div>
+    <div class="mts">
         <label data-tie="class: weeklyLabelClass">
-            <input type="radio" value="weekly" class="inline-radio">
+            <input type="radio" value="weekly" class="inline-radio mrs">
             {{i18n "Every week"}}
             <span class="text-normal" data-tie="visible: weeklySchedule">
                 {{i18n "on"}}
@@ -66,9 +66,9 @@
             </span>
         </label>
     </div>
-    <div>
+    <div class="mts">
         <label data-tie="class: customLabelClass">
-            <input type="radio" value="custom" class="inline-radio">
+            <input type="radio" value="custom" class="inline-radio mrs">
             {{i18n "According to a custom schedule"}}
         </label>
     </div>

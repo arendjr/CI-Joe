@@ -1,8 +1,26 @@
 define("pagefactory",
-       ["lodash", "page/campaignsoverview", "page/editcampaign", "page/error", "page/headquarters",
-        "page/login", "page/mission", "page/missionsoverview", "page/newcampaign"],
-       function(_, CampaignsOverviewPage, EditCampaignPage, ErrorPage, HeadquartersPage,
-                LoginPage, MissionPage, MissionsOverviewPage, NewCampaignPage) {
+       ["lodash",
+        "page/campaignsoverview",
+        "page/editcampaign",
+        "page/error",
+        "page/headquarters",
+        "page/help",
+        "page/login",
+        "page/mission",
+        "page/missionsoverview",
+        "page/newcampaign",
+        "page/settings"],
+       function(_,
+                CampaignsOverviewPage,
+                EditCampaignPage,
+                ErrorPage,
+                HeadquartersPage,
+                HelpPage,
+                LoginPage,
+                MissionPage,
+                MissionsOverviewPage,
+                NewCampaignPage,
+                SettingsPage) {
 
     "use strict";
 
@@ -11,10 +29,12 @@ define("pagefactory",
         EditCampaign: EditCampaignPage,
         Error: ErrorPage,
         Headquarters: HeadquartersPage,
+        Help: HelpPage,
         Login: LoginPage,
         Mission: MissionPage,
         MissionsOverview: MissionsOverviewPage,
-        NewCampaign: NewCampaignPage
+        NewCampaign: NewCampaignPage,
+        Settings: SettingsPage
     };
 
     /**

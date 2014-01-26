@@ -70,11 +70,17 @@ define("router", ["lodash", "setzerotimeout"], function(_, setZeroTimeout, undef
             "headquarters(/:path)": function(path) {
                 this.openPage("Headquarters", undefined, path);
             },
+            "help(/:path)": function(path) {
+                this.openPage("Help", undefined, path);
+            },
             "missions(/:path)": function(path) {
                 this.openPage("MissionsOverview", undefined, path);
             },
             "mission/:id(/:path)": function(id, path) {
                 this.openPage("Mission", id, path);
+            },
+            "settings(/:path)": function(path) {
+                this.openPage("Settings", undefined, path);
             }
         },
 

@@ -1,0 +1,77 @@
+<h1 class="page-title">{{i18n "Help"}}</h1>
+<ul>
+    <li><a href="#introduction"><b>{{i18n "Introduction"}}</b></a></li>
+    <li><a href="#campaigns-and-missions"><b>{{i18n "Campaigns and Missions"}}</b></a>
+        <ul>
+            <li><a href="#missions">{{i18n "Missions"}}</a></li>
+            <li><a href="#campaigns">{{i18n "Campaigns"}}</a>
+                <ul>
+                    <li><a href="#schedules">{{i18n "Schedules"}}</a></li>
+                </ul>
+            </li>
+            <li><a href="#workspaces">{{i18n "Workspaces"}}</a></li>
+        </ul>
+    </li>
+    <li><a href="#slaves"><b>{{i18n "Slaves"}}</b></a>
+</ul>
+
+
+<h2><a name="introduction"></a>{{i18n "Introduction"}}</h2>
+<p>{{i18n "C.I. Joe is a build system that is intended to be used for the purpose of Continuous
+           Integration. Continuous Integration is typically used by software developers and means
+           that a group of developers can work together on a single repository of their code, where
+           the code contributed by each member of the team is continuously integrated with that of
+           the other members. In order to prevent code contributions from regressing the code base,
+           this practice should be combined with continuous (or at least frequently scheduled)
+           running of a test suite. This is where C.I. Joe comes in."}}</p>
+<p>{{i18n "Put very bluntly, C.I. Joe facilitates in the execution of shell scripts at convenient
+           intervals for the purpose of building software and running test suites. C.I. Joe assumes
+           the developers know how best to build their own software and have set up a build system
+           to take care of this (regardless of whether they use Ant, Grunt, Makefiles or any other
+           tools). All C.I. Joe adds to this is a convenient interface to set up a server that will
+           set in motion the wheels of these other systems at convenient moments after which the
+           results will be collected and presented in a nice overview."}}</p>
+
+
+<h2><a name="campaigns-and-missions"></a>{{i18n "Campaigns and Missions"}}</h2>
+<p>{{i18n "Missions are the cornerstone for C.I. Joe's most basic functionality: the execution of a
+           single command. A mission can be created as a standalone mission, but it can also be
+           created as part of a campaign. Campaigns provide the mechanism for scheduling multiple
+           missions which can be run either one after another, or in parallel."}}</p>
+
+<h3><a name="missions"></a>{{i18n "Missions"}}</h3>
+<p>{{i18n "A mission is created to execute a single command. A command can be a single bash
+           command (bash is the default shell used by C.I. Joe), but it may also be a longer script.
+           When a mission is executed, a job is started that will execute the given command. When
+           the command successfully completes with an exit code of 0, the mission is considered a
+           success. If the command completes with any other exit code, the mission is considered a
+           failure. Note that by default, if the mission command comprises multiple shell commands,
+           the first shell command that exits with a non-zero exit code will terminate and fail the
+           mission."}}</p>
+<p>{{i18n "Optionally, a timeout can be set on a mission. If set, when the command does not
+           terminate within the given timeout, the command is forced to terminate and the mission
+           is considered a failure. This is useful in situations where failure causes the command
+           to wait for long periods of time (for example, because of TCP timeouts or timeouts in
+           test suites)."}}</p>
+
+<h3><a name="campaigns"></a>{{i18n "Campaigns"}}</h3>
+<p>{{i18n "Campaigns are most useful to execute multiple missions. Campaigns are split into one or
+           more phases. Each phase can have one or more missions. When a campaign is run, it will
+           start by executing the first phase. If a phase has more than one mission, all missions
+           in that phase will start executing in parallel (assuming there are enough slaves
+           available). When all missions in a phase are finished, the phase is completed and the
+           next phase is executed. The campaign is considered a success when all phases were
+           executed successfully. If any phase fails, the campaign is aborted and considered a
+           failure, though an individual phase can be configured to not fail even if one of its
+           missions fails."}}</p>
+
+<h4><a name="schedules"></a>{{i18n "Schedules"}}</h4>
+<p>{{i18n "Besides configuration of phases, campaigns also provide for scheduling options."}}</p>
+<p>TODO: more about scheduling options</p>
+
+<h3><a name="workspaces"></a>{{i18n "Workspaces"}}</h3>
+<p>TODO: more about workspaces</p>
+
+
+<h2><a name="slaves"></a>{{i18n "Slaves"}}</h2>
+<p>TODO: more about slaves</p>
