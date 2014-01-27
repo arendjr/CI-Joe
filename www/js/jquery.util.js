@@ -191,16 +191,6 @@ define("jquery.util",
     };
 
     /**
-     * Returns whether the given string is a valid email address.
-     */
-    $.isValidEmail = function(email) {
-
-        var atIndex = email.indexOf("@");
-        var dotIndex = email.lastIndexOf(".");
-        return (atIndex > -1 && dotIndex > atIndex);
-    };
-
-    /**
      * Escapes a plain string so that it becomes a valid, escaped JavaScript string, including its
      * surrounding quotes.
      *

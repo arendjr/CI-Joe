@@ -72,7 +72,8 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             "name",
             "shell",
             "timeout",
-            "workspace"
+            "workspace",
+            "workspaceName"
         ],
 
         /**

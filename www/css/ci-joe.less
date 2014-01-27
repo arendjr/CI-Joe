@@ -280,6 +280,10 @@ input[type=radio]:focus {
  * Input elements *
  ******************/
 
+.form-control.error {
+    border-color: @brand-danger;
+}
+
 .inline-control {
     background-color: @input-bg;
     border: 2px solid @input-border;
@@ -516,3 +520,13 @@ input[type=radio]:focus {
 .c85 { width: 85% }
 .c90 { width: 90% }
 .c95 { width: 95% }
+
+
+/*************************
+ * Pines Notify override *
+ *************************/
+
+.ui-pnotify-container {
+    position: relative;
+    top: @header-height;
+}

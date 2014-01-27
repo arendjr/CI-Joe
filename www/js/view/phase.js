@@ -79,7 +79,8 @@ define("view/phase", ["lodash", "view", "tmpl/phase"], function(_, View, tmpl) {
                 context: this,
                 mission: mission,
                 saveModel: false
-            }).then(function() {
+            }).then(function(updatedMission) {
+                mission.set(updatedMission);
                 this.render();
             });
         },

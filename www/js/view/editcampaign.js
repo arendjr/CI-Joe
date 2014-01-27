@@ -19,10 +19,17 @@ define("view/editcampaign",
             campaign.set(options.campaign);
             this.campaign = campaign;
 
+            _.each(campaign.phases, function(phase) {
+                phase.missions = _.map(phase.missions, function(mission) {
+                    return (typeof mission === "string" ? this.application.missions.get(mission)
+                                                        : mission);
+                }, this);
+            }, this);
+
             campaign.workspaces = _.map(campaign.workspaces, function(workspace) {
                 return (typeof workspace === "string" ? this.application.workspaces.get(workspace)
                                                       : workspace);
-            });
+            }, this);
 
             this.scheduleOptions = null;
 
@@ -44,6 +51,8 @@ define("view/editcampaign",
 
             var tie = new Laces.Tie(this.campaign, tmpl.editcampaign);
             this.$el.html(tie.render());
+
+            this.$(".js-name-input").validate("non-empty");
 
             this.scheduleOptions = new ScheduleOptionsView(this, { model: this.campaign });
             this.$(".js-schedule").html(this.scheduleOptions.render());
@@ -114,13 +123,22 @@ define("view/editcampaign",
 
         _save: function() {
 
+            if (!this.$(".js-name-input").isValid()) {
+                this.showError(i18n("Please enter a callsign"));
+                return;
+            }
+
             var $button = this.$(".action-save");
             $button.addClass("btn-progress");
 
             this.scheduleOptions.save();
 
             this.campaign.save({ context: this }).then(function() {
-                this.application.navigation.goBack();
+                if (this.application.navigation.canGoBack()) {
+                    this.application.navigation.goBack();
+                } else {
+                    this.application.navigateTo("/campaigns");
+                }
             }, function(error) {
                 this.showError(i18n("Could not save the campaign"), error);
             }).always(function() {

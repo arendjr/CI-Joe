@@ -198,8 +198,9 @@ define("model",
 
             var json = {};
             _.each(this.serializableProperties || this.keys(), function(key) {
-                if (key !== "id") {
-                    json[key] = this[key];
+                var value = this[key];
+                if (key !== "id" && value !== undefined) {
+                    json[key] = value;
                 }
             }, this);
             if (!this.isNew()) {

@@ -25,18 +25,12 @@ define("lightbox/editmission",
                     mission.campaigns.push(campaign);
                     mission.standalone = false;
 
-                    if (campaign.workspaces.length === 1) {
-                        mission.workspace = campaign.workspaces[0];
+                    var workspaces = campaign.workspaces;
+                    if (workspaces.length === 1) {
+                        mission.workspace = workspaces[0].id;
+                        mission.workspaceName = workspaces[0].name;
                     }
                 }
-
-                var name = i18n("Unnamed Mission").toString();
-                var index = 1;
-                while (this.application.missions.any({ name: name })) {
-                    index++;
-                    name = i18n("Unnamed Mission") + " " + index;
-                }
-                mission.name = name;
 
                 this.title = i18n("New Mission");
             }
@@ -57,6 +51,8 @@ define("lightbox/editmission",
 
             var tie = new Laces.Tie(mission, tmpl.editmission);
             this.$(".js-content").html(tie.render());
+
+            this.$(".js-name-input").validate("non-empty");
 
             if (mission.standalone) {
                 var workspace = mission.workspace;
@@ -83,6 +79,11 @@ define("lightbox/editmission",
         },
 
         _save: function() {
+
+            if (!this.$(".js-name-input").isValid()) {
+                this.showError(i18n("Please enter a name"));
+                return;
+            }
 
             var mission = this.mission;
 
