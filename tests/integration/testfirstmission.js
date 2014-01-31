@@ -30,25 +30,25 @@
             tester.assertElementCount(".action-mission", 1);
             tester.assertSelectorHasText(".action-mission", "Test mission");
             tester.assertExists(".action-mission .status-unavailable");
-            tester.assertVisible(".action-mission .action-start-mission");
+            tester.assertVisible(".action-mission .action-start");
 
-            tester.click(".action-start-mission");
+            tester.click(".action-start");
         });
 
         tester.wait(500, function() {
-            tester.assertNotVisible(".action-mission .action-start-mission");
+            tester.assertNotVisible(".action-mission .action-start");
         });
 
         tester.wait(2000, function() {
             tester.assertDoesntExist(".action-mission .status-unavailable");
             tester.assertExists(".action-mission .status-success");
 
-            tester.assertVisible(".action-mission .action-start-mission");
+            tester.assertVisible(".action-mission .action-start");
 
             tester.click(".action-mission");
         });
 
-        tester.waitForSelector(".js-main h2", function() {
+        tester.waitForSelector(".js-main h1", function() {
             tester.assertSelectorHasText(".js-main", "Command exited with exit code 0");
 
             tester.assertSelectorHasText(".js-main pre", "Waited 1 second");

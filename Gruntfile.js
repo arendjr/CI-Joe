@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
     var _ = grunt.util._;
 
-    var serverTest = grunt.option("server-test");
-    var clientTest = grunt.option("client-test");
+    var serverTest = grunt.option("unit-test");
+    var clientTest = grunt.option("integration-test");
 
 
     var config = {

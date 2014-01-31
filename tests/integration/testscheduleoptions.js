@@ -11,7 +11,9 @@
         tester.waitForSelector(".js-main .action-new", function() {
             tester.click(".js-main .action-new");
 
-            tester.click(".action-toggle-schedule");
+            tester.assertExists(".js-main .js-name-input");
+
+            tester.type(".js-name-input", "Test campaign");
 
             tester.click("input[type=radio][value='hourly']");
 
@@ -24,13 +26,16 @@
             tester.click(".action-save");
         });
 
+
         tester.waitForSelector(".js-main .action-campaign", function() {
             tester.wait(100, function() {
+                tester.assertExists(".js-main .action-campaign .action-edit");
+
                 tester.click(".action-edit");
             });
         });
 
-        tester.then(".modal .action-toggle-schedule", function() {
+        tester.then(function() {
             tester.assertElementChecked("input[type=radio][value='hourly']");
 
             tester.assertEvalEquals(function() {
@@ -138,6 +143,8 @@
             tester.assertSelection(".js-custom-days", [1, 2]);
             tester.assertSelection(".js-custom-hours", [3, 4, 5]);
             tester.assertSelection(".js-custom-minutes", [0, 30]);
+
+            tester.click(".action-campaigns");
 
             tester.click(".action-remove");
         });

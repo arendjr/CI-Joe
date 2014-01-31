@@ -197,14 +197,9 @@ Tester.prototype.setSessionStorageItem = function(key, value) {
 Tester.prototype.start = function(callback) {
 
     var url = "http://localhost:" + TEST_PORT + "/";
-    console.log("Test URL: " + url.replace(":" + TEST_PORT, ":8080"));
+    console.log("Test URL: " + url.replace(":" + TEST_PORT, ":8080") + "build/");
 
     this.casper.start(url, function() {
-        this.evaluate(function() {
-            sessionStorage.clear();
-            localStorage.clear();
-        });
-
         callback();
     });
 

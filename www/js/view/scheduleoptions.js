@@ -185,10 +185,6 @@ define("view/scheduleoptions",
             $minutes.select2("data", _.map(this.scheduleOptions.minutes, function(minute) {
                 return { id: minute, text: zeroPad(minute) };
             }));
-
-            if (this.model.schedule) {
-                this._toggleSchedule();
-            }
         },
 
         _restoreOptions: function() {

@@ -154,5 +154,7 @@ License
 
 This software is licensed under GPLv3. For details, see LICENSE.GPL.txt.
 
-Icons (not including the C.I. Joe logo) are used from the GlyphIcons set:
-http://glyphicons.com/
+Icons (not including the C.I. Joe logo) are used from the FontAwesome set:
+http://fortawesome.github.io/Font-Awesome/
+
+The Myriad Pro font is licensed by Adobe (TM).
