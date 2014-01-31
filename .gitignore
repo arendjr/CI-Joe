@@ -26,8 +26,7 @@ node_modules
 
 # Qt Creator IDE files
 CI-Joe*.config
-CI-Joe*.creator
-CI-Joe*.creator.user
+CI-Joe*.creator*
 CI-Joe*.files
 CI-Joe*.includes
 

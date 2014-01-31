@@ -3,17 +3,16 @@
         <i class="fa fa-dot-circle-o" data-tie="visible: !isRunning"></i>
         <i class="fa fa-spin fa-spinner" data-tie="visible: isRunning"></i>
     </td>
-    {{#if campaign}}
-    <td>{{campaignName}} <i class="fa fa-angle-double-right"></i> <data-tie="text: name"></span></td>
-    {{else}}
-    <td data-tie="text: name"></td>
-    {{/if}}
+    <td>
+        {{#if campaignName}}{{campaignName}} <i class="fa fa-angle-double-right"></i>{{/if}}
+        <span data-tie="text: name"></span>
+    </td>
     <td data-tie="attr[data-timestamp]: lastSuccess"></td>
     <td data-tie="attr[data-timestamp]: lastFailure"></td>
     <td>
-        <a class="action-stop-mission icon icon-stop" data-tie="visible: isQueued"></a>
-        <a class="action-stop-mission icon icon-stop" data-tie="visible: isRunning"></a>
-        <a class="action-start-mission icon icon-play" data-tie="visible: isStopped"></a>
+        <a class="action-stop icon icon-stop" data-tie="visible: isQueued"></a>
+        <a class="action-stop icon icon-stop" data-tie="visible: isRunning"></a>
+        <a class="action-start icon icon-play" data-tie="visible: isStopped"></a>
         <a class="action-edit icon icon-edit"></a>
         <a class="action-remove icon icon-trash"></a>
     </td>

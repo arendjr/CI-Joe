@@ -9,6 +9,13 @@ define("model/campaign", ["model"], function(Model) {
             this.set("advancedOptionsChevron", function() {
                 return "fa-chevron-" + (this.advancedOptionsExpanded ? "down" : "right");
             });
+
+            this.set("isActive", function() {
+                return this.status === "active";
+            });
+            this.set("statusClass", function() {
+                return "status-" + this.status;
+            });
         },
 
         defaults: {

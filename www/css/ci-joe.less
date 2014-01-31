@@ -43,6 +43,16 @@ input[type=radio]:focus {
     outline: none;
 }
 
+.breadcrump {
+    color: #3a393e;
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover {
+        color: #3a393e;
+    }
+}
+
 .command-input {
     font-family: Fixed, monospace;
 }
@@ -67,6 +77,12 @@ input[type=radio]:focus {
 .header {
     background: #3b3a3f;
     border-bottom: 2px solid #2c2b30;
+    left: 0;
+    position: fixed;
+    height: @header-height;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 }
 .header-logo {
     background: url(/img/logo.png);
@@ -109,7 +125,8 @@ input[type=radio]:focus {
     border-right: 2px solid @gray-lighter;
     height: calc(100% - @header-height);
     left: 0px;
-    position: relative;
+    position: fixed;
+    top: @header-height;
     width: (@sidebar-width - 2px);
 }
 
@@ -127,10 +144,10 @@ input[type=radio]:focus {
 }
 .sidebar-icon {
     font-size: 22px;
-    margin: 4px 4px 0 0;
+    margin: 8px 4px 0 0;
     text-align: center;
     position: relative;
-    top: -3px;
+    top: -5px;
     vertical-align: middle;
     width: 24px;
 }
@@ -139,7 +156,7 @@ input[type=radio]:focus {
     .sidebar {
         border-right: 0;
         display: none;
-        position: static;
+        position: fixed;
         width: 100%;
     }
 }
@@ -171,7 +188,7 @@ input[type=radio]:focus {
 }
 @media all and (max-width: 767px) {
     .main {
-        padding: 0 2%;
+        padding: @header-height 2% 0;
         position: static;
         width: 100%;
     }
@@ -237,7 +254,7 @@ input[type=radio]:focus {
     }
     td {
         border-left: 1px solid @gray-lighter;
-        line-height: 1;
+        line-height: 1.1;
         padding: 10px;
     }
     td:first-child {
@@ -354,7 +371,7 @@ input[type=radio]:focus {
     border-radius: @border-radius-small;
     color: #fff;
     display: inline-block;
-    padding: 3px 5px;
+    padding: 4px 5px 2px;
 }
 .phase-remove-mission {
     color: #fff;
@@ -376,6 +393,9 @@ input[type=radio]:focus {
     color: @brand-info;
 }
 .status-running {
+    color: @brand-info;
+}
+.status-active {
     color: @brand-info;
 }
 .status-failed {

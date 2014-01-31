@@ -1,7 +1,7 @@
 define("view/missionsoverview",
-       ["i18n", "continuouspager", "jquery", "tmpl/missionitem", "tmpl/missionsoverview",
-        "tmpl/nomissions"],
-       function(i18n, ContinuousPager, $, tmpl) {
+       ["i18n", "continuouspager", "jquery", "laces", "timestamps", "tmpl/missionitem",
+        "tmpl/missionsoverview", "tmpl/nomissions"],
+       function(i18n, ContinuousPager, $, Laces, Timestamps, tmpl) {
 
     "use strict";
 
@@ -21,7 +21,29 @@ define("view/missionsoverview",
         events: {
             "click .action-edit": "_edit",
             "click .action-new": "_new",
-            "click .action-remove": "_remove"
+            "click .action-remove": "_remove",
+            "click .action-start": "_start"
+        },
+
+        renderItem: function(model) {
+
+            var data = model;
+
+            if (model.campaigns.length === 1) {
+                var campaign = this.application.campaigns.get(model.campaigns[0]);
+                if (campaign) {
+                    model.campaignName = campaign.name;
+                }
+            }
+
+            var tie = new Laces.Tie(data, this.itemTemplate);
+            var $el = $(tie.render()).children();
+
+            $el.attr("data-item-id", model.id);
+
+            Timestamps.process($el.find("[data-timestamp]"));
+
+            return $el;
         },
 
         _edit: function(event) {
@@ -54,6 +76,13 @@ define("view/missionsoverview",
                     this.showError(i18n("Could not remove the mission"), error);
                 });
             });
+            return false;
+        },
+
+        _start: function(event) {
+
+            var mission = this.collection.get(this.targetData(event, "mission-id"));
+            mission.start();
             return false;
         }
 

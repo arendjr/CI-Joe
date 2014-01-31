@@ -29,9 +29,6 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
                 });
             }});
 
-            this.set("statusClass", function() {
-                return "status-" + this.status;
-            });
             this.set("isQueued", function() {
                 return this.status === "queued";
             });
@@ -40,6 +37,9 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             });
             this.set("isStopped", function() {
                 return this.status !== "queued" && this.status !== "running";
+            });
+            this.set("statusClass", function() {
+                return "status-" + this.status;
             });
         },
 

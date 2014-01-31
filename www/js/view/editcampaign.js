@@ -137,7 +137,7 @@ define("view/editcampaign",
                 if (this.application.navigation.canGoBack()) {
                     this.application.navigation.goBack();
                 } else {
-                    this.application.navigateTo("/campaigns");
+                    this.application.navigateTo("campaigns");
                 }
             }, function(error) {
                 this.showError(i18n("Could not save the campaign"), error);

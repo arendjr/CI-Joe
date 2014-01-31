@@ -52,11 +52,6 @@ define("view/application",
                 var $pre = $("<pre>").text(this.exception.stacktrace);
                 this.$(".action-show-stacktrace").replaceWith($pre);
             },
-            "click .action-start-mission": function(event) {
-                var id = this.targetData(event, "mission-id");
-                this.application.missions.get(id).start();
-                return false;
-            },
             "click .action-toggle-menu": function() {
                 if (this.$(".js-sidebar").css("display") === "block") {
                     this._hideSidebar();

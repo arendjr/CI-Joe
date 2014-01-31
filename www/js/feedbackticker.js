@@ -54,8 +54,7 @@ define("feedbackticker",
             }).length === 0) {
                 $.pnotify({
                     text: message,
-                    type: (options.type === "alert" ? "error" : "info"),
-                    sticker: false
+                    type: (options.type === "alert" ? "error" : "info")
                 });
             }
         }

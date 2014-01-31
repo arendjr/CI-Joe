@@ -1,8 +1,14 @@
 <tr class="clickable action-campaign" data-campaign-id="{{id}}">
+    <td class="status-indicator" data-tie="class: statusClass">
+        <i class="fa fa-dot-circle-o" data-tie="visible: !isActive"></i>
+        <i class="fa fa-spin fa-spinner" data-tie="visible: isActive"></i>
+    </td>
     <td data-tie="text: name"></td>
+    <td data-tie="attr[data-timestamp]: lastSuccess"></td>
+    <td data-tie="attr[data-timestamp]: lastFailure"></td>
     <td>
-        <a class="action-stop-campaign icon icon-stop" data-tie="visible: isActive"></a>
-        <a class="action-start-campaign icon icon-play" data-tie="visible: isStopped"></a>
+        <a class="action-stop icon icon-stop" data-tie="visible: isActive"></a>
+        <a class="action-start icon icon-play" data-tie="visible: !isActive"></a>
         <a class="action-edit icon icon-edit"></a>
         <a class="action-remove icon icon-trash"></a>
     </td>
