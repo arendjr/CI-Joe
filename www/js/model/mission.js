@@ -71,6 +71,7 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
             "environment",
             "name",
             "shell",
+            "standalone",
             "timeout",
             "workspace",
             "workspaceName"
@@ -82,6 +83,14 @@ define("model/mission", ["i18n", "lodash", "model", "model/job"], function(i18n,
         start: function() {
 
             return this.application.api.ajax(this.url() + "start", { type: "POST" });
+        },
+
+        /**
+         * Stops execution of the mission.
+         */
+        stop: function() {
+
+            return this.application.api.ajax(this.url() + "stop", { type: "POST" });
         },
 
         toJSON: function() {

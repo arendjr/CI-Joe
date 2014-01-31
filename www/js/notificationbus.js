@@ -164,7 +164,7 @@ define("notificationbus", ["lodash", "setzerotimeout"], function(_, setZeroTimeo
             }
 
             var socket = io.connect(host, {
-                "reconnection limit": 60 * 60 * 1000,
+                "reconnection limit": 60 * 1000,
                 "max reconnection attempts": Infinity
             });
             if (!socket) {

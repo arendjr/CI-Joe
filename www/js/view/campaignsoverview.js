@@ -22,7 +22,8 @@ define("view/campaignsoverview",
             "click .action-edit": "_edit",
             "click .action-new": "_new",
             "click .action-remove": "_remove",
-            "click .action-start": "_start"
+            "click .action-start": "_start",
+            "click .action-stop": "_stop"
         },
 
         renderItem: function(model) {
@@ -72,6 +73,13 @@ define("view/campaignsoverview",
 
             var campaign = this.collection.get(this.targetData(event, "campaign-id"));
             campaign.start();
+            return false;
+        },
+
+        _stop: function(event) {
+
+            var campaign = this.collection.get(this.targetData(event, "campaign-id"));
+            campaign.stop();
             return false;
         }
 

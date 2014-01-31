@@ -50,6 +50,10 @@ function main() {
         jobRunner.startJob(data.mission);
     });
 
+    socket.on("job:stop", function(data) {
+        jobRunner.stopJob(data.jobId);
+    });
+
     socket.on("slave:rejected", function() {
         process.exit(2);
     });

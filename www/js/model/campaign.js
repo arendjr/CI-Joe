@@ -20,6 +20,8 @@ define("model/campaign", ["model"], function(Model) {
 
         defaults: {
             advancedOptionsExpanded: false,
+            lastFailure: 0,
+            lastSuccess: 0,
             name: "",
             phases: [],
             runs: [],
@@ -42,6 +44,14 @@ define("model/campaign", ["model"], function(Model) {
         start: function() {
 
             return this.application.api.ajax(this.url() + "start", { type: "POST" });
+        },
+
+        /**
+         * Stops execution of the campaign.
+         */
+        stop: function() {
+
+            return this.application.api.ajax(this.url() + "stop", { type: "POST" });
         },
 
         type: "campaign"

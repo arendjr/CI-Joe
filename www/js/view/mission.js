@@ -67,7 +67,7 @@ define("view/mission",
             if (data.missionId === this.mission.id) {
                 var job = _.find(this.mission.jobs, { id: data.jobId });
                 if (job) {
-                    job.actionResults = data.actionResults;
+                    job.results = data.results;
                     job.status = data.status;
 
                     if (job.expanded) {

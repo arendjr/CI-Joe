@@ -22,7 +22,8 @@ define("view/missionsoverview",
             "click .action-edit": "_edit",
             "click .action-new": "_new",
             "click .action-remove": "_remove",
-            "click .action-start": "_start"
+            "click .action-start": "_start",
+            "click .action-stop": "_stop"
         },
 
         renderItem: function(model) {
@@ -83,6 +84,13 @@ define("view/missionsoverview",
 
             var mission = this.collection.get(this.targetData(event, "mission-id"));
             mission.start();
+            return false;
+        },
+
+        _stop: function(event) {
+
+            var mission = this.collection.get(this.targetData(event, "mission-id"));
+            mission.stop();
             return false;
         }
 
