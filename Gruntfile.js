@@ -20,8 +20,9 @@ module.exports = function(grunt) {
         // all JavaScript sources, excluding 3rd party libraries
         js: [], // determined automatically
 
-        // all JavaScript test files
+        // all unit test files
         tests: (serverTest || clientTest) ? (serverTest ? [serverTest] : []) : [
+            "missions",
             "schedular"
         ]
     };
@@ -46,8 +47,9 @@ module.exports = function(grunt) {
         // all Handlebars templates
         tmpl: [], // determined automatically
 
-        // all JavaScript test files
+        // all integration test files
         tests: (serverTest || clientTest) ? (clientTest ? [clientTest] : []) : [
+            "firstcampaign",
             "firstmission",
             "scheduleoptions"
         ],

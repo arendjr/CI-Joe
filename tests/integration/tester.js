@@ -225,11 +225,7 @@ Tester.prototype.type = function(selector, text) {
 
     this.evaluate(function(selector, text) {
         var $el = $(selector);
-        $el.focus().val(text);
-        for (var i = 0; i < Math.max(1, text.length); i++) {
-            $el.keyup();
-        }
-        $el.blur();
+        $el.focus().val(text).keyup().blur();
 
         var event = document.createEvent("Event");
         event.initEvent("change", true, true);

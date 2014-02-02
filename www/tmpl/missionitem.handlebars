@@ -10,10 +10,12 @@
     <td data-tie="attr[data-timestamp]: lastSuccess"></td>
     <td data-tie="attr[data-timestamp]: lastFailure"></td>
     <td>
-        <a class="action-stop icon icon-stop" data-tie="visible: isQueued"></a>
-        <a class="action-stop icon icon-stop" data-tie="visible: isRunning"></a>
-        <a class="action-start icon icon-play" data-tie="visible: isStopped"></a>
-        <a class="action-edit icon icon-edit"></a>
-        <a class="action-remove icon icon-trash"></a>
+        <a class="action-stop icon icon-stop" data-tie="visible: isQueued" title="{{i18n 'Stop'}}"></a>
+        <a class="action-stop icon icon-stop" data-tie="visible: isRunning" title="{{i18n 'Stop'}}"></a>
+        <a class="action-start icon icon-play" data-tie="visible: isStopped" title="{{i18n 'Run'}}"></a>
+        <a class="action-edit icon icon-edit" title="{{i18n 'Edit'}}"></a>
+        {{#if standalone}}
+        <a class="action-remove icon icon-trash" title="{{i18n 'Remove'}}"></a>
+        {{/if}}
     </td>
 </tr>
