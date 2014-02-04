@@ -5,6 +5,7 @@ C.I. Joe - Because knowing is half the battle!
 
  * **[Goals](#goals)**
  * **[Roadmap](#roadmap)**
+ * **[Blog](#blog)**
  * **[Usage](#usage)**
  * **[Tests](#tests)**
  * **[Terminology](#terminology)**
@@ -84,6 +85,13 @@ but bullet points on the roadmap:
 
 Want to add anything to the roadmap? Now is the time!
 [File an issue!](https://github.com/arendjr/CI-Joe/issues/new)
+
+
+Blog
+----
+
+I'm keeping track of C.I. Joe development on my personal blog:
+http://www.arendjr.nl/
 
 
 Usage
