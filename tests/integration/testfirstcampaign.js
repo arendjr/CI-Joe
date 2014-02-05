@@ -206,7 +206,7 @@
             tester.click(".action-confirm");
         });
 
-        tester.waitWhileSelector(".modal", function() {
+        tester.waitWhileSelector(".action-campaign", function() {
             tester.assertElementCount(".action-campaign", 0);
             tester.assertTextExists("No campaigns available.");
 
