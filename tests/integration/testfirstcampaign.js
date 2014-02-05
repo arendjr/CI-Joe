@@ -2,8 +2,7 @@
 
     "use strict";
 
-    var casper = require("casper").create({ viewportSize: { width: 1024, height: 768 } });
-    var tester = require("./tests/integration/tester").newTester(casper);
+    var tester = require("./testerutil").newTester(casper);
 
     tester.start(function() {
 

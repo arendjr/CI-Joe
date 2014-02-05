@@ -1,10 +1,11 @@
 /* jshint node: true */
-/* global $: false, Joe: false */
+/* global $: false, Joe: false, patchRequire: false, require: true */
 
 "use strict";
 
 
-var _ = require("./tests/integration/lodash");
+require = patchRequire(require);
+var _ = require("./lodash");
 
 var TEST_PORT = 18080;
 
@@ -68,21 +69,6 @@ Tester.prototype.assertElementChecked = function(selector, checked, message) {
     this.test.assertEvalEquals(function(selector) {
         return $(selector).prop("checked");
     }, checked, message, [selector]);
-};
-
-Tester.prototype.assertElementCount = function(selector, count, message) {
-
-    if (!message) {
-        if (count === 1) {
-            message = "" + count + " element with selector \"" + selector + "\" is expected";
-        } else {
-            message = "" + count + " elements with selector \"" + selector + "\" are expected";
-        }
-    }
-
-    this.test.assertEvalEquals(function(selector) {
-        return $(selector).length;
-    }, count, message, [selector]);
 };
 
 Tester.prototype.assertElementData = function(selector, name, value, message) {

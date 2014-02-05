@@ -264,7 +264,7 @@ module.exports = function(grunt) {
                     noarg: true,
                     node: true,
                     nonew: true,
-                    predef: ["define", "module", "require", "-event"],
+                    predef: ["casper", "define", "module", "require", "-event"],
                     strict: true,
                     trailing: true,
                     undef: true,
@@ -458,7 +458,7 @@ module.exports = function(grunt) {
                 "node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js",
                 "slave.sh",
                 "run_tests.sh",
-                "tests/integration/tester.js",
+                "tests/integration/testerutil.js",
                 "tools/install-git-hooks.sh",
                 "tools/git-pre-commit",
                 "www/index.html.tmpl"
