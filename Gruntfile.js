@@ -376,12 +376,11 @@ module.exports = function(grunt) {
                 cleanupBuild: {
                     // the build directory contains a lot of crust (mostly due to require.js),
                     // which we would not want to be included for distribution... for this reason we
-                    // remove every file and directory from the build directory that does not match
-                    // the production regex
+                    // manually copy only the relevant stuff
                     command: "mkdir www2;" +
                              "cp www/build/all.css www2;" +
                              "cp www/build/index.html www2;" +
-                             "cp www/build/favicon.png www2;" +
+                             "cp www/favicon.png www2;" +
                              "cp -R www/fonts www2;" +
                              "cp -R www/img www2;" +
                              "cp www/js/lib/require.js www2;" +
