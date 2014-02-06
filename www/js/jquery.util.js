@@ -1,6 +1,6 @@
 define("jquery.util",
-       ["canvasloader", "jquery", "l10n", "lodash"],
-       function(CanvasLoader, $, l10n, _) {
+       ["ansi_up", "canvasloader", "jquery", "l10n", "lodash"],
+       function(AnsiUp, CanvasLoader, $, l10n, _) {
 
     "use strict";
 
@@ -30,6 +30,14 @@ define("jquery.util",
         } else {
             return "";
         }
+    };
+
+    /**
+     * Returns the text escaped with all ANSI colors converted to HTML format.
+     */
+    $.colored = function(text) {
+
+        return AnsiUp.ansi_to_html(_.escape(text));
     };
 
     /**

@@ -1,6 +1,6 @@
 define("view/mission",
-       ["ansi_up", "laces.tie", "lodash", "view", "tmpl/joboutput", "tmpl/mission"],
-       function(AnsiUp, Laces, _, View, tmpl) {
+       ["jquery", "laces.tie", "lodash", "view", "tmpl/joboutput", "tmpl/mission"],
+       function($, Laces, _, View, tmpl) {
 
     "use strict";
 
@@ -66,12 +66,11 @@ define("view/mission",
 
             if (data.missionId === this.mission.id) {
                 var job = _.find(this.mission.jobs, { id: data.jobId });
-                if (job) {
-                    job.results = data.results;
-                    job.status = data.status;
-
-                    if (job.expanded) {
-                        this.$(".js-output").append(AnsiUp.ansi_to_html(_.escape(data.output)));
+                if (job && job.expanded) {
+                    var $output = this.$(".js-job-output[data-job-id=" + $.jsEscape(data.jobId) +
+                                         "] .js-output");
+                    if ($output.length) {
+                        $output[0].innerHTML += $.colored(data.output);
                     }
                 }
             }
