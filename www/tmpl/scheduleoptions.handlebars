@@ -86,4 +86,16 @@
             <select class="mtt js-custom-minutes" multiple placeholder="{{i18n 'Every minute'}}" style="width: 15em"></select>
         </div>
     </div>
+    <div class="mts js-prerequisites-radio">
+        <label data-tie="class: prereqLabelClass">
+            <input type="radio" value="prerequisite" class="inline-radio mrs">
+            {{i18n "Upon successful completion of schedules"}}
+        </label>
+    </div>
+    <div data-tie="visible: prereqSchedule">
+        <div class="col-sm-12">
+            <span class="col-sm-3 text-right mts">{{i18n "Campaign(s):"}}</span>
+            <select class="js-prerequisites" multiple placeholder="{{i18n 'Enter campaigns'}}" style="width: 15em"></select>
+        </div>
+    </div>
 </div>

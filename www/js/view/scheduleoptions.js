@@ -46,6 +46,7 @@ define("view/scheduleoptions",
             var options = this.scheduleOptions;
             switch (options.scheduleType) {
             case "manual":
+                model.prerequisites = [];
                 model.schedule = null;
                 break;
             case "hourly":
@@ -68,6 +69,7 @@ define("view/scheduleoptions",
                     }
                 }
                 minutes = [_.parseInt(options.minute)];
+                model.prerequisites = [];
                 model.schedule = { days: days, hours: hours, minutes: minutes };
                 break;
             case "daily":
@@ -76,19 +78,27 @@ define("view/scheduleoptions",
                 }
                 hours = [_.parseInt(options.time.slice(0, 2))];
                 minutes = [_.parseInt(options.time.slice(3, 5))];
+                model.prerequisites = [];
                 model.schedule = { days: days, hours: hours, minutes: minutes };
                 break;
             case "weekly":
                 days = [this.$(".js-weekly-day").select2("data").id];
                 hours = [_.parseInt(options.time.slice(0, 2))];
                 minutes = [_.parseInt(options.time.slice(3, 5))];
+                model.prerequisites = [];
                 model.schedule = { days: days, hours: hours, minutes: minutes };
                 break;
             case "custom":
                 days = selectInts(this.$(".js-custom-days"));
                 hours = selectInts(this.$(".js-custom-hours"));
                 minutes = selectInts(this.$(".js-custom-minutes"));
+                model.prerequisites = [];
                 model.schedule = { days: days, hours: hours, minutes: minutes };
+                break;
+            case "prerequisite":
+                var $prerequisites = this.$(".js-prerequisites");
+                model.prerequisites = _.pluck($prerequisites.select2("data"), "id");
+                model.schedule = null;
                 break;
             }
         },
@@ -112,11 +122,13 @@ define("view/scheduleoptions",
                 dailySchedule: function() { return this.scheduleType === "daily"; },
                 weeklySchedule: function() { return this.scheduleType === "weekly"; },
                 customSchedule: function() { return this.scheduleType === "custom"; },
+                prereqSchedule: function() { return this.scheduleType === "prerequisite"; },
                 manualLabelClass: function() { return this.manualSchedule ? "" : "text-normal"; },
                 hourlyLabelClass: function() { return this.hourlySchedule ? "" : "text-normal"; },
                 dailyLabelClass: function() { return this.dailySchedule ? "" : "text-normal"; },
                 weeklyLabelClass: function() { return this.weeklySchedule ? "" : "text-normal"; },
                 customLabelClass: function() { return this.customSchedule ? "" : "text-normal"; },
+                prereqLabelClass: function() { return this.prereqSchedule ? "" : "text-normal"; },
                 // hourly options
                 minute: 0,
                 exceptHours: true,
@@ -131,7 +143,9 @@ define("view/scheduleoptions",
                 // custom options
                 days: [1, 2, 3, 4, 5],
                 hours: [9, 11, 13, 15, 17],
-                minutes: [0]
+                minutes: [0],
+                // prerequisite campaigns
+                prerequisites: []
             });
 
             this._restoreOptions();
@@ -185,6 +199,29 @@ define("view/scheduleoptions",
             $minutes.select2("data", _.map(this.scheduleOptions.minutes, function(minute) {
                 return { id: minute, text: zeroPad(minute) };
             }));
+
+            var prereqOptionsHtml = this.application.campaigns.map(function(campaign) {
+                if (campaign.id === this.model.id) {
+                    return "";
+                } else {
+                    return '<option value="' + _.escape(campaign.id) + '">' +
+                               _.escape(campaign.name) +
+                           '</option>';
+                }
+            }, this).join("");
+
+            var $prerequisites = this.$(".js-prerequisites");
+            if (prereqOptionsHtml) {
+                $prerequisites.html(prereqOptionsHtml);
+                $prerequisites.select2();
+                $prerequisites.select2("data", _.map(this.scheduleOptions.prerequisites,
+                                                       function(campaignId) {
+                    var campaign = this.application.campaigns.get(campaignId);
+                    return { id: campaignId, text: campaign.name };
+                }, this));
+            } else if (this.scheduleOptions.scheduleType !== "prerequisite") {
+                this.$(".js-prerequisites-radio").hide();
+            }
         },
 
         _restoreOptions: function() {
@@ -196,9 +233,11 @@ define("view/scheduleoptions",
                 minutes = schedule.minutes;
             }
 
-            if (schedule && days && hours && minutes) {
-                var options = this.scheduleOptions;
+            var prerequisites = this.model.prerequisites;
 
+            var options = this.scheduleOptions;
+
+            if (schedule && days && hours && minutes) {
                 var numGaps = 0, consecutiveHours, firstExcludedHour, lastExcludedHour;
                 _.each(hours, function(hour, index) {
                     var previousHour = hours[index - 1];
@@ -252,6 +291,10 @@ define("view/scheduleoptions",
                 options.days = days;
                 options.hours = hours;
                 options.minutes = minutes;
+            }
+
+            if (prerequisites) {
+                options.prerequisites = prerequisites;
             }
         }
 

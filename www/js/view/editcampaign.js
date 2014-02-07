@@ -124,6 +124,7 @@ define("view/editcampaign",
         _save: function() {
 
             if (!this.$(".js-name-input").isValid()) {
+                this.$(".js-name-input").focus();
                 this.showError(i18n("Please enter a callsign"));
                 return;
             }
