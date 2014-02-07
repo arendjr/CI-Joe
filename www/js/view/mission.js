@@ -1,6 +1,6 @@
 define("view/mission",
-       ["laces.tie", "lodash", "view", "tmpl/joboutput", "tmpl/mission"],
-       function(Laces, _, View, tmpl) {
+       ["jquery", "laces.tie", "lodash", "view", "tmpl/joboutput", "tmpl/mission"],
+       function($, Laces, _, View, tmpl) {
 
     "use strict";
 
@@ -11,7 +11,7 @@ define("view/mission",
             this.mission = options.mission;
             this.mission.jobs.on("add", this._onNewJobs, { context: this });
 
-            this.subscribe("server-push:missions:update-results", this._onResults);
+            this.subscribe("server-push:missions:job-output", this._onJobOutput);
 
             this.$jobs = null;
         },
@@ -62,18 +62,15 @@ define("view/mission",
             _.each(event.elements, _.bind(this._renderJob, this));
         },
 
-        _onResults: function(data) {
+        _onJobOutput: function(data) {
 
             if (data.missionId === this.mission.id) {
                 var job = _.find(this.mission.jobs, { id: data.jobId });
-                if (job) {
-                    job.results = data.results;
-                    job.status = data.status;
-
-                    if (job.expanded) {
-                        var tie = new Laces.Tie(job, tmpl.joboutput);
-                        var $jobOutput = this.$(".js-job-output[data-job-id='" + job.id + "']");
-                        $jobOutput.replaceWith(tie.render());
+                if (job && job.expanded) {
+                    var $output = this.$(".js-job-output[data-job-id=" + $.jsEscape(data.jobId) +
+                                         "] .js-output");
+                    if ($output.length) {
+                        $output[0].innerHTML += $.colored(data.output);
                     }
                 }
             }

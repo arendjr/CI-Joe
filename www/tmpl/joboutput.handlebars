@@ -6,7 +6,7 @@
     </p>
     <div data-tie="visible: expanded">
         {{#with results}}
-        <pre>{{{colored output}}}</pre>
+        <pre class="js-output">{{{colored output}}}</pre>
         {{#if endTime}}
         <p>{{i18n "Command exited with exit code %1" exitCode}}</p>
         {{/if}}
